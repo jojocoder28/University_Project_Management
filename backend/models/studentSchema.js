@@ -52,6 +52,18 @@ const studentSchema = new mongoose.Schema({
         public_id: String,
         url: String,
     },
+    colabRequest:[{
+        type: String,
+    }],
+    projects:[{
+        type: String,
+    }],
+    colab:[{
+        type: String,
+    }],
+    languages:[{
+        type: String,
+    }],
 
 });
 
