@@ -5,7 +5,7 @@ import { generateToken } from "../utils/jwtToken.js";
 import cloudinary from "cloudinary";
 
 export const userRegister = catchAsyncErrors(async (req, res, next) => {
-    const { firstName, lastName, email, phone, username, role, gender, password } =
+    const { firstName, lastName, email, phone, username, gender, password } =
       req.body;
     if (
       !firstName ||
@@ -13,10 +13,10 @@ export const userRegister = catchAsyncErrors(async (req, res, next) => {
       !email ||
       !phone ||
       !username ||
-      !role ||
       !gender ||
       !password
     ) {
+      console.log(firstName+" "+lastName+" "+email+" "+phone+" "+username+" "+gender+" "+password)
       return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
   
@@ -31,7 +31,6 @@ export const userRegister = catchAsyncErrors(async (req, res, next) => {
       email,
       phone,
       username,
-      role,
       gender,
       password,
       role: "User",
@@ -54,6 +53,9 @@ export const userRegister = catchAsyncErrors(async (req, res, next) => {
     const isPasswordMatched = await user.comparePassword(password);
     if(!isPasswordMatched){
         return next(new ErrorHandler("Invalid Password or Email!",400));
+    }
+    if (role !== user.role) {
+      return next(new ErrorHandler(`User Not Found With This Role!`, 400));
     }
     generateToken(user, "Login Successfully!", 201, res);
   });

@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     email:{
         type: String,
         required: true,
-        minLength: [validator.isEmail, "Please Provide A Valid Email"],
+        validate: [validator.isEmail, "Please Provide A Valid Email"],
     },
     phone:{
         type:String,
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     },
     university:{
         type:String,
-        required: true,
+        // required: true,
     },
     dob:{
         type: String,
@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required: true,
-        minLength: [11, "Password Must Contain At Least 8 Characters!"],
+        minLength: [8, "Password Must Contain At Least 8 Characters!"],
         select: false,
     },
     avatar:{
