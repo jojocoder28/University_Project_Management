@@ -1,12 +1,23 @@
 import React from 'react'
-import Hero from '../components/Hero';
-import Biography from '../components/Biography';
+
+
+import Navbar from "../components/Navbar.jsx";
+import Footer from "../components/Footer.jsx";
+import ThemeSwitch from '../components/ThemeSwitch.jsx';
+
 
 const Home = () => {
   return ( <>
-    <Hero title={"Welcome to UniFolio, the ultimate project management platform for university students"} imageUrl={"/hero1.png"} />
-    <button className="btn glass">Glass button</button>
-    <Biography />
+  <Navbar transparent/>
+    <main>
+    <div className="bg-white dark:bg-slate-800
+    border-slate-100 dark:border-slate-500
+    rounded-box px-7 py-5
+    w-48 h-32">
+      hello
+    </div>
+    </main>
+    {/* <Footer/> */}
     </>
   )
 }
