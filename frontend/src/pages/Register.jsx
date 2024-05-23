@@ -17,7 +17,6 @@ const Register = () => {
                         <FormInput name="email" type="email" placeholder="Email ID"/>
                         <FormInput name="phone" type="number" placeholder="Phone No."/>
                         <FormInput name="username" type="text" placeholder="Username"/>
-                        {/* <FormInput name="gender" type="text" placeholder="Gender"/> */}
                         <div>
                             <label htmlFor="gender" className="sr-only">Role</label>
                             <select id="gender" name="gender" className="bg-blue-100 dark:bg-white appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Select Gender">
