@@ -14,14 +14,26 @@ const Home = () => {
     <main>
       <div className="container mx-auto">
         <div className="flex mb-4 p-4">
-          <CardsHome title={title1} description={desc1}/>
-          <div className="lg:w-4/12 h-96 lg:block hidden">
-            <div className="flex align-middle justify-center items-center relative">button</div>
+          <CardsHome title={title1} description={desc1} wh="lg:w-8/12 h-96"/>
+          <div className="lg:w-4/12 h-96 lg:block hidden overflow-hidden">
+            <div className="flex align-middle justify-center text-center items-center relative">
+              <img src="https://github.githubassets.com/assets/bg-a352b7ab2e3b.png" width={370} className='box rounded-xl h-96 relative bg-cover z-0'/>
+               <div className="absolute flex top-10 left-20 overflow-hidden"> 
+                <img src='/white-logo.png' height={70} width={70}/>
+                <span className='text-3xl px-5 relative top-5 font-bold'> n i f o l i o </span>
+              </div>
+              <div className="absolute px-5">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti at explicabo ipsam quis ad distinctio laboriosam rerum eaque maiores ipsa.
+              </div>
+
+              <div className="absolute bottom-12">
+                <a href='/register' className='btn btn-wide dark:bg-slate-800 dark:hover:bg-slate-900 bg-blue-100 border-0'>Register</a>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="flex p-4">
-          <CardsHome title="Test2" description="lorem80"/>
-          <div className="w-4/12">hi</div>
+        <div className="flex mb-4 p-4">
+          <CardsHome title={title1} description={desc1} wh="lg:w-full h-84"/>
         </div>
       </div>
     </main>

@@ -42,7 +42,7 @@ export default function Navbar(props) {
           <a
             className={
               (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
-              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold"
+              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-slate-400 hover:text-blue-900"
             }
             href="/"
           >
