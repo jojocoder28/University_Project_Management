@@ -10,7 +10,7 @@ export default function Navbar(props) {
         (props.transparent
           ? "top-0 relative z-50 w-full"
           : "relative bg-white shadow-lg") +
-        " flex flex-wrap items-center justify-between px-2 py-3 "
+        " flex flex-wrap items-center justify-between px-2 py-3 top-2"
       }
     >
       <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
@@ -52,15 +52,15 @@ export default function Navbar(props) {
         </div>
         <div
           className={
-            "lg:flex dark:bg-gray-900 bg-white lg:bg-transparent lg:shadow-none" +
+            "lg:flex dark:bg-transparent bg-white lg:bg-transparent lg:shadow-none" +
             (navbarOpen ? " block rounded shadow-lg" : " hidden")
           }
           id="example-navbar-warning"
         >
-          <NavbarElements name="Home" link="/"/>
-          <NavbarElements name="About Us" link="about"/>
-          <NavbarElements name="Login" link="login"/>
-          <NavbarElements name="Register" link="register"/>
+          <NavbarElements name="Home" link="/" flag={navbarOpen}/>
+          <NavbarElements name="About Us" link="about" flag={navbarOpen}/>
+          <NavbarElements name="Login" link="login" flag={navbarOpen}/>
+          <NavbarElements name="Register" link="register" flag={navbarOpen}/>
 
         </div>
           <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">       
