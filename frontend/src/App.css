@@ -26,27 +26,5 @@
   }
 }
 
-/* custom-scrollbar.css */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 12px;
-}
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #b01616;
-  border-radius: 6px;
-  border: 3px solid #f1f1f1;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #69ff61;
-}
-
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #fff23a #1218ce;
-}
 

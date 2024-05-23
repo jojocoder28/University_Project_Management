@@ -20,12 +20,11 @@ const Home = () => {
               <img src="https://github.githubassets.com/assets/bg-a352b7ab2e3b.png" width={370} className='box rounded-xl h-96 relative bg-cover z-0'/>
                <div className="absolute flex top-10 left-20 overflow-hidden"> 
                 <img src='/white-logo.png' height={70} width={70}/>
-                <span className='text-3xl px-5 relative top-5 font-bold'> n i f o l i o </span>
+                <span className='text-3xl px-5 relative top-5 font-bold text-white'> n i f o l i o </span>
               </div>
-              <div className="absolute px-5">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti at explicabo ipsam quis ad distinctio laboriosam rerum eaque maiores ipsa.
+              <div className="absolute px-12 text-white">
+              Sign in to Unifolio today and streamline your university projects. Easy management, collaboration, and success await
               </div>
-
               <div className="absolute bottom-12">
                 <a href='/register' className='btn btn-wide dark:bg-slate-800 dark:hover:bg-slate-900 bg-blue-100 border-0'>Register</a>
               </div>
