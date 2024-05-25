@@ -1,9 +1,34 @@
-import React from "react";
 import ThemeSwitch from "./ThemeSwitch.jsx";
 import NavbarElements from "../elements/NavbarElements.jsx";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Context } from "../main";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+
+  const handleLogout = async () => {
+    await axios
+      .get("http://localhost:4000/api/v1/user/logout", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        setIsAuthenticated(false);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
+  const navigateTo = useNavigate();
+
+  const goToLogin = () => {
+    navigateTo("/login");
+  };
   return (
     <nav
       className={
@@ -59,8 +84,23 @@ export default function Navbar(props) {
         >
           <NavbarElements name="Home" link="/" flag={navbarOpen}/>
           <NavbarElements name="About Us" link="about" flag={navbarOpen}/>
-          <NavbarElements name="Login" link="login" flag={navbarOpen}/>
+          {/* <NavbarElements name="Login" link="login" flag={navbarOpen}/> */}
           <NavbarElements name="Register" link="register" flag={navbarOpen}/>
+          <ul className="flex flex-col lg:flex-row list-none mr-auto">
+            <li className="flex items-center">
+            {isAuthenticated ? (<button
+                className={"dark:text-white dark:hover:text-gray-400 text-gray-800 hover:text-blue-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
+                onClick={handleLogout}
+              >
+                Logout
+              </button>):(<button
+                className={"dark:text-white dark:hover:text-gray-400 text-gray-800 hover:text-blue-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
+                onClick={goToLogin}
+              >
+                Login
+              </button>)}
+            </li>
+          </ul>
 
         </div>
           <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">       

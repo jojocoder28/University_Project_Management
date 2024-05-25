@@ -8,6 +8,7 @@ import CardsHome from '../components/CardsHome.jsx';
 
 
 const Home = () => {
+  document.title="Unifolio"
       const title1="Unifolio: Streamline your university projects with ease, collaboration, and efficiency";
       const desc1="Unifolio is a comprehensive university project management website designed to streamline academic projects. It offers features such as task tracking, file sharing, collaborative tools, and deadline reminders. With Unifolio, students and faculty can manage projects efficiently, ensuring better organization and communication. The platform supports seamless collaboration, making it easy to coordinate tasks, share resources, and monitor progress. Ideal for both individual and group projects, Unifolio enhances productivity and helps users stay on top of their academic commitments"
   return ( <>
