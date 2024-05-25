@@ -5,7 +5,7 @@ import { generateToken } from "../utils/jwtToken.js";
 import cloudinary from "cloudinary";
 
 export const userRegister = catchAsyncErrors(async (req, res, next) => {
-    const { firstName, lastName, email, phone, username, gender, password } =
+    const { firstName, lastName, email, phone, username, gender, password, confPassword } =
       req.body;
     if (
       !firstName ||
@@ -14,11 +14,15 @@ export const userRegister = catchAsyncErrors(async (req, res, next) => {
       !phone ||
       !username ||
       !gender ||
-      !password
+      !password ||
+      !confPassword
     ) {
-      console.log(firstName+" "+lastName+" "+email+" "+phone+" "+username+" "+gender+" "+password)
+      console.log(firstName+" "+lastName+" "+email+" "+phone+" "+username+" "+gender+" "+password+" "+confPassword)
       return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
+    if (password !== confPassword){
+      return next(new ErrorHandler("Password and Confirm Password do not match!",400));
+  }
   
     const isRegistered = await User.findOne({ email });
     if (isRegistered) {
@@ -39,12 +43,9 @@ export const userRegister = catchAsyncErrors(async (req, res, next) => {
   });
 
   export const login=catchAsyncErrors(async(req,res,next)=>{
-    const {email, password, confPassword, role}=req.body;
-    if (!email || !password || !confPassword || !role){
+    const {email, password, role}=req.body;
+    if (!email || !password || !role){
         return next(new ErrorHandler("Please provide all details",400));
-    }
-    if (password !== confPassword){
-        return next(new ErrorHandler("Password and Confirm Password do not match!",400));
     }
     const user = await User.findOne({email}).select("+password");
     if(!user){

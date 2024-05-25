@@ -24,7 +24,7 @@ export const isAdminAuthenticated = catchAsyncErrors(async (req,res,next)=>{
 export const isUserAuthenticated = catchAsyncErrors(async (req,res,next)=>{
     const token=req.cookies.userToken;
     if(!token){
-        return next(new ErrorHandler("Admin not Authenticated!",400));
+        return next(new ErrorHandler("User not Authenticated!",400));
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = await User.findById(decoded.id);
