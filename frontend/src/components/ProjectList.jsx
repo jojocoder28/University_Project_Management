@@ -21,7 +21,7 @@ function ProjectList() {
                             <div className="badge badge-neutral overflow-hidden">Cohere</div>
                         </td>
                         <td className="px-6 py-4">
-                            <div className="badge badge-neutral overflow-hidden">Accepted</div>
+                            <div className="badge badge-neutral bg-green-800 overflow-hidden">Accepted</div>
                         </td>
                         </tr>
                         <tr className="cursor-pointer transition-color duration-300 hover:bg-gray-500 dark:hover:bg-slate-900">
@@ -32,7 +32,7 @@ function ProjectList() {
                             <div className="badge badge-neutral overflow-hidden">Cohere</div>
                         </td>
                         <td className="px-6 py-4">
-                            <div className="badge badge-neutral overflow-hidden">Accepted</div>
+                            <div className="badge badge-neutral bg-green-800 overflow-hidden">Accepted</div>
                         </td>
                         </tr>
                         <tr className="cursor-pointer transition-color duration-300 hover:bg-gray-500 dark:hover:bg-slate-900">
@@ -43,7 +43,7 @@ function ProjectList() {
                             <div className="badge badge-neutral overflow-hidden">Cohere</div>
                         </td>
                         <td className="px-6 py-4">
-                            <div className="badge badge-neutral overflow-hidden">Pending</div>
+                            <div className="badge badge-neutral bg-yellow-500 overflow-hidden">Pending</div>
                         </td>
                         </tr>
                         <tr className="cursor-pointer transition-color duration-300 hover:bg-gray-500 dark:hover:bg-slate-900">
@@ -54,7 +54,7 @@ function ProjectList() {
                             <div className="badge badge-neutral overflow-hidden">Cohere</div>
                         </td>
                         <td className="px-6 py-4">
-                            <div className="badge badge-neutral overflow-hidden">Rejected</div>
+                            <div className="badge badge-neutral bg-red-800 overflow-hidden">Rejected</div>
                         </td>
                         </tr>
                     </tbody>

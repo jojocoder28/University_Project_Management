@@ -14,7 +14,7 @@ function Dashboard() {
                 <div className="flex gap-5 w-full justify-center items-center">
                     <h2 className="text-2xl font-semibold text-center my-4">Projects</h2>
                     <div className="flex justify-center">
-                        <button className="btn btn-primary hover:bg-amber-500 dark:hover:bg-slate-900 shadow-md">Add Project</button>
+                        <button className="btn btn-primary hover:bg-blue-200 dark:hover:bg-slate-900 shadow-md">Add Project</button>
                     </div>
                 </div>
                 <div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
