@@ -1,10 +1,10 @@
 import "./App.css";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
-import Home from "./pages/Home"
-import AboutUs from "./pages/AboutUs"
-import Register from "./pages/Register"
-import Login from "./pages/Login"
-import Dashboard from './pages/Dashboard'
+import Home from "./pages/Home.jsx"
+import AboutUs from "./pages/AboutUs.jsx"
+import Register from "./pages/Register.jsx"
+import Login from "./pages/Login.jsx"
+import Dashboard from './pages/Dashboard.jsx'
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar.jsx';
@@ -26,10 +26,12 @@ const App = () => {
             withCredentials: true,
           }
         );
+        console.log(response);
         setIsAuthenticated(true);
+        console.log(isAuthenticated);
         setUser(response.data.user);
       } catch (error) {
-        // console.log(error)
+        console.log("sdk cnq error !!!!!!!!!!!!!");
         setIsAuthenticated(false);
         setUser({});
       }
@@ -48,7 +50,6 @@ const App = () => {
         <Route path='/dashboard' element={<Dashboard />} />
       </Routes>
       <CopyrightElement name="SDK CNQ" link="/"/>
-
       <ToastContainer position='top-center' />
     </Router>
     </>

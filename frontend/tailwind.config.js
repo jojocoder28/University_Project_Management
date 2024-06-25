@@ -11,7 +11,7 @@ export default {
   plugins: [
     daisyui,
     require('tailwindcss'),
-    require('flowbite/plugin'),
+    // require("/node_modules/flowbite/plugin.js"),
   ],
   daisyui: {
     themes: [],
