@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import jwt from "jsonwebtoken";
 
 const studentSchema = new mongoose.Schema({
     rollnumber:{
@@ -24,7 +25,7 @@ const studentSchema = new mongoose.Schema({
     email:{
         type: String,
         required: true,
-        minLength: [validator.isEmail, "Please Provide A Valid Email"],
+        validate: [validator.isEmail, "Please Provide A Valid Email"],
     },
     phone:{
         type:String,
@@ -67,6 +68,11 @@ const studentSchema = new mongoose.Schema({
 
 });
 
+studentSchema.methods.generateJsonWebToken= function(){
+    return jwt.sign({id: this._id},process.env.JWT_SECRET_KEY,{
+        expiresIn: process.env.JWT_EXPIRES,
+    })
+};
 
 
 export const Student = mongoose.model("student", studentSchema);
