@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Dashboard() {
 // const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const {user, setUser} = useContext(Context);
+  const [student, setStudent] = useState([]);
   const email=user.email;
   // console.log("user = ",user)
   useEffect(() => {
@@ -30,21 +31,21 @@ function Dashboard() {
           "http://localhost:4000/api/v1/student/me",
           { withCredentials: true }
         );
-        setUser(data.student);
+        setStudent(data.student);
         // console.log(data);
       } catch (error) {
-        setUser([]);
+        setStudent([]);
       }
     };
     fetchStudent();
   }, []);
 
     let numProjects = 0;
-    if(user.projects){
-      numProjects=user.projects.length;
+    if(student.projects){
+      numProjects=student.projects.length;
     }
-    const course=user.course;
-    const university=user.university;
+    const course=student.course;
+    const university=student.university;
     // console.log(course)
     // console.log(university)
     // const institute=user.institute;
@@ -67,7 +68,7 @@ function Dashboard() {
                 {numProjects!==0 ? (<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
                     <div className="max-w-3/5">
                         <ProjectList
-                        projects={user.projects}
+                        projects={student.projects}
                         />
                     </div>
                 </div>):(<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
