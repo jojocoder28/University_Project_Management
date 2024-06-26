@@ -3,12 +3,29 @@ import NavbarElements from "../elements/NavbarElements.jsx";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:4000/api/v1/user/me",
+          { withCredentials: true }
+        );
+        setUser(data.user);
+        // console.log(data.user);
+      } catch (error) {
+        setUser([]);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const handleLogout = async () => {
     await axios
@@ -64,7 +81,7 @@ export default function Navbar(props) {
             />
           </svg></i>
           </button>
-          <a
+          {!isAuthenticated ? (<a
             className={
               (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
               " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-slate-400 hover:text-blue-900"
@@ -72,7 +89,15 @@ export default function Navbar(props) {
             href="/"
           >
             UniFolio
-          </a>
+          </a>):(<a
+            className={
+              (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
+              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-slate-400 hover:text-blue-900"
+            }
+            href="/dashboard"
+          >
+            {user.username}
+          </a>)}
           
         </div>
         <div
@@ -85,7 +110,6 @@ export default function Navbar(props) {
           <NavbarElements name="Home" link="/" flag={navbarOpen}/>
           <NavbarElements name="About Us" link="about" flag={navbarOpen}/>
           {/* <NavbarElements name="Login" link="login" flag={navbarOpen}/> */}
-          <NavbarElements name="Register" link="register" flag={navbarOpen}/>
           <ul className="flex flex-col lg:flex-row list-none mr-auto">
             <li className="flex items-center">
             {isAuthenticated ? (<button
@@ -93,12 +117,12 @@ export default function Navbar(props) {
                 onClick={handleLogout}
               >
                 Logout
-              </button>):(<button
-                className={"dark:text-white dark:hover:text-gray-400 text-gray-800 hover:text-blue-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
-                onClick={goToLogin}
-              >
-                Login
-              </button>)}
+              </button>):(<><NavbarElements name="Register" link="register" flag={navbarOpen} /><button
+                  className={"dark:text-white dark:hover:text-gray-400 text-gray-800 hover:text-blue-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
+                  onClick={goToLogin}
+                >
+                  Login
+                </button></>)}
             </li>
           </ul>
 

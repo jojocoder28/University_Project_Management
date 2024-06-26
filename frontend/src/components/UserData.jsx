@@ -15,7 +15,7 @@ function UserData(props) {
                     </div>
                 </div>
                 <div className="flex flex-col ml-5 gap-3">
-                    <h2 className="text-3xl font-semibold">{props.name}</h2>
+                    <h2 className="text-3xl font-semibold">{props.fname} {props.lname}</h2>
                     <div className="badge badge-md badge-outline overflow-hidden">
                         {props.role}
                     </div>

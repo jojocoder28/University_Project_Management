@@ -28,7 +28,7 @@ const App = () => {
         );
         console.log(response);
         setIsAuthenticated(true);
-        console.log(isAuthenticated);
+        // console.log(isAuthenticated);
         setUser(response.data.user);
       } catch (error) {
         console.log("sdk cnq error !!!!!!!!!!!!!");

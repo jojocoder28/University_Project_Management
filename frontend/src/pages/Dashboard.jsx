@@ -1,12 +1,36 @@
 import UserData from '../components/UserData'
 import ProjectList from '../components/ProjectList'
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Context } from "../main";
+import React, { useContext, useState, useEffect} from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 function Dashboard() {
+// const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:4000/api/v1/user/me",
+          { withCredentials: true }
+        );
+        setUser(data.user);
+        // console.log(data.user);
+      } catch (error) {
+        setUser([]);
+      }
+    };
+    fetchUser();
+  }, []);
     return (
         <>
             <div className="container mx-auto h-auto w-full">
                 <div className="flex items-start justify-center">
                     <UserData 
-                    name="Carl Johnson" role="Student" 
+                    fname={user.firstName} lname={user.lastName} role={user.role} 
                     location="Los Santos" university="Los Santos Public University"
                     />
                 </div>
