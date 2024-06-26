@@ -8,30 +8,53 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
 // const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-  const [user, setUser] = useState([]);
-
+  const {user, setUser} = useContext(Context);
+  const email=user.email;
+  // console.log("user = ",user)
   useEffect(() => {
-    const fetchUser = async () => {
+    const loginStudent = async () => {
+      await axios
+        .post(
+          "http://localhost:4000/api/v1/student/login",
+          {email},
+          {
+            withCredentials: true,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+    }
+    loginStudent();
+    const fetchStudent = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/user/me",
+          "http://localhost:4000/api/v1/student/me",
           { withCredentials: true }
         );
-        setUser(data.user);
-        // console.log(data.user);
+        setUser(data.student);
+        // console.log(data);
       } catch (error) {
         setUser([]);
       }
     };
-    fetchUser();
+    fetchStudent();
   }, []);
+
+    let numProjects = 0;
+    if(user.projects){
+      numProjects=user.projects.length;
+    }
+    const course=user.course;
+    const university=user.university;
+    // console.log(course)
+    // console.log(university)
+    // const institute=user.institute;
     return (
         <>
             <div className="container mx-auto h-auto w-full">
                 <div className="flex items-start justify-center">
                     <UserData 
-                    fname={user.firstName} lname={user.lastName} role={user.role} 
-                    location="Los Santos" university="Los Santos Public University"
+                    fname={user.firstName} lname={user.lastName} role="User"
+                    course={course} university={university} numProjects={numProjects}
                     />
                 </div>
                 <div className="divider"></div>
@@ -41,11 +64,18 @@ function Dashboard() {
                         <button className="btn btn-primary hover:bg-blue-200 dark:hover:bg-slate-900 shadow-md">Add Project</button>
                     </div>
                 </div>
-                <div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
+                {numProjects!==0 ? (<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
                     <div className="max-w-3/5">
-                        <ProjectList />
+                        <ProjectList
+                        projects={user.projects}
+                        />
                     </div>
-                </div>
+                </div>):(<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
+                    <div className="max-w-3/5">
+                        No projects
+                    </div>
+                </div>)}
+                
             </div>
         </>
     )

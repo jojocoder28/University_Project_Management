@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-  const [user, setUser] = useState([]);
+  const {user, setUser} = useContext(Context);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -94,7 +94,7 @@ export default function Navbar(props) {
               (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
               " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-slate-400 hover:text-blue-900"
             }
-            href="/dashboard"
+            href="/"
           >
             {user.username}
           </a>)}

@@ -1,5 +1,5 @@
 
-function ProjectList() {
+function ProjectList(props) {
     return (
         <>
             <div className="overflow-auto p-4">
@@ -24,39 +24,19 @@ function ProjectList() {
                             <div className="badge badge-neutral bg-green-800 overflow-hidden">Accepted</div>
                         </td>
                         </tr>
-                        <tr className="cursor-pointer transition-color duration-300 hover:bg-gray-500 dark:hover:bg-slate-900">
-                        <td className="px-6 py-4">Efficient In-context Example Selection for In-context Transfer Learning using LLMs</td>
-                        <td className="flex px-6 py-4 overflow-auto gap-2">
-                            <div className="badge badge-neutral overflow-hidden">Python</div>
-                            <div className="badge badge-neutral overflow-hidden">LangChain</div>
-                            <div className="badge badge-neutral overflow-hidden">Cohere</div>
-                        </td>
-                        <td className="px-6 py-4">
-                            <div className="badge badge-neutral bg-green-800 overflow-hidden">Accepted</div>
-                        </td>
-                        </tr>
-                        <tr className="cursor-pointer transition-color duration-300 hover:bg-gray-500 dark:hover:bg-slate-900">
-                        <td className="px-6 py-4">Efficient In-context Example Selection for In-context Transfer Learning using LLMs</td>
-                        <td className="flex px-6 py-4 overflow-auto gap-2">
-                            <div className="badge badge-neutral overflow-hidden">Python</div>
-                            <div className="badge badge-neutral overflow-hidden">LangChain</div>
-                            <div className="badge badge-neutral overflow-hidden">Cohere</div>
-                        </td>
-                        <td className="px-6 py-4">
-                            <div className="badge badge-neutral bg-yellow-500 overflow-hidden">Pending</div>
-                        </td>
-                        </tr>
-                        <tr className="cursor-pointer transition-color duration-300 hover:bg-gray-500 dark:hover:bg-slate-900">
-                        <td className="px-6 py-4">Efficient In-context Example Selection for In-context Transfer Learning using LLMs</td>
-                        <td className="flex px-6 py-4 overflow-auto gap-2">
-                            <div className="badge badge-neutral overflow-hidden">Python</div>
-                            <div className="badge badge-neutral overflow-hidden">LangChain</div>
-                            <div className="badge badge-neutral overflow-hidden">Cohere</div>
-                        </td>
-                        <td className="px-6 py-4">
-                            <div className="badge badge-neutral bg-red-800 overflow-hidden">Rejected</div>
-                        </td>
-                        </tr>
+                        {props.projects.map((project, index) => (
+                            <tr key={index} className="cursor-pointer transition-color duration-300 hover:bg-gray-500 dark:hover:bg-slate-900">
+                            <td className="px-6 py-4">{project}</td>
+                            <td className="flex px-6 py-4 overflow-auto gap-2">
+                                <div className="badge badge-neutral overflow-hidden">Python</div>
+                                <div className="badge badge-neutral overflow-hidden">LangChain</div>
+                                <div className="badge badge-neutral overflow-hidden">Cohere</div>
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className="badge badge-neutral bg-green-800 overflow-hidden">Accepted</div>
+                            </td>
+                            </tr>
+                        ))}
                     </tbody>
                     </table>
                 </div>

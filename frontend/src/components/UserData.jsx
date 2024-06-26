@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { IoSchoolSharp } from "react-icons/io5";
+import { FaBookOpen } from "react-icons/fa6";
 
 function UserData(props) {
     return (
@@ -20,8 +21,8 @@ function UserData(props) {
                         {props.role}
                     </div>
                     <div className="location flex items-center">
-                        <HiOutlineLocationMarker />
-                        <h4 className="text-md ml-2">{props.location}</h4>
+                        <FaBookOpen />
+                        <h4 className="text-md ml-2">{props.course}</h4>
                     </div>
                     <div className="university flex items-center">
                         <IoSchoolSharp />
@@ -33,12 +34,12 @@ function UserData(props) {
             <div className="flex stats stats-vertical lg:stats-horizontal lg:space-x-5 shadow">
                 <div className="stat">
                     <div className="stat-title text-xl">Projects</div>
-                    <div className="stat-value overflow-hidden">10</div>
+                    <div className="stat-value overflow-hidden">{props.numProjects}</div>
                     <div className="stat-desc text-wrap">Latest: 10th Jan 2024</div>
                 </div>
                 <div className="stat">
-                    <div className="stat-title text-wrap text-xl">Pending Projects</div>
-                    <div className="stat-value overflow-hidden">2</div>
+                    <div className="stat-title text-wrap text-xl">Pending</div>
+                    <div className="stat-value overflow-hidden">{props.numProjects}</div>
                     <div className="stat-desc text-wrap">↗︎ Accepance Rate: 69%</div>
                 </div>
             </div>

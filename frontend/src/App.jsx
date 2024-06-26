@@ -26,7 +26,7 @@ const App = () => {
             withCredentials: true,
           }
         );
-        console.log(response);
+        // console.log(response);
         setIsAuthenticated(true);
         // console.log(isAuthenticated);
         setUser(response.data.user);
@@ -43,11 +43,11 @@ const App = () => {
     <Router>
     <Navbar transparent/>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {isAuthenticated ? (<Route path="/" element={<Dashboard />} />):(<Route path="/" element={<Home />} />)}
         <Route path="/about" element={<AboutUs />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        {/* <Route path='/dashboard' element={<Dashboard />} /> */}
       </Routes>
       <CopyrightElement name="SDK CNQ" link="/"/>
       <ToastContainer position='top-center' />
