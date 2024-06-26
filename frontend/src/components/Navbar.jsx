@@ -111,19 +111,22 @@ export default function Navbar(props) {
           <NavbarElements name="About Us" link="about" flag={navbarOpen}/>
           {/* <NavbarElements name="Login" link="login" flag={navbarOpen}/> */}
           <ul className="flex flex-col lg:flex-row list-none mr-auto">
-            <li className="flex items-center">
-            {isAuthenticated ? (<button
+            
+            {isAuthenticated ? (
+              <li className="flex items-center">
+                <button
                 className={"dark:text-white dark:hover:text-gray-400 text-gray-800 hover:text-blue-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
                 onClick={handleLogout}
               >
                 Logout
-              </button>):(<><NavbarElements name="Register" link="register" flag={navbarOpen} /><button
+              </button></li>):(<><li><NavbarElements name="Register" link="register" flag={navbarOpen} /></li>
+              <li><button
                   className={"dark:text-white dark:hover:text-gray-400 text-gray-800 hover:text-blue-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
                   onClick={goToLogin}
                 >
                   Login
-                </button></>)}
-            </li>
+                </button></li></>)}
+            
           </ul>
 
         </div>

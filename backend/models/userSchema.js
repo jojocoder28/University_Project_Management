@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     },
     university:{
         type:String,
-        // required: true,
+        required: true,
     },
     dob:{
         type: String,
@@ -57,7 +57,38 @@ const userSchema = new mongoose.Schema({
         public_id: String,
         url: String,
     },
-    
+    rollnumber:{
+        type: String,
+        // required: true,
+    },
+    institute:{
+        type: String,
+    },
+    course:{
+        type: String,
+    },
+    admissiondate:{
+        type: String,
+    },
+    passoutyear:{
+        type: Number,
+    },
+    avatar:{
+        public_id: String,
+        url: String,
+    },
+    colabRequest:[{
+        type: String,
+    }],
+    projects:[{
+        type: String,
+    }],
+    colab:[{
+        type: String,
+    }],
+    languages:[{
+        type: String,
+    }],
 
 });
 

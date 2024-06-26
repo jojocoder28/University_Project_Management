@@ -5,7 +5,7 @@ import { generateToken } from "../utils/jwtToken.js";
 import cloudinary from "cloudinary";
 
 export const userRegister = catchAsyncErrors(async (req, res, next) => {
-  const { firstName, lastName, email, phone, username, gender, password, confPassword } =
+  const { firstName, lastName, email, university, course, dob, phone, username, gender, password, confPassword } =
     req.body;
   if (
     !firstName ||
@@ -14,10 +14,14 @@ export const userRegister = catchAsyncErrors(async (req, res, next) => {
     !phone ||
     !username ||
     !gender ||
+    !university ||
+    !course ||
+    !dob ||
     !password ||
     !confPassword
   ) {
-    console.log(firstName+" "+lastName+" "+email+" "+phone+" "+username+" "+gender+" "+password+" "+confPassword)
+    // console.log(firstName+" "+lastName+" "+email+" "+phone+" "+username+" "+gender+" "+password+" "+confPassword)
+    // console.log(req.body);
     return next(new ErrorHandler("Please Fill Full Form!", 400));
   }
   if (password !== confPassword){
@@ -33,6 +37,9 @@ export const userRegister = catchAsyncErrors(async (req, res, next) => {
     firstName,
     lastName,
     email,
+    university,
+    course,
+    dob,
     phone,
     username,
     gender,

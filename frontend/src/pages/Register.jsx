@@ -15,6 +15,9 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [username, setUsername] = useState("");
   const [gender, setGender] = useState("");
+  const [university, setUniversity] = useState("");
+  const [dob, setDob] = useState("");
+  const [course, setCourse] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
 
@@ -27,7 +30,7 @@ const Register = () => {
       await axios
         .post(
           "http://localhost:4000/api/v1/user/register",
-          { firstName, lastName, email, phone, username, gender, password, confPassword },
+          { firstName, lastName, email, university, course, dob, phone, username, gender, password, confPassword },
           {
             withCredentials: true,
             headers: { "Content-Type": "application/json" },
@@ -40,6 +43,9 @@ const Register = () => {
           setFirstName("");
           setLastName("");
           setEmail("");
+          setCourse("");
+          setUniversity("");
+          setDob("");
           setPhone("");
           setUsername("");
           setGender("");
@@ -85,6 +91,33 @@ const Register = () => {
                       Email
                     </label>
                     <input value={email} onChange={(e) => setEmail(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-email" type="email" placeholder="example@example.com"/>
+                    
+                  </div>
+                </div>
+                <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full px-3">
+                    <label className="block uppercase tracking-wide dark:text-white text-gray-700 text-xs font-bold mb-2" htmlFor="grid-password">
+                      University
+                    </label>
+                    <input value={university} onChange={(e) => setUniversity(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-university" type="text" placeholder="Name of your University"/>
+                    
+                  </div>
+                </div>
+                <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full px-3">
+                    <label className="block uppercase tracking-wide dark:text-white text-gray-700 text-xs font-bold mb-2" htmlFor="grid-password">
+                      Course
+                    </label>
+                    <input value={course} onChange={(e) => setCourse(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-course" type="text" placeholder="BSc/BA/MSc/MA/MCA/BTech"/>
+                    
+                  </div>
+                </div>
+                <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full px-3">
+                    <label className="block uppercase tracking-wide dark:text-white text-gray-700 text-xs font-bold mb-2" htmlFor="grid-password">
+                      Date of Birth
+                    </label>
+                    <input value={dob} onChange={(e) => setDob(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-dob" type="date" placeholder="DD-MM-YYYY"/>
                     
                   </div>
                 </div>

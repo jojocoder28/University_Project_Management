@@ -7,55 +7,50 @@ import React, { useContext, useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
-// const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const {user, setUser} = useContext(Context);
-  const [student, setStudent] = useState([]);
-  const email=user.email;
+  // const [student, setStudent] = useState([]);
+  // const email=user.email;
   // console.log("user = ",user)
   useEffect(() => {
-    const loginStudent = async () => {
-      await axios
-        .post(
-          "http://localhost:4000/api/v1/student/login",
-          {email},
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-    }
-    loginStudent();
-    const fetchStudent = async () => {
-      try {
-        const { data } = await axios.get(
-          "http://localhost:4000/api/v1/student/me",
-          { withCredentials: true }
-        );
-        setStudent(data.student);
-        // console.log(data);
-      } catch (error) {
-        setStudent([]);
-      }
-    };
-    fetchStudent();
+    // const loginStudent = async () => {
+    //   await axios
+    //     .post(
+    //       "http://localhost:4000/api/v1/student/login",
+    //       {email},
+    //       {
+    //         withCredentials: true,
+    //         headers: { "Content-Type": "application/json" },
+    //       }
+    //     );
+    // }
+    // loginStudent();
+    // const fetchStudent = async () => {
+    //   try {
+    //     const { data } = await axios.get(
+    //       "http://localhost:4000/api/v1/student/me",
+    //       { withCredentials: true }
+    //     );
+    //     setStudent(data.student);
+    //     // console.log(data);
+    //   } catch (error) {
+    //     setStudent([]);
+    //   }
+    // };
+    // fetchStudent();
   }, []);
 
     let numProjects = 0;
-    if(student.projects){
-      numProjects=student.projects.length;
+    if(user.projects){
+      numProjects=user.projects.length;
     }
-    const course=student.course;
-    const university=student.university;
-    // console.log(course)
-    // console.log(university)
-    // const institute=user.institute;
     return (
         <>
             <div className="container mx-auto h-auto w-full">
                 <div className="flex items-start justify-center">
                     <UserData 
                     fname={user.firstName} lname={user.lastName} role="User"
-                    course={course} university={university} numProjects={numProjects}
+                    course={user.course} university={user.university} numProjects={numProjects}
                     />
                 </div>
                 <div className="divider"></div>
@@ -68,7 +63,7 @@ function Dashboard() {
                 {numProjects!==0 ? (<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
                     <div className="max-w-3/5">
                         <ProjectList
-                        projects={student.projects}
+                        projects={user.projects}
                         />
                     </div>
                 </div>):(<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
