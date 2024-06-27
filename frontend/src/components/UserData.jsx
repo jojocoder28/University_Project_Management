@@ -17,8 +17,9 @@ function UserData(props) {
     const [avatar, setAvatar] = useState("");
     const [avatarPreview, setAvatarPreview] = useState("");
     const {user, setUser} = useContext(Context);
+    const [id, setId] = useState(user._id);
     const navigateTo = useNavigate();
-    
+    // console.log(user._id);
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -42,7 +43,8 @@ function UserData(props) {
         e.preventDefault();
         try {
           const formData = new FormData();
-          formData.append("docAvatar", docAvatar);
+          formData.append("avatar", avatar);
+          formData.append("id",id);
           await axios
             .post("http://localhost:4000/api/v1/user/addavatar", formData, {
               withCredentials: true,
@@ -50,11 +52,13 @@ function UserData(props) {
             })
             .then((res) => {
               toast.success(res.data.message);
-              setIsAuthenticated(true);
+            //   setIsAuthenticated(true);
+              setIsModalOpen(false);
               navigateTo("/");
             });
         } catch (error) {
-          toast.error(error.response.data.message);
+          toast.error(error.response);
+        //   console.log(error)
         }
       };
 
@@ -63,7 +67,7 @@ function UserData(props) {
         <div className="flex flex-col lg:flex-row justify-between mx-5 my-10 p-5 rounded-lg w-full">
             <div className="flex flex-row userData mb-5 lg:mb-0">
                 <div className="relative">
-                    <img className="w-20 h-20 rounded-full" src="blankAvatar.jpg" alt=""/>
+                    <img className="w-20 h-20 rounded-full" src={user.avatar && user.avatar.url} alt="avatar"/>
                     <div className="flex justify-center items-center">
                     <button className="flex bg-slate-800 w-full lg:mx-4 text-sm py-1 justify-center items-center rounded-lg mt-4 sm:mx-0 md:mx-0" onClick={openModal}> Edit </button>
                     </div>
@@ -97,7 +101,7 @@ function UserData(props) {
                                 <input id="dropzone-file" type="file" className="hidden" onChange={handleAvatar}/>
                             </label>
                         </div> 
-                        <input type="hidden" value={user._id} name="email"></input>
+                        {/* <input type="hidden" value={user._id} name="id"></input> */}
                         <div className="flex justify-center items-center pt-5">
                             <button className="btn btn-primary hover:bg-blue-200 dark:hover:bg-slate-900 shadow-md">Update Image</button>
                         </div>

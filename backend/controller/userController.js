@@ -1,7 +1,7 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import { User } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
-import { generateToken } from "../utils/jwtToken.js";
+import { generateToken, generateTokenStudent } from "../utils/jwtToken.js";
 import cloudinary from "cloudinary";
 
 export const userRegister = catchAsyncErrors(async (req, res, next) => {
@@ -77,7 +77,52 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
 });
 
 
+export const addAvatar = catchAsyncErrors(async (req,res,next) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return next(new ErrorHandler("User Avatar Required!", 400));
+  }
+  const { avatar } = req.files;
+  const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+  if (!allowedFormats.includes(avatar.mimetype)) {
+    return next(new ErrorHandler("File Format Not Supported!", 400));
+  }
+  const id = req.body.id;
+  // console.log(req.body.id);
+  if(!avatar)
+  {
+    return next(new ErrorHandler("Please upload an image!", 400));
+  }
+  if(!id){
+    return next(new ErrorHandler("Can't fetch user information", 400));
+  }
+  const cloudinaryResponse = await cloudinary.uploader.upload(
+    avatar.tempFilePath
+  );
+  if (!cloudinaryResponse || cloudinaryResponse.error) {
+    console.error(
+      "Cloudinary Error:",
+      cloudinaryResponse.error || "Unknown Cloudinary error"
+    );
+    return next(
+      new ErrorHandler("Failed To Upload Avatar To Cloudinary", 500)
+    );
+  }
+  const updateData= {avatar: {
+    public_id: cloudinaryResponse.public_id,
+    url: cloudinaryResponse.secure_url,
+  }};
+  
+    const updateUser = await User.findByIdAndUpdate(id,updateData,{
+      new: true,
+      runValidators: true
+    });
+  
+    res.status(200).json({
+      success: true,
+      updateUser,
+    });
 
+})
 
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
   res
