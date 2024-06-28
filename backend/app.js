@@ -12,13 +12,22 @@ import universityRouter from "./router/universityRouter.js";
 const app = express();
 config({ path: "./config/config.env" });
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    method: ["GET", "POST", "DELETE", "PUT"],
-    credentials: true,
-  })
-);
+
+const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ["GET", "POST", "DELETE", "PUT"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 app.use(express.json());
