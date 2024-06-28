@@ -69,7 +69,7 @@ function UserData(props) {
                 <div className="relative">
                     <img className="w-20 h-20 rounded-full" src={user.avatar && user.avatar.url} alt="avatar"/>
                     <div className="flex justify-center items-center">
-                    <button className="flex bg-slate-800 w-full lg:mx-4 text-sm py-1 justify-center items-center rounded-lg mt-4 sm:mx-0 md:mx-0" onClick={openModal}> Edit </button>
+                    <button className="flex dark:bg-slate-800 bg-slate-200 hover:bg-slate-400 dark:hover:bg-slate-700 w-full lg:mx-4 text-sm py-1 justify-center items-center rounded-lg mt-4 sm:mx-0 md:mx-0" onClick={openModal}> Edit </button>
                     </div>
                 </div>
                 {/* <button onClick={openModal}>

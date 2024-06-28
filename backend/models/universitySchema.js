@@ -20,8 +20,9 @@ const universitySchema = new Schema(
         location:String,
         projects:[{
             projectId: String,
-            required: true,
             isApproved: Boolean
         }]
     }
 );
+
+export const University = mongoose.model("university", universitySchema);

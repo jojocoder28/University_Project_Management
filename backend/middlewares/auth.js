@@ -10,7 +10,7 @@ export const isAdminAuthenticated = catchAsyncErrors(
     const token = req.cookies.adminToken;
     if (!token) {
       return next(
-        new ErrorHandler("Dashboard User is not authenticated!", 400)
+        new ErrorHandler("Admin is not authenticated!", 400)
       );
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
