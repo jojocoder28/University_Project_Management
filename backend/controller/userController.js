@@ -122,7 +122,45 @@ export const addAvatar = catchAsyncErrors(async (req,res,next) => {
       updateUser,
     });
 
-})
+});
+
+
+export const adminRegister = catchAsyncErrors(async (req, res, next) => {
+  const { firstName, lastName, email, phone, username, gender, password, confPassword } =
+    req.body;
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !phone ||
+    !username ||
+    !gender ||
+    !password ||
+    !confPassword
+  ) {
+    return next(new ErrorHandler("Please Fill Full Form!", 400));
+  }
+  if (password !== confPassword){
+    return next(new ErrorHandler("Password and Confirm Password do not match!",400));
+}
+
+  const isRegistered = await User.findOne({ email });
+  if (isRegistered) {
+    return next(new ErrorHandler("Admin already Registered!", 400));
+  }
+
+  const user = await User.create({
+    firstName,
+    lastName,
+    email,
+    phone,
+    username,
+    gender,
+    password,
+    role: "Admin",
+  });
+  generateToken(user, "Admin Registered!", 200, res);
+});
 
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
   res

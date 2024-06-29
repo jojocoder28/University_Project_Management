@@ -9,6 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
 import "./App.css";
+import CopyrightElement from "./components/CopyrightElement";
+import NotFound from "./components/NotFound";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
@@ -40,7 +42,9 @@ const App = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
+      <CopyrightElement name="SDK CNQ" link="/"/>
       <ToastContainer position="top-center" />
     </Router>
   );

@@ -12,6 +12,7 @@ import CopyrightElement from './elements/CopyrightElement.jsx';
 import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { Context } from "./main.jsx";
+import NotFound from "./components/NotFound.jsx";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } =
@@ -47,7 +48,7 @@ const App = () => {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path='/dashboard' element={<Dashboard />} /> */}
+        <Route path='*' element={<NotFound />} />
       </Routes>
       <CopyrightElement name="SDK CNQ" link="/"/>
       <ToastContainer position='top-center' />
