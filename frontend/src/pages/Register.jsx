@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import { Link, Navigate, useNavigate } from "react-router-dom";
@@ -20,9 +20,27 @@ const Register = () => {
   const [course, setCourse] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-
+  const [universities, setUniversities] = useState("");
 
   const navigateTo = useNavigate();
+
+  useEffect(() => {
+    const fetchUniversity = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/university/getall",
+          {
+            withCredentials: true,
+          }
+        );
+        setUniversities(response.data.university);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUniversity();
+  }, [isAuthenticated]);
+
 
   const handleRegistration = async (e) => {
     e.preventDefault();
@@ -95,11 +113,25 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                  <div className="w-full px-3">
+                  <div className="w-full relative px-3">
                     <label className="block uppercase tracking-wide dark:text-white text-gray-700 text-xs font-bold mb-2" htmlFor="grid-password">
                       University
                     </label>
-                    <input value={university} onChange={(e) => setUniversity(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-university" type="text" placeholder="Name of your University"/>
+                    <select value={university} onChange={(e) => setUniversity(e.target.value)} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="university-grid">
+                      {universities && universities.length > 0 ? (
+                        universities.map((element)=>{
+                          return(
+                              <option key={element.universityId} value={element.universityName}>{element.universityName+" ("+element.acronym+")"}</option>
+                            )
+                          })
+                        ):(
+                          <option value="NA">No university registered</option>
+                        )}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 pt-6 right-2 flex items-center justify-center px-2 text-gray-700">
+                        <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                    {/* <input value={university} onChange={(e) => setUniversity(e.target.value)} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-university" type="text" placeholder="Name of your University"/> */}
                     
                   </div>
                 </div>
