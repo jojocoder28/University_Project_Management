@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import Loading from "../components/Loading.jsx";
 
 const Register = () => {
   document.title="Register";
@@ -23,10 +24,12 @@ const Register = () => {
   const [universities, setUniversities] = useState("");
 
   const navigateTo = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUniversity = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(
           "http://localhost:4000/api/v1/university/getall",
           {
@@ -36,6 +39,8 @@ const Register = () => {
         setUniversities(response.data.university);
       } catch (error) {
         console.log(error);
+      }finally{
+        setIsLoading(false);
       }
     };
     fetchUniversity();
@@ -45,6 +50,7 @@ const Register = () => {
   const handleRegistration = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       await axios
         .post(
           "http://localhost:4000/api/v1/user/register",
@@ -73,6 +79,8 @@ const Register = () => {
         });
     } catch (error) {
       toast.error(error.response.data.message);
+    }finally{
+      setIsLoading(false);
     }
   };
 
@@ -82,6 +90,10 @@ const Register = () => {
 
 
   return (
+    <>
+    {isLoading ? (
+      <Loading />
+    ):(
     <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-">
               <div>
@@ -211,6 +223,8 @@ const Register = () => {
               </form>
             </div>
         </div>
+      )}
+      </>
   )
 }
 

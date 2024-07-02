@@ -9,7 +9,8 @@ import { IoPersonAddSharp } from "react-icons/io5";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
 
 const Sidebar = (props) => {
   const [show, setShow] = useState(false);
@@ -53,6 +54,10 @@ const Sidebar = (props) => {
     navigateTo("/admin/addnew");
     setShow(!show);
   };
+  if (!isAuthenticated) {
+    return <Navigate to={"/login"} />;
+  }
+
 
   return (
     <>

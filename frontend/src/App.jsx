@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useContext, useEffect, useState } from "react";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import Home from "./pages/Home.jsx"
 import AboutUs from "./pages/AboutUs.jsx"
@@ -9,17 +10,17 @@ import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar.jsx';
 import CopyrightElement from './elements/CopyrightElement.jsx';
-import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { Context } from "./main.jsx";
 import NotFound from "./components/NotFound.jsx";
+import Loading from "./components/Loading.jsx";
 
 const App = () => {
-  const { isAuthenticated, setIsAuthenticated, setUser } =
-    useContext(Context);
-
+  const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(
           "http://localhost:4000/api/v1/user/me",
@@ -36,11 +37,17 @@ const App = () => {
         setIsAuthenticated(false);
         setUser({});
       }
+      finally{
+        setIsLoading(false);
+      }
     };
     fetchUser();
   }, [isAuthenticated]);
   return (
     <>
+    {isLoading ? (
+      <Loading/>):(
+    
     <Router>
     <Navbar transparent/>
       <Routes>
@@ -53,7 +60,8 @@ const App = () => {
       <CopyrightElement name="SDK CNQ" link="/"/>
       <ToastContainer position='top-center' />
     </Router>
-    </>
+  )}
+  </>
   )
 }
 

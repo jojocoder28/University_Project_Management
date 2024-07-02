@@ -159,7 +159,10 @@ export const adminRegister = catchAsyncErrors(async (req, res, next) => {
     password,
     role: "Admin",
   });
-  generateToken(user, "Admin Registered!", 200, res);
+  res.status(200).json({
+    success: true,
+    user,
+  });
 });
 
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
