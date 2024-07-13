@@ -61,25 +61,7 @@ const Sidebar = (props) => {
 
   return (
     <>
-      {/* <nav
-        style={!isAuthenticated ? { display: "none" } : { display: "flex flex-wrap" }}
-        className={show ? "" : ""}
-      >
-        <div className="justify-between">
-          <TiHome onClick={gotoHomePage} />
-          <FaUserDoctor onClick={gotoUsersPage} />
-          <MdAddModerator onClick={gotoAddNewAdmin} />
-          <IoPersonAddSharp onClick={gotoAddNewDoctor} />
-          <AiFillMessage onClick={gotoUniversityPage} />
-          <RiLogoutBoxFill onClick={handleLogout} />
-        </div>
-      </nav>
-      <div
-        className="flex-wrap"
-        style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
-      >
-        <GiHamburgerMenu className="hamburger" onClick={() => setShow(!show)} />
-      </div> */}
+      
 
       <nav
       className={
@@ -89,7 +71,7 @@ const Sidebar = (props) => {
         " flex flex-wrap items-center justify-between px-2 py-3 top-2"
       }
     >
-      <div className="container px-4 mx-auto flex flex-wrap items-center justify-center">
+      <div className={"container px-4 mx-auto flex flex-wrap items-center" + (navbarOpen ? "justify-start" : " justify-center")}>
         <div className="w-full relative flex lg:w-auto lg:static lg:block lg:justify-start">
         <button
             className="overflow-hidden cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
@@ -115,38 +97,27 @@ const Sidebar = (props) => {
             />
           </svg></i>
           </button>
-          {/* {!isAuthenticated ? (<a
-            className={
-              (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
-              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-slate-400 hover:text-blue-900"
-            }
-            href="/"
-          >
-            UniFolio
-          </a>):(<a
-            className={
-              (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
-              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-slate-400 hover:text-blue-900"
-            }
-            href="/"
-          >
-            {user.username}
-          </a>)} */}
+        
           
         </div>
         <div
           className={
             "lg:flex dark:bg-transparent bg-white lg:bg-transparent lg:shadow-none" +
-            (navbarOpen ? " block rounded shadow-lg" : " hidden")
+            (navbarOpen ? "block rounded shadow-lg" : " hidden")
           }
           id="example-navbar-warning"
         >
-          <TiHome onClick={gotoHomePage} className="text-2xl mx-12" />
-          <FaUserDoctor onClick={gotoUsersPage} className="text-2xl mx-12" />
-          <MdAddModerator onClick={gotoAddNewAdmin} className="text-2xl mx-12" />
-          <IoPersonAddSharp onClick={gotoAddNewDoctor} className="text-2xl mx-12" />
-          <AiFillMessage onClick={gotoUniversityPage} className="text-2xl mx-12" />
-          <RiLogoutBoxFill onClick={handleLogout} className="text-2xl mx-12" />
+          <TiHome onClick={gotoHomePage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <div className={navbarOpen ? "py-2":""}></div>
+          <FaUserDoctor onClick={gotoUsersPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <div className={navbarOpen ? "py-2":""}></div>
+          <MdAddModerator onClick={gotoAddNewAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <div className={navbarOpen ? "py-2":""}></div>
+          <IoPersonAddSharp onClick={gotoAddNewDoctor} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <div className={navbarOpen ? "py-2":""}></div>
+          <AiFillMessage onClick={gotoUniversityPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <div className={navbarOpen ? "py-2":""}></div>
+          <RiLogoutBoxFill onClick={handleLogout} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
           {/* <NavbarElements name="Login" link="login" flag={navbarOpen}/> */}
          
 

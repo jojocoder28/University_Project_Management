@@ -22,6 +22,7 @@ const AddNewAdmin = () => {
   const navigateTo = useNavigate();
 
   const handleRegistration = async (e) => {
+    
     e.preventDefault();
     try {
       await axios

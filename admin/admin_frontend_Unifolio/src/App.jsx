@@ -11,6 +11,7 @@ import AddNewAdmin from "./components/AddNewAdmin";
 import "./App.css";
 import CopyrightElement from "./components/CopyrightElement";
 import NotFound from "./components/NotFound";
+import University from "./components/University";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
@@ -41,6 +42,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/university" element={<University />} />
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
         <Route path="*" element={<NotFound/>} />
       </Routes>

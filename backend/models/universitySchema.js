@@ -21,7 +21,11 @@ const universitySchema = new Schema(
         projects:[{
             projectId: String,
             isApproved: Boolean
-        }]
+        }],
+        avatar:{
+            public_id: String,
+            url: String,
+        }
     }
 );
 

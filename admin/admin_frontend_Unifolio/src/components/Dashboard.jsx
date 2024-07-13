@@ -8,42 +8,9 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import Sidebar from "./Sidebar";
 
 const Dashboard = () => {
-  const [appointments, setAppointments] = useState([]);
   // const {admin, setAdmin} = useContext(Context);
-  // useEffect(() => {
-  //   const fetchAppointments = async () => {
-  //     try {
-  //       const { data } = await axios.get(
-  //         "http://localhost:4000/api/v1/appointment/getall",
-  //         { withCredentials: true }
-  //       );
-  //       setAppointments(data.appointments);
-  //     } catch (error) {
-  //       setAppointments([]);
-  //     }
-  //   };
-  //   fetchAppointments();
-  // }, []);
-
-  // const handleUpdateStatus = async (appointmentId, status) => {
-  //   try {
-  //     const { data } = await axios.put(
-  //       `http://localhost:4000/api/v1/appointment/update/${appointmentId}`,
-  //       { status },
-  //       { withCredentials: true }
-  //     );
-  //     setAppointments((prevAppointments) =>
-  //       prevAppointments.map((appointment) =>
-  //         appointment._id === appointmentId
-  //           ? { ...appointment, status }
-  //           : appointment
-  //       )
-  //     );
-  //     toast.success(data.message);
-  //   } catch (error) {
-  //     toast.error(error.response.data.message);
-  //   }
-  // };
+  
+  document.title="Home";
 
   const { isAuthenticated, admin } = useContext(Context);
   if (!isAuthenticated) {
@@ -52,6 +19,7 @@ const Dashboard = () => {
 
   return (
     <>
+    <div className="h-5 relative"></div>
      hello
     </>
   );
