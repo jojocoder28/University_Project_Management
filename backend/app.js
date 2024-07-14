@@ -6,7 +6,6 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 import { errorMiddleware } from "./middlewares/error.js";
 import userRouter from "./router/userRouter.js";
-import studentRouter from "./router/studentRouter.js";
 import universityRouter from "./router/universityRouter.js";
 
 const app = express();
@@ -40,7 +39,6 @@ app.use(
   })
 );
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/student", studentRouter);
 app.use("/api/v1/university", universityRouter);
 
 dbConnection();

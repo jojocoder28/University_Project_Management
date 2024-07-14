@@ -1,7 +1,7 @@
 export const generateToken = (user, message, statusCode, res) => {
   const token = user.generateJsonWebToken();
   // Determine the cookie name based on the user's role
-  const cookieName = user.role === 'Admin' ? 'adminToken' : 'userToken';
+  const cookieName = user.role === 'Admin' ? 'adminToken' : user.role === 'UniversityAdmin' ? 'universityToken' : 'userToken';
 
   res
     .status(statusCode)
@@ -19,10 +19,9 @@ export const generateToken = (user, message, statusCode, res) => {
     });
 };
 
-export const generateTokenStudent = (student, message, statusCode, res) => {
-  const token = student.generateJsonWebToken();
-  // Determine the cookie name based on the user's role
-  const cookieName = 'studentToken';
+export const generateTokenUniversity = (university, message, statusCode, res) => {
+  const token = university.generateJsonWebToken();
+  const cookieName = 'universityToken';
 
   res
     .status(statusCode)
@@ -35,7 +34,7 @@ export const generateTokenStudent = (student, message, statusCode, res) => {
     .json({
       success: true,
       message,
-      student,
+      university,
       token,
     });
 };

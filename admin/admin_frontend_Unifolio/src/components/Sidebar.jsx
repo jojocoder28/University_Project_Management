@@ -46,8 +46,8 @@ const Sidebar = (props) => {
     navigateTo("/university");
     setShow(!show);
   };
-  const gotoAddNewDoctor = () => {
-    navigateTo("/doctor/addnew");
+  const gotoAddNewUniversityAdmin = () => {
+    navigateTo("/admin/adduniversityadmin");
     setShow(!show);
   };
   const gotoAddNewAdmin = () => {
@@ -113,7 +113,7 @@ const Sidebar = (props) => {
           <div className={navbarOpen ? "py-2":""}></div>
           <MdAddModerator onClick={gotoAddNewAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
           <div className={navbarOpen ? "py-2":""}></div>
-          <IoPersonAddSharp onClick={gotoAddNewDoctor} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <IoPersonAddSharp onClick={gotoAddNewUniversityAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
           <div className={navbarOpen ? "py-2":""}></div>
           <AiFillMessage onClick={gotoUniversityPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
           <div className={navbarOpen ? "py-2":""}></div>

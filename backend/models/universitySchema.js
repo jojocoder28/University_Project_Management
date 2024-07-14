@@ -6,7 +6,7 @@ const universitySchema = new Schema(
         universityId:{
             type: String,
             required: true,
-            minLength: [2, "Invalid University ID"]
+            minLength: [1, "Invalid University ID"]
         },
         universityName:{
             type: String,

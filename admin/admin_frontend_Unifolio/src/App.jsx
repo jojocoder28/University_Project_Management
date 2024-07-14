@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
@@ -12,13 +12,18 @@ import "./App.css";
 import CopyrightElement from "./components/CopyrightElement";
 import NotFound from "./components/NotFound";
 import University from "./components/University";
+import AddUniversityAdmin from "./components/AddUniversityAdmin";
+import Loading from "./components/Loading";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
     useContext(Context);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(
           "http://localhost:4000/api/v1/user/admin/me",
@@ -32,11 +37,17 @@ const App = () => {
         setIsAuthenticated(false);
         setAdmin({});
       }
+      finally{
+        setIsLoading(false);
+      }
     };
     fetchUser();
   }, [isAuthenticated]);
 
   return (
+    <>
+    {isLoading ? (
+      <Loading/>):(
     <Router>
       <Sidebar />
       <Routes>
@@ -44,11 +55,14 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/university" element={<University />} />
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
+        <Route path="/admin/adduniversityadmin" element={<AddUniversityAdmin />} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
       <CopyrightElement name="SDK CNQ" link="/"/>
       <ToastContainer position="top-center" />
     </Router>
+  )}
+  </>
   );
 };
 

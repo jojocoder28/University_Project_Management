@@ -1,4 +1,5 @@
 import { Student } from "../models/studentSchema.js";
+import { University } from "../models/universitySchema.js";
 import { User } from "../models/userSchema.js";
 import { catchAsyncErrors } from "./catchAsyncErrors.js";
 import ErrorHandler from "./error.js";
@@ -34,6 +35,24 @@ export const isUserAuthenticated = catchAsyncErrors(
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = await User.findById(decoded.id);
     if (req.user.role !== "User") {
+      return next(
+        new ErrorHandler(`${req.user.role} not authorized for this resource!`, 403)
+      );
+    }
+    next();
+  }
+);
+
+
+export const isUniversityAuthenticated = catchAsyncErrors(
+  async (req, res, next) => {
+    const token = req.cookies.universityToken;
+    if (!token) {
+      return next(new ErrorHandler("University is not authenticated!", 400));
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.university = await University.findById(decoded.id);
+    if (req.user.role !== "UniversityAdmin") {
       return next(
         new ErrorHandler(`${req.user.role} not authorized for this resource!`, 403)
       );

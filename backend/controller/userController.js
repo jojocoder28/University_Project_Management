@@ -1,7 +1,7 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import { User } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
-import { generateToken, generateTokenStudent } from "../utils/jwtToken.js";
+import { generateToken} from "../utils/jwtToken.js";
 import cloudinary from "cloudinary";
 
 export const userRegister = catchAsyncErrors(async (req, res, next) => {
@@ -69,6 +69,15 @@ export const login=catchAsyncErrors(async(req,res,next)=>{
 });
 
 export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
+  const user = req.user;
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+export const getUniversityAdminDetails = catchAsyncErrors(async (req, res, next) => {
+  req.user = await User.find({"role":"UniversityAdmin"});
   const user = req.user;
   res.status(200).json({
     success: true,

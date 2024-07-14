@@ -11,10 +11,12 @@ const University = () => {
 
   const { isAuthenticated, admin } = useContext(Context);
     const [university, setUniversity] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const fetchUniversity = async () => {
       try {
-        // setIsLoading(true);
+        setIsLoading(true);
         const response = await axios.get(
           "http://localhost:4000/api/v1/university/getall",
           {
@@ -25,7 +27,7 @@ const University = () => {
       } catch (error) {
         console.log(error);
       }finally{
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     };
     fetchUniversity();
