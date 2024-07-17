@@ -43,7 +43,7 @@ export const UniversityRegister = catchAsyncErrors(async (req, res, next) => {
       !password ||
       !confPassword
     ) {
-      // console.log(firstName+" "+lastName+" "+email+" "+phone+" "+username+" "+gender+" "+password+" "+confPassword)
+      // console.log(firstName+" "+lastName+" "+email+" "+phone+" "+username+" "+gender+" "+password+" "+confPassword+" "+university)
       // console.log(req.body);
       return next(new ErrorHandler("Please Fill Full Form!", 400));
     }

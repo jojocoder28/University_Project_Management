@@ -26,7 +26,7 @@ const ThemeSwitch = () => {
       }, [darkMode]);
     return (
     <button onClick={() => setDarkMode(!darkMode)} className="text-white text-lg focus:outline-none">
-        <div className={`w-17 h-7 btn-circle ${!darkMode ? 'bg-blue-100 border-black border-1 shadow-lg' : 'bg-gray-700 border-white border-1 shadow-lg'} overflow-hidden absolute top-4 right-4 transition-transform duration-300 transform-gpu`}>
+        <div className={`w-17 h-7 btn-circle ${!darkMode ? 'bg-teal-100 border-black border-1 shadow-lg' : 'bg-gray-700 border-white border-1 shadow-lg'} overflow-hidden absolute top-4 right-4 transition-transform duration-300 transform-gpu`}>
             <FontAwesomeIcon icon={darkMode ? faMoon : faSun} className="text-slate-950" />
           </div>
     </button>

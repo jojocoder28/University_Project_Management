@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import React, { useContext, useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import backend_api from "../config.js";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
@@ -15,7 +16,7 @@ export default function Navbar(props) {
     const fetchUser = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/user/me",
+          backend_api+"api/v1/user/me" || "http://localhost:4000/api/v1/user/me",
           { withCredentials: true }
         );
         setUser(data.user);
@@ -84,7 +85,7 @@ export default function Navbar(props) {
           {!isAuthenticated ? (<a
             className={
               (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
-              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-slate-400 hover:text-blue-900"
+              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-teal-700 hover:text-teal-900"
             }
             href="/"
           >
@@ -92,7 +93,7 @@ export default function Navbar(props) {
           </a>):(<a
             className={
               (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
-              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-slate-400 hover:text-blue-900"
+              " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-teal-700 hover:text-teal-900"
             }
             href="/"
           >
@@ -115,13 +116,13 @@ export default function Navbar(props) {
             {isAuthenticated ? (
               <li className="flex items-center">
                 <button
-                className={"dark:text-white dark:hover:text-gray-400 text-gray-800 hover:text-blue-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
+                className={"dark:text-white text-gray-800 dark:hover:text-teal-500 hover:text-teal-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
                 onClick={handleLogout}
               >
                 Logout
               </button></li>):(<><li><NavbarElements name="Register" link="register" flag={navbarOpen} /></li>
               <li><button
-                  className={"dark:text-white dark:hover:text-gray-400 text-gray-800 hover:text-blue-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
+                  className={"dark:text-white dark:hover:text-teal-500 text-gray-800 hover:text-teal-500 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"}
                   onClick={goToLogin}
                 >
                   Login

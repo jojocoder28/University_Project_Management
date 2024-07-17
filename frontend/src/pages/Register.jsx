@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
+import backend_api from "../config.js";
 
 const Register = () => {
   document.title="Register";
@@ -31,7 +32,7 @@ const Register = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          "http://localhost:4000/api/v1/university/getall",
+          backend_api+"api/v1/university/getall" || "http://localhost:4000/api/v1/university/getall",
           {
             withCredentials: true,
           }
@@ -53,7 +54,7 @@ const Register = () => {
       setIsLoading(true);
       await axios
         .post(
-          "http://localhost:4000/api/v1/user/register",
+          backend_api+"api/v1/user/register" || "http://localhost:4000/api/v1/user/register",
           { firstName, lastName, email, university, course, dob, phone, username, gender, password, confPassword },
           {
             withCredentials: true,
@@ -97,7 +98,9 @@ const Register = () => {
     <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-">
               <div>
-                <h2 className="mt-6 text-center text-3xl font-extrabold py-10">Register</h2>
+                <h2 className="mt-6 text-center text-3xl font-extrabold py-10 cursor-default select-none">
+                  <span>Sign</span><span className="animate-pulse text-teal-500">Up</span>
+                </h2>
               </div>
               <form className="w-full max-w-lg" onSubmit={handleRegistration}>
                 <div className="flex flex-wrap -mx-3 mb-6">
@@ -130,6 +133,7 @@ const Register = () => {
                       University
                     </label>
                     <select value={university} onChange={(e) => setUniversity(e.target.value)} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="university-grid">
+                    <option value={null}>Select University...</option>
                       {universities && universities.length > 0 ? (
                         universities.map((element)=>{
                           return(
@@ -220,6 +224,10 @@ const Register = () => {
                     Signup
                   </button>
                 </div>
+                <p className="flex items-center align-middle justify-center my-2 text-gray-600 text-s dark:text-gray-200">
+                    <p>Already registered? </p>
+                    <a href="/login" className="text-blue-500 dark:hover:text-teal-500 hover:animate-pulse overflow-hidden hover:text-teal-500">&nbsp; Login</a>
+                  </p>
               </form>
             </div>
         </div>

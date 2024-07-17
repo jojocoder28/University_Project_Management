@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import backend_api from "../config.js";
 
 const Login = () => {
   document.title="Login";
@@ -20,7 +21,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/user/login",
+          backend_api+"api/v1/user/login" || "http://localhost:4000/api/v1/user/login",
           { email, password, role },
           {
             withCredentials: true,
@@ -50,7 +51,9 @@ const Login = () => {
     <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-">
               <div>
-                <h2 className="mt-6 text-center text-3xl font-extrabold py-10">Login</h2>
+                <h2 className="mt-6 text-center text-3xl font-extrabold py-10 overflow-hidden cursor-default select-none">
+                  <span>Log</span><span className="animate-pulse text-teal-500">in</span>
+                </h2>
               </div>
               <form className="w-full max-w-lg" onSubmit={handleLogin}>
                 
@@ -78,6 +81,10 @@ const Login = () => {
                     Login
                   </button>
                 </div>
+                  <p className="flex items-center align-middle justify-center mt-5 text-gray-600 text-s dark:text-gray-200">
+                    <p>New to this platform? </p>
+                    <a href="/register" className="text-blue-500 dark:hover:text-teal-500 hover:animate-pulse overflow-hidden hover:text-teal-500">&nbsp; Sign up</a>
+                  </p>
               </form>
             </div>
         </div>

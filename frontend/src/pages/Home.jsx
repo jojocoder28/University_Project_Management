@@ -22,7 +22,7 @@ const Home = () => {
               Sign in to Unifolio today and streamline your university projects. Easy management, collaboration, and success await
               </div>
               <div className="absolute bottom-12">
-                <a href='/register' className='btn btn-wide dark:bg-slate-800 dark:hover:bg-slate-900 bg-blue-100 border-0'>Register</a>
+                <a href='/register' className='btn btn-wide dark:bg-slate-800 dark:hover:bg-teal-900 bg-blue-200 border-0 hover:bg-teal-500'>Register</a>
               </div>
             </div>
           </div>

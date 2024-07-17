@@ -80,16 +80,17 @@ const AddUniversityAdmin = () => {
       }
     };
   
-    if (isAuthenticated) {
+    if (!isAuthenticated) {
       return <Navigate to={"/"} />;
     }
   
-  
+    // console.log(universities[0]);
     return (
       <>
       {isLoading ? (
         <Loading />
       ):(
+        <>
       <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
               <div className="max-w-md w-full space-y-">
                 <div>
@@ -126,6 +127,7 @@ const AddUniversityAdmin = () => {
                         University
                       </label>
                       <select value={university} onChange={(e) => setUniversity(e.target.value)} className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="university-grid">
+                        <option value={null}>Select University...</option>
                         {universities && universities.length > 0 ? (
                           universities.map((element)=>{
                             return(
@@ -202,6 +204,7 @@ const AddUniversityAdmin = () => {
                 </form>
               </div>
           </div>
+        </>
         )}
         </>
     )

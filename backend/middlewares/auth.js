@@ -1,4 +1,3 @@
-import { Student } from "../models/studentSchema.js";
 import { University } from "../models/universitySchema.js";
 import { User } from "../models/userSchema.js";
 import { catchAsyncErrors } from "./catchAsyncErrors.js";

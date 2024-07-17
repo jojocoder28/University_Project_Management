@@ -7,6 +7,7 @@ import React, { useContext, useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
+    document.title="Dashboard";
 const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const {user, setUser} = useContext(Context);
   // const [student, setStudent] = useState([]);

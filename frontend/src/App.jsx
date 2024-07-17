@@ -14,6 +14,7 @@ import axios from "axios";
 import { Context } from "./main.jsx";
 import NotFound from "./components/NotFound.jsx";
 import Loading from "./components/Loading.jsx";
+import backend_api from "./config.js";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
@@ -23,7 +24,7 @@ const App = () => {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/user/me",
+          backend_api+"api/v1/user/me" || "http://localhost:4000/api/v1/user/me",
           {
             withCredentials: true,
           }
