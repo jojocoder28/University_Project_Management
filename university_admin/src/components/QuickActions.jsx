@@ -7,10 +7,10 @@ function QuickActions() {
     
     return (
         <>
-           <div className="flex flex-row items-center gap-4">
+           <div className="pt-5">
 
-                <div className="text-xl text-slate-200">Quick Actions</div>
-                <button className="btn" onClick={()=>{document.getElementById('StudentModal').showModal() }}>
+                <div className="flex text-xl text-slate-200 items-center py-5 justify-center">Quick Actions</div>
+                <button className="btn mx-2" onClick={()=>{document.getElementById('StudentModal').showModal() }}>
                 <FaPlusSquare />
                 Add Student
                 </button>
@@ -26,7 +26,7 @@ function QuickActions() {
                 </div>
                 </dialog>
 
-                <button className="btn" onClick={()=>{document.getElementById('ProjectModal').showModal() }}>
+                <button className="btn mx-2" onClick={()=>{document.getElementById('ProjectModal').showModal() }}>
                 <LuPackage />
                 Project Action
                 </button>

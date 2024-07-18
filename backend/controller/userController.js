@@ -68,6 +68,30 @@ export const login=catchAsyncErrors(async(req,res,next)=>{
   generateToken(user, "Login Successfully!", 201, res);
 });
 
+
+
+export const universityAdminLogin=catchAsyncErrors(async(req,res,next)=>{
+  const {email, password, role}=req.body;
+  if (!email || !password || !role){
+      return next(new ErrorHandler("Please provide all details",400));
+  }
+  const user = await User.findOne({email}).select("+password");
+  if(!user){
+      return next(new ErrorHandler("Invalid Password or Email!",400));
+  }
+  const isPasswordMatched = await user.comparePassword(password);
+  if(!isPasswordMatched){
+      return next(new ErrorHandler("Invalid Password or Email!",400));
+  }
+  if (role !== user.role) {
+    return next(new ErrorHandler(`University Admin Not Found With This Role!`, 400));
+  }
+  generateToken(user, "Login Successfully!", 201, res);
+});
+
+
+
+
 export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const user = req.user;
   res.status(200).json({

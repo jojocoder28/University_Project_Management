@@ -3,7 +3,7 @@ import React from 'react'
 function Table({title, th}) {
     return (
         <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x">
             <table className="table">
                 {/* head */}
                 <thead>

@@ -10,7 +10,7 @@ const Tabs = () => {
   };
 
   return (
-    <div className="container mt-10 p-4">
+    <div className="container mt-10 py-4 pl-9 pr-12">
       <div role="tablist" className="tabs tabs-boxed">
         <a
           role="tab"

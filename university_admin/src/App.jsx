@@ -13,6 +13,7 @@ import CopyrightElement from '../../admin/admin_frontend_Unifolio/src/components
 import NotFound from '../../admin/admin_frontend_Unifolio/src/components/NotFound';
 import Loading from '../../admin/admin_frontend_Unifolio/src/components/Loading';
 import { Context } from "./main";
+import Login from './pages/Login';
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
@@ -54,8 +55,8 @@ const App = () => {
         </div>
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        {/* <Route path="/login" element={<Login />} />
-        <Route path="/university" element={<University />} />
+        <Route path="/login" element={<Login />} />
+        {/*<Route path="/university" element={<University />} />
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
         <Route path="/admin/adduniversityadmin" element={<AddUniversityAdmin />} /> */}
         <Route path="*" element={<NotFound/>} />
