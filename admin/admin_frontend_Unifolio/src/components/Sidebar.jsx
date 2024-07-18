@@ -107,17 +107,17 @@ const Sidebar = (props) => {
           }
           id="example-navbar-warning"
         >
-          <TiHome onClick={gotoHomePage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <TiHome onClick={gotoHomePage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
           <div className={navbarOpen ? "py-2":""}></div>
-          <FaUserDoctor onClick={gotoUsersPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <FaUserDoctor onClick={gotoUsersPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
           <div className={navbarOpen ? "py-2":""}></div>
-          <MdAddModerator onClick={gotoAddNewAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <MdAddModerator onClick={gotoAddNewAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
           <div className={navbarOpen ? "py-2":""}></div>
-          <IoPersonAddSharp onClick={gotoAddNewUniversityAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <IoPersonAddSharp onClick={gotoAddNewUniversityAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
           <div className={navbarOpen ? "py-2":""}></div>
-          <AiFillMessage onClick={gotoUniversityPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <AiFillMessage onClick={gotoUniversityPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
           <div className={navbarOpen ? "py-2":""}></div>
-          <RiLogoutBoxFill onClick={handleLogout} className="text-2xl mx-12 cursor-pointer hover:text-blue-700" />
+          <RiLogoutBoxFill onClick={handleLogout} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
           {/* <NavbarElements name="Login" link="login" flag={navbarOpen}/> */}
          
 

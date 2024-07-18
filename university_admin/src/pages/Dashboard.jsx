@@ -20,7 +20,7 @@ function Dashboard() {
         <div className="flex flex-col items-center justify-start pb-4">
         <NavBar activeTab="Home" />
         </div>
-                <AdminData admin={admin[0]}/>
+                <AdminData admin={admin}/>
                 <QuickActions />                
                 <Tabs />
         </>

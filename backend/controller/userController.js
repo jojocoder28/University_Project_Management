@@ -101,7 +101,6 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getUniversityAdminDetails = catchAsyncErrors(async (req, res, next) => {
-  req.user = await User.find({"role":"UniversityAdmin"});
   const user = req.user;
   res.status(200).json({
     success: true,
