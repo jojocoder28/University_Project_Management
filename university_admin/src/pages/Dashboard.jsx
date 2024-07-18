@@ -8,7 +8,6 @@ function Dashboard() {
     return (
         <>
             <div className="flex flex-col items-center justify-start h-screen w-screen gap-4">
-                <NavBar activeTab="Home" />
                 <AdminData />
                 <QuickActions />                
                 <Tabs />
