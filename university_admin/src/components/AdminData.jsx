@@ -5,7 +5,7 @@ import { LuPackage } from "react-icons/lu";
 function AdminData() {
     return (
         <>
-            <div className="stats shadow">
+            <div className="lg:stats shadow flex justify-center items-center align-middler">
 
                 <div className="stat">
                         <div className="stat-figure text-secondary">

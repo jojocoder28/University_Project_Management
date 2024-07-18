@@ -44,6 +44,7 @@ const App = () => {
 
   return (
     <>
+    <div className="flex flex-col items-center justify-start w-screen gap-4">
     {isLoading ? (
       <Loading/>):(
     <Router>
@@ -63,6 +64,7 @@ const App = () => {
     </Router>
     
   )}
+  </div>
   </>
   );
 };
