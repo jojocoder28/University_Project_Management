@@ -10,7 +10,8 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 function Dashboard() {
   const navigateTo = useNavigate();
 
-    const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+    const { isAuthenticated, setIsAuthenticated, admin, setAdmin } = useContext(Context);
+
     if (!isAuthenticated) {
         return <Navigate to={"/login"} />;
       }
@@ -19,7 +20,7 @@ function Dashboard() {
         <div className="flex flex-col items-center justify-start pb-4">
         <NavBar activeTab="Home" />
         </div>
-                <AdminData />
+                <AdminData admin={admin[0]}/>
                 <QuickActions />                
                 <Tabs />
         </>

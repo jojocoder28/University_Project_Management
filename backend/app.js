@@ -12,7 +12,7 @@ const app = express();
 config({ path: "./config/config.env" });
 
 
-const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL];
+const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL, process.env.UNIVERSITY_ADMIN_URL];
 
 const corsOptions = {
   origin: function (origin, callback) {

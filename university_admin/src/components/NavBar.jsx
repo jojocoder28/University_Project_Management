@@ -7,8 +7,24 @@ import { IoMdSettings } from "react-icons/io";
 import { Context } from '../main';
 import { BiLogInCircle } from "react-icons/bi";
 import { TbLogout } from "react-icons/tb";
+import backend_api from '../config.js';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 function NavBar({activeTab}) {
+    const handleLogout = async () => {
+        await axios
+          .get(backend_api+"api/v1/university/admin/logout" || "http://localhost:4000/api/v1/university/admin/logout", {
+            withCredentials: true,
+          })
+          .then((res) => {
+            toast.success(res.data.message);
+            setIsAuthenticated(false);
+          })
+          .catch((err) => {
+            toast.error(err.response.data.message);
+          });
+      };
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
     return (
         <>
@@ -34,7 +50,7 @@ function NavBar({activeTab}) {
                 </a>
             </li>
             {isAuthenticated ? ( <li>
-                <a className={`tooltip ${activeTab == "Logout" ? "active" : ""}`} data-tip="Logout" href="/logout">
+                <a className={`tooltip ${activeTab == "Login" ? "active" : ""}`} data-tip="Logout" onClick={handleLogout}>
                 <TbLogout />
                 </a>
             </li>):(

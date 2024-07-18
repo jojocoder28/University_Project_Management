@@ -223,3 +223,17 @@ export const logoutUser = catchAsyncErrors(async (req, res, next) => {
       message: "User Logged Out Successfully.",
     });
 });
+
+
+export const logoutUniversityAdmin = catchAsyncErrors(async (req, res, next) => {
+  res
+    .status(201)
+    .cookie("universityToken", "", {
+      httpOnly: true,
+      expires: new Date(Date.now()),
+    })
+    .json({
+      success: true,
+      message: "University Admin Logged Out Successfully.",
+    });
+});
