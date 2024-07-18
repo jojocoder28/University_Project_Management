@@ -1,8 +1,19 @@
+<<<<<<< HEAD
+import React from 'react'
+=======
 import React, { createContext, useState } from "react";
+>>>>>>> upstream/main
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 
+<<<<<<< HEAD
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+=======
 export const Context = createContext({ isAuthenticated: false });
 
 const AppWrapper = () => {
@@ -23,3 +34,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <AppWrapper />
   </React.StrictMode>
 );
+>>>>>>> upstream/main

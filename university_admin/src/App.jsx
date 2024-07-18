@@ -1,3 +1,22 @@
+<<<<<<< HEAD
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import Dashboard from './pages/Dashboard'
+import './App.css'
+
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+        <Dashboard />
+    </>
+  )
+}
+
+export default App
+=======
 import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import reactLogo from './assets/react.svg';
@@ -69,3 +88,4 @@ const App = () => {
 
 export default App;
 
+>>>>>>> upstream/main
