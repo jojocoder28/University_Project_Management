@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import NavBar from "../components/NavBar";
 
 const Login = () => {
   document.title="Login";
@@ -11,7 +12,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("Admin");
+  const [role, setRole] = useState("UniversityAdmin");
 
 
   const navigateTo = useNavigate();
@@ -21,7 +22,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/admin/login",
+          "http://localhost:4000/api/v1/university/admin/login",
           { email, password, role },
           {
             withCredentials: true,
@@ -46,9 +47,12 @@ const Login = () => {
     return <Navigate to={"/"} />;
   }
 
-
   return (
-    <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
+    <>
+    <div className="flex flex-col items-center justify-start pb-4">
+        <NavBar activeTab="Login" />
+        </div>
+    <div className="min-h-screen w-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-">
               <div>
                 <h2 className="mt-6 text-center text-3xl font-extrabold py-10">Login</h2>
@@ -83,6 +87,7 @@ const Login = () => {
               </form>
             </div>
         </div>
+        </>
   )
 }
 

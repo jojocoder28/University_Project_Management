@@ -50,7 +50,7 @@ export const isUniversityAuthenticated = catchAsyncErrors(
       return next(new ErrorHandler("University is not authenticated!", 400));
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.university = await University.findById(decoded.id);
+    req.user = await User.findById(decoded.id);
     if (req.user.role !== "UniversityAdmin") {
       return next(
         new ErrorHandler(`${req.user.role} not authorized for this resource!`, 403)

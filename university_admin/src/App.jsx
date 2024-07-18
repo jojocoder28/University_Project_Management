@@ -9,9 +9,9 @@ import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavBar from './components/NavBar';
-import CopyrightElement from '../../admin/admin_frontend_Unifolio/src/components/CopyrightElement';
-import NotFound from '../../admin/admin_frontend_Unifolio/src/components/NotFound';
-import Loading from '../../admin/admin_frontend_Unifolio/src/components/Loading';
+import CopyrightElement from './components/CopyrightElement';
+import NotFound from './components/NotFound';
+import Loading from './components/Loading';
 import { Context } from "./main";
 import Login from './pages/Login';
 
@@ -50,9 +50,7 @@ const App = () => {
     {isLoading ? (
       <Loading/>):(
     <Router>
-      <div className="flex flex-col items-center justify-start pb-4">
-        <NavBar activeTab="Home" />
-        </div>
+      
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
