@@ -5,7 +5,7 @@ import { LuPackage } from "react-icons/lu";
 function AdminData() {
     return (
         <>
-            <div className="lg:stats shadow flex justify-center items-center align-middler">
+            <div className="stats shadow">
 
                 <div className="stat">
                         <div className="stat-figure text-secondary">
@@ -16,9 +16,15 @@ function AdminData() {
                         </div>
                         </div>
                         <div className="text-3xl">Admin Name</div>
+<<<<<<< HEAD
+                        <div className="text-lg sm:text xl text-gray-500 sm:text-2xl">University of Sandeshkhali</div>
+                        <div className="text-base sm:text-lg text-secondary">31 tasks remaining</div>
+                </div>
+=======
                         <div className="text-2xl text-gray-500">University of Sandeshkhali</div>
                         <div className="text-lg text-secondary">31 tasks remaining</div>
                     </div>
+>>>>>>> upstream/main
 
                 <div className="stat">
                     <div className="stat-figure text-primary">
@@ -47,9 +53,13 @@ function AdminData() {
                     <div className="stat-value text-secondary">2.6M</div>
                     <div className="stat-desc">21% more than last month</div>
                 </div>
+<<<<<<< HEAD
+            </div>
+=======
 
                 
                 </div>
+>>>>>>> upstream/main
         </>
     )
 }
