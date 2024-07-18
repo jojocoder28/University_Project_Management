@@ -81,3 +81,12 @@ export const UniversityRegister = catchAsyncErrors(async (req, res, next) => {
       university,
     });
   });
+
+  export const getStudentDetails = catchAsyncErrors(async (req, res, next) => {
+    const uni=req.user.university;
+    const user=await User.find({"university":uni, "role":"User"});
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  });

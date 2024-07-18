@@ -14,6 +14,7 @@ import NotFound from './components/NotFound';
 import Loading from './components/Loading';
 import { Context } from "./main";
 import Login from './pages/Login';
+import Students from './pages/Students';
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
@@ -55,9 +56,13 @@ const App = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         {/*<Route path="/university" element={<University />} />
-        <Route path="/admin/addnew" element={<AddNewAdmin />} />
-        <Route path="/admin/adduniversityadmin" element={<AddUniversityAdmin />} /> */}
-        <Route path="*" element={<NotFound/>} />
+        <Route path="/admin/addnew" element={<AddNewAdmin />} /> */}
+        <Route path="/students" element={<Students />} /> 
+        {isAuthenticated ? (<Route path="*" element={<NotFound/>} />):
+        (
+          <Route path="*" element={<Login/>} />
+        )}
+        
       </Routes>
       <CopyrightElement name="SDK CNQ" link="/"/>
       <ToastContainer position="top-center" />
