@@ -7,11 +7,8 @@ function QuickActions() {
     
     return (
         <>
-<<<<<<< HEAD
             <div className="flex flex-col sm:flex-row items-center gap-4">
-=======
-            <div className="flex flex-row items-center gap-4">
->>>>>>> upstream/main
+
                 <div className="text-xl text-slate-200">Quick Actions</div>
                 <button className="btn" onClick={()=>{document.getElementById('StudentModal').showModal() }}>
                 <FaPlusSquare />
@@ -45,11 +42,6 @@ function QuickActions() {
                     <button className="btn join-item ml-2">Search</button>
                 </div>
                 </dialog>
-<<<<<<< HEAD
-=======
-
-
->>>>>>> upstream/main
             </div>
         </>
     )
