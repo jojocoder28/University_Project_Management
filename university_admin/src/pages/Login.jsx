@@ -23,7 +23,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          backend_api+"api/v1/university/admin/login",
+          `${backend_api}api/v1/university/admin/login`,
           { email, password, role },
           {
             withCredentials: true,
@@ -32,6 +32,7 @@ const Login = () => {
         )
         .then((res) => {
           toast.success(res.data.message);
+          console.log(res.data);
           setIsAuthenticated(true);
           navigateTo("/");
           setEmail("");
@@ -40,6 +41,7 @@ const Login = () => {
 
         });
     } catch (error) {
+      console.log(error);
       toast.error(error.response.data.message);
     }
   };

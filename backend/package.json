@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "cross-env NODE_ENV=production nodemon server.js"
   },
   "author": "",
   "license": "ISC",

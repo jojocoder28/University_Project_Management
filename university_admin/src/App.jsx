@@ -28,14 +28,20 @@ const App = () => {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          backend_api+"api/v1/university/admin/universityadmin/getall",
+          `${backend_api}api/v1/university/admin/universityadmin/getall`,
           {
             withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            }
           }
         );
+        console.log(response);
         setIsAuthenticated(true);
         setAdmin(response.data.user);
       } catch (error) {
+        // console.log(response);
         setIsAuthenticated(false);
         setAdmin({});
       }
