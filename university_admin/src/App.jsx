@@ -37,7 +37,7 @@ const App = () => {
             }
           }
         );
-        console.log(response);
+        // console.log(response);
         setIsAuthenticated(true);
         setAdmin(response.data.user);
       } catch (error) {

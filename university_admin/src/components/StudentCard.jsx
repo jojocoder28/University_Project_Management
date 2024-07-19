@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 import UpdateStudentDetails from './UpdateStudentDetails';
 import { toast } from "react-toastify";
@@ -12,6 +12,16 @@ const StudentCard = ({ student }) => {
     const [isDataAvailable, setIsDataAvailable] = useState(false);
     const [email, setEmail] = useState(student.email);
     const navigateTo = useNavigate();
+    
+    const checkData = () => {
+        if (student.rollnumber && student.admissiondate){
+            setIsDataAvailable(true)
+        }
+    }
+
+    useEffect(()=>{
+        checkData();
+    },[isModalOpen])
 
     const openModal = () => {
         setIsModalOpen(true);

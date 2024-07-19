@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "NODE_ENV=production nodemon server.js"
+    "dev": "NODE_ENV=production nodemon server.js",
+    "test": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
