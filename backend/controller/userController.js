@@ -157,6 +157,38 @@ export const addAvatar = catchAsyncErrors(async (req,res,next) => {
 });
 
 
+export const updateUserByUniversity = catchAsyncErrors(async (req,res,next) => {
+  const email=req.body.email;
+  const rollnumber = req.body.rollnumber;
+  const admissiondate = req.body.admissiondate;
+
+  const updateUser = await User.findOneAndUpdate(
+    {"email":email},
+    {
+      "rollnumber":rollnumber,
+      "admissiondate":admissiondate
+    },
+    {
+      new: true,
+      runValidators: true
+    });
+  res.status(200).json({
+    success: true,
+    updateUser,
+  });
+});
+
+
+export const deleteUserByUniversity = catchAsyncErrors(async (req,res,next) => {
+  const email = req.body.email;
+  const deleteUser = await User.findOneAndDelete({"email":email});
+  res.status(200).json({
+    success: true,
+    deleteUser,
+  });
+});
+
+
 export const adminRegister = catchAsyncErrors(async (req, res, next) => {
   const { firstName, lastName, email, phone, username, gender, password, confPassword } =
     req.body;

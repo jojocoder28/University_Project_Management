@@ -31,7 +31,7 @@ const Students = () => {
         }
       };
       fetchUser();
-    });
+    },[students]);
 
     if (!isAuthenticated) {
         return <Navigate to={"/login"} />;
