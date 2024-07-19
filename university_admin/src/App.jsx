@@ -28,7 +28,7 @@ const App = () => {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          "https://university-project-management.onrender.com/api/v1/university/admin/universityadmin/getall",
+          backend_api+"api/v1/university/admin/universityadmin/getall",
           {
             withCredentials: true,
           }
