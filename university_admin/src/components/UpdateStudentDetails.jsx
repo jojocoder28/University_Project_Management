@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import backend_api from "../config";
 
 
 const UpdateStudentDetails = (props) => {
@@ -17,7 +18,7 @@ const UpdateStudentDetails = (props) => {
       try {
         await axios
           .post(
-            "http://localhost:4000/api/v1/university/user/update",
+            backend_api+"api/v1/university/user/update",
             { email, admissiondate, rollnumber },
             {
               withCredentials: true,

@@ -4,6 +4,7 @@ import UpdateStudentDetails from './UpdateStudentDetails';
 import { toast } from "react-toastify";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
+import backend_api from '../config';
 
 
 
@@ -48,7 +49,7 @@ const StudentCard = ({ student }) => {
         try {
           await axios
             .post(
-              "http://localhost:4000/api/v1/university/user/delete",
+              backend_api+"api/v1/university/user/delete",
               { email },
               {
                 withCredentials: true,
