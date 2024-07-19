@@ -235,6 +235,8 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
     .cookie("adminToken", "", {
       httpOnly: true,
       expires: new Date(Date.now()),
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'None',
     })
     .json({
       success: true,
@@ -248,6 +250,8 @@ export const logoutUser = catchAsyncErrors(async (req, res, next) => {
     .cookie("userToken", "", {
       httpOnly: true,
       expires: new Date(Date.now()),
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'None',
     })
     .json({
       success: true,
@@ -262,6 +266,8 @@ export const logoutUniversityAdmin = catchAsyncErrors(async (req, res, next) => 
     .cookie("universityToken", "", {
       httpOnly: true,
       expires: new Date(Date.now()),
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'None',
     })
     .json({
       success: true,
