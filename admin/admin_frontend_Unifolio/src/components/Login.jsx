@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import backend_api from "../config";
 
 const Login = () => {
   document.title="Login";
@@ -21,7 +22,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/user/login",
+          backend_api+"api/v1/user/login",
           { email, password, role },
           {
             withCredentials: true,

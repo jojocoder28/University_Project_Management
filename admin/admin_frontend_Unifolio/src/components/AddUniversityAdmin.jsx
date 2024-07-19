@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Loading from "./Loading.jsx";
+import backend_api from "../config.js";
 
 const AddUniversityAdmin = () => {
     document.title="Register";
@@ -29,7 +30,7 @@ const AddUniversityAdmin = () => {
         try {
           setIsLoading(true);
           const response = await axios.get(
-            "http://localhost:4000/api/v1/university/getall",
+            backend_api+"api/v1/university/getall",
             {
               withCredentials: true,
             }
@@ -51,7 +52,7 @@ const AddUniversityAdmin = () => {
         setIsLoading(true);
         await axios
           .post(
-            "http://localhost:4000/api/v1/university/admin/adduniversityadmin",
+            backend_api+"api/v1/university/admin/adduniversityadmin",
             { firstName, lastName, email, university, phone, username, gender, password, confPassword },
             {
               withCredentials: true,

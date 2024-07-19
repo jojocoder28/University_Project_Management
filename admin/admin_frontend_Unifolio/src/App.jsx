@@ -14,6 +14,7 @@ import NotFound from "./components/NotFound";
 import University from "./components/University";
 import AddUniversityAdmin from "./components/AddUniversityAdmin";
 import Loading from "./components/Loading";
+import backend_api from "./config";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
@@ -26,7 +27,7 @@ const App = () => {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/user/admin/me",
+          backend_api+"api/v1/user/admin/me",
           {
             withCredentials: true,
           }

@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
+import backend_api from '../config';
 
 
 const University = () => {
@@ -18,7 +19,7 @@ const University = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          "http://localhost:4000/api/v1/university/getall",
+          backend_api+"api/v1/university/getall",
           {
             withCredentials: true,
           }

@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import backend_api from "../config.js";
 
 const AddNewAdmin = () => {
   document.title="Add Admin";
@@ -27,7 +28,7 @@ const AddNewAdmin = () => {
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/user/admin/addnew",
+          backend_api+"api/v1/user/admin/addnew",
           { firstName, lastName, email, phone, username, gender, password, confPassword },
           {
             withCredentials: true,

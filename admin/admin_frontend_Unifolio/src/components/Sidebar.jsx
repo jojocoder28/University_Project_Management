@@ -10,6 +10,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import backend_api from "../config";
 
 
 const Sidebar = (props) => {
@@ -20,7 +21,7 @@ const Sidebar = (props) => {
 
   const handleLogout = async () => {
     await axios
-      .get("http://localhost:4000/api/v1/user/admin/logout", {
+      .get(backend_api+"api/v1/user/admin/logout", {
         withCredentials: true,
       })
       .then((res) => {
