@@ -72,6 +72,7 @@ const StudentCard = ({ student }) => {
                     <button className="bg-slate-500 hover:bg-green-700 border-none text-white font-bold py-2 px-4 rounded-md mb-4 w-full" onClick={openModal}>
                         Edit
                     </button>
+                    <div className='px-1'>&nbsp;</div>
                     <button className="bg-red-500 hover:bg-red-800 border-none text-white font-bold py-2 px-4 rounded-md mb-4 w-full" onClick={openModal2}>
                         Delete
                     </button>
