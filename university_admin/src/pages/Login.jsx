@@ -23,7 +23,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          backend_api+"api/v1/university/admin/login",
+          "https://university-project-management.onrender.com/api/v1/university/admin/login",
           { email, password, role },
           {
             withCredentials: true,
