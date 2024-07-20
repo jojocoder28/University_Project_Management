@@ -56,7 +56,7 @@ export default function Navbar(props) {
         " flex flex-wrap items-center justify-between px-2 py-3 top-2"
       }
     >
-      <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
+      <div className="container lg:px-4 lg:mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full relative flex lg:w-auto lg:static lg:block lg:justify-start">
         <button
             className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"

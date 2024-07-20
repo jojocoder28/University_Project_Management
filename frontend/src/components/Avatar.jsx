@@ -1,17 +1,22 @@
 import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 const Avatar = (props) => {
-    const { nodes, materials } = useGLTF("models/swarnadeep.glb");
+
+    // const { animations : testAnimation } = useFBX(props.animation);
+    // testAnimation[0].name='test';
+
+    const { nodes, materials } = useGLTF(props.modelUrl);
     const group = useRef();
     const lightRef = useRef();
-  
+    
+
     useFrame((state) => {
-      const target = new THREE.Vector3(state.mouse.x * 10, state.mouse.y * 10, 5);
+      const target = new THREE.Vector3(state.pointer.x * 10, state.pointer.y * 10, 5);
       lightRef.current.position.lerp(target, 0.1); // Smoothly move the light to the target position
-      group.current.getObjectByName("Spine2").lookAt(target);
+    //   group.current.getObjectByName("Spine2").lookAt(target);
       
     });
   
@@ -88,3 +93,5 @@ const Avatar = (props) => {
   export default Avatar;
   
   useGLTF.preload("models/swarnadeep.glb");
+  useGLTF.preload("models/sukanta.glb");
+  useGLTF.preload("models/soumyajit.glb");

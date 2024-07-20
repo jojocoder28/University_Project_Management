@@ -15,6 +15,7 @@ import { Context } from "./main.jsx";
 import NotFound from "./components/NotFound.jsx";
 import Loading from "./components/Loading.jsx";
 import backend_api from "./config.js";
+import AboutData from "./components/AboutData.jsx";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
