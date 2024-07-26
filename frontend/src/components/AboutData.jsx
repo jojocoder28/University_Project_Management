@@ -5,6 +5,7 @@ import {
   Environment,
   OrbitControls,
   Sky,
+  Reflector
 } from "@react-three/drei";
 import Avatar from './Avatar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -87,6 +88,18 @@ const AboutData = () => {
           resolution={256}
           color="#000000"
         />
+        {/* <Reflector
+              resolution={512}
+              args={[6, 4]}
+              mirror={1}
+              mixBlur={1}
+              mixStrength={10}
+              rotation={[0, Math.PI / 18, 0]}
+              position={[0, 0, -6]}
+            //   blur={[400, 100]}
+            >
+              {(Material, props) => <Material color="#a0a0a0" metalness={0.5} roughness={0.5} {...props} />}
+            </Reflector> */}
             <Avatar modelUrl={characters[currentValue].modelUrl} animation={characters[currentValue].animation} />
       </group>
     </Canvas>

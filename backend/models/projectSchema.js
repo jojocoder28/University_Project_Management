@@ -18,13 +18,17 @@ const projectSchema = new mongoose.Schema({
     creatorEmail:{
         type: String,
         required: true,
-        minLength: [validator.isEmail, "Please Provide A Valid Email"],
+        validate: [validator.isEmail, "Please Provide A Valid Email"],
     },
     colabEmail:[{
         type: String,
-        minLength: [validator.isEmail, "Please Provide A Valid Email"],
+        validate: [validator.isEmail, "Please Provide A Valid Email"],
     }],
-    
+    supervisor:{
+        type: String,
+        required: true,
+        validate: [validator.isEmail, "Please Provide A Valid Email"],
+    },
     university:{
         type:String,
         required: true,
@@ -47,6 +51,10 @@ const projectSchema = new mongoose.Schema({
     topic:[{
         type: String,
     }],
+    treeStructure: {
+        type: Object,
+        // required: true,
+    },
 
 });
 

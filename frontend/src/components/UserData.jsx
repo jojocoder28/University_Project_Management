@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import axios from "axios";
 import { Avatar, Badge } from "@material-tailwind/react";
-import backend_api from "../config.js";
+import {backend_api} from "../config.js";
 
 function UserData(props) {
 
@@ -20,6 +20,7 @@ function UserData(props) {
     const {user, setUser} = useContext(Context);
     const [id, setId] = useState(user._id);
     const navigateTo = useNavigate();
+    const [date, setDate] = useState(new Date(props.date).toLocaleDateString());
     // console.log(user._id);
     const openModal = () => {
         setIsModalOpen(true);
@@ -129,12 +130,12 @@ function UserData(props) {
                 <div className="stat">
                     <div className="stat-title text-xl">Projects</div>
                     <div className="stat-value overflow-hidden">{props.numProjects}</div>
-                    <div className="stat-desc text-wrap">Latest: 10th Jan 2024</div>
+                    <div className="stat-desc text-wrap">Latest: {date}</div>
                 </div>
                 <div className="stat">
                     <div className="stat-title text-wrap text-xl">Pending</div>
-                    <div className="stat-value overflow-hidden">{props.numProjects}</div>
-                    <div className="stat-desc text-wrap">↗︎ Accepance Rate: 69%</div>
+                    <div className="stat-value overflow-hidden">{props.pending}</div>
+                    <div className="stat-desc text-wrap">↗︎ Accepance Rate: {props.acceptance}%</div>
                 </div>
             </div>
         </div>

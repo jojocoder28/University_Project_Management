@@ -14,8 +14,9 @@ import axios from "axios";
 import { Context } from "./main.jsx";
 import NotFound from "./components/NotFound.jsx";
 import Loading from "./components/Loading.jsx";
-import backend_api from "./config.js";
+import {backend_api} from "./config.js";
 import AboutData from "./components/AboutData.jsx";
+import AddProject from "./pages/AddProject.jsx";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
@@ -55,11 +56,12 @@ const App = () => {
       <Routes>
         {isAuthenticated ? (<Route path="/" element={<Dashboard />} />):(<Route path="/" element={<Home />} />)}
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/project/add" element={<AddProject/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
-      <CopyrightElement name="SDK CNQ" link="/"/>
+      <CopyrightElement name="Unifolio" link="/"/>
       <ToastContainer position='top-center' />
     </Router>
   )}

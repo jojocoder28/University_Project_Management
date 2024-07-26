@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
-import backend_api from "../config.js";
+import { backend_api } from "../config.js";
 
 const Register = () => {
   document.title="Register";

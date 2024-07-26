@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import backend_api from "../config.js";
+import {backend_api} from "../config.js";
 
 const Login = () => {
   document.title="Login";

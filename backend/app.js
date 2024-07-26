@@ -7,6 +7,9 @@ import fileUpload from "express-fileupload";
 import { errorMiddleware } from "./middlewares/error.js";
 import userRouter from "./router/userRouter.js";
 import universityRouter from "./router/universityRouter.js";
+import projectRouter from "./router/projectRouter.js";
+import fs from 'fs';
+import path from 'path';
 
 const app = express();
 config({ path: "./config/config.env" });
@@ -40,6 +43,8 @@ app.use(
 );
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/university", universityRouter);
+app.use("/api/v1/project", projectRouter);
+
 
 dbConnection();
 

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import React, { useContext, useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
-import backend_api from "../config.js";
+import {backend_api} from "../config.js";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);

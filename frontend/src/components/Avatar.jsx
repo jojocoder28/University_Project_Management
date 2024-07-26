@@ -19,11 +19,19 @@ const Avatar = (props) => {
     //   group.current.getObjectByName("Spine2").lookAt(target);
       
     });
+
+
   
     return (
       <group {...props} ref={group} dispose={null}>
         {/* Light that follows the mouse */}
-        <pointLight ref={lightRef} intensity={150} distance={100} />
+        {/* <pointLight ref={lightRef} intensity={150} distance={100} /> */}
+        <directionalLight 
+        ref={lightRef} 
+        intensity={6} 
+        color="#ffffff" 
+        castShadow 
+      />
         
         {/* Avatar elements */}
         <group>
@@ -86,6 +94,7 @@ const Avatar = (props) => {
             morphTargetInfluences={nodes.Wolf3D_Teeth.morphTargetInfluences}
           />
         </group>
+        
       </group>
     );
   };
@@ -95,3 +104,4 @@ const Avatar = (props) => {
   useGLTF.preload("models/swarnadeep.glb");
   useGLTF.preload("models/sukanta.glb");
   useGLTF.preload("models/soumyajit.glb");
+
