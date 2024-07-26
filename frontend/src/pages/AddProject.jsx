@@ -124,6 +124,10 @@ const AddProject = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return <Navigate to={"/"} />;
+  }
+
   return (
     <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-">
