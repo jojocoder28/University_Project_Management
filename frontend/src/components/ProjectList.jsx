@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 const ProjectList = (props) => {
     const navigateTo = useNavigate();
     const gotoProjectPage = async (projectId) => {
         navigateTo(`/project/${projectId}`);
     }
+    
     return (
         <>
             <div className="overflow-auto p-4">
@@ -28,9 +29,17 @@ const ProjectList = (props) => {
                                 {project.description}
                             </td>
                             <td className="px-6 py-4 overflow-auto gap-2">
-                                <div className="badge badge-neutral overflow-hidden">Python</div>
-                                <div className="badge badge-neutral overflow-hidden">LangChain</div>
-                                <div className="badge badge-neutral overflow-hidden">Cohere</div>
+
+                                {project.languages ? (
+                                    project.languages.map((lang, index) => (
+                                        <ul key={index} className="list-disc list-inside">{
+                                            lang.split(',').map((tag,i) =>(
+                                            <li key={i} className="overflow-hidden">{tag}
+                                            </li>
+                                            ))
+                                            }
+                                            </ul>
+                                    ))):(<div></div>)}
                             </td>
                             <td className="px-6 py-4">
                             {project.isApproved ? (
