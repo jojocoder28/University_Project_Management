@@ -17,6 +17,8 @@ import Loading from "./components/Loading.jsx";
 import {backend_api} from "./config.js";
 import AboutData from "./components/AboutData.jsx";
 import AddProject from "./pages/AddProject.jsx";
+import ProjectPage from "./pages/ProjectPage.jsx";
+import FileUpload from "./pages/FileUpload.jsx";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
@@ -57,6 +59,8 @@ const App = () => {
         {isAuthenticated ? (<Route path="/" element={<Dashboard />} />):(<Route path="/" element={<Home />} />)}
         <Route path="/about" element={<AboutUs />} />
         <Route path="/project/add" element={<AddProject/>} />
+        <Route path="/project/:projectId" element={<ProjectPage />} />
+        <Route path="/project/:projectId/fileupload" element={<FileUpload />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path='*' element={<NotFound />} />

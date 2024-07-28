@@ -26,5 +26,19 @@
   }
 }
 
+.TreeNode{
+  display: flex;
+}
+.TreeNodeToolBar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.typeIconContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 

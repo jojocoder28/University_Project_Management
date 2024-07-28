@@ -1,8 +1,8 @@
 import express, { json, urlencoded } from 'express';
 import multer, { memoryStorage } from 'multer';
-import { writeFileSync, existsSync, mkdirSync, renameSync } from 'fs';
+import fs, { writeFileSync, existsSync, mkdirSync, renameSync } from 'fs';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import path, { dirname, join } from 'path';
 import cors from "cors";
 import { config } from "dotenv";
 
@@ -33,64 +33,80 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+const createDirectoryStructure = (node, currentPath, projectId) => {
+  if (node.children && node.children.length > 0) {
+    node.children.forEach((child) => {
+      const childPath = path.join(currentPath, child.name);
 
-app.post('/api/upload', upload.array('files'), (req, res) => {
+      if (child.isDirectory) {
+        // Create directory
+        if (!fs.existsSync(childPath)) {
+         fs. mkdirSync(childPath);
+        }
+        // Recurse into the directory
+        createDirectoryStructure(child, childPath);
+      } else {
+        // Move file to the correct location
+        // const oldoldpath = path.join('uploads','0');
+        const oldPath = path.join(__dirname, 'uploads', child.name);
+        const newPath = path.join(currentPath, child.name);
+
+        if (fs.existsSync(oldPath)) {
+          fs.renameSync(oldPath, newPath);
+        } else {
+          console.error(`File not found: ${oldPath}`);
+        }
+      }
+    });
+  }
+};
+
+app.post('/api/upload', upload.any(), (req, res) => {
   try {
     const tree = JSON.parse(req.body.tree);
-    // const files = req.files;
+    const files = req.files;
     const projectId = req.body.projectId;
+
+    // Ensure the uploads directory exists
+    const uploadDir = path.join(__dirname, 'uploads', projectId);
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    // Save tree structure to a file
+    const treePath = path.join(uploadDir, 'tree.json');
+    fs.writeFileSync(treePath, JSON.stringify(tree, null, 2));
+
+    // Create directory structure
     
-    const uploadDir = join(__dirname, 'uploads',projectId);
-    if (!existsSync(uploadDir)) {
-      mkdirSync(uploadDir);
-    }
-    const treepath = join(uploadDir,'tree.json')
-    writeFileSync(treepath, JSON.stringify(tree, null, 2));
-
-    const fileData = req.files.map(file => {
-      const filePath = join(uploadDir, file.originalname);
-      writeFileSync(filePath, file.buffer);
+    
+    // Save files to their corresponding directories
+    const fileUrls = files.map((file) => {
+      const filePath = path.join(uploadDir, file.originalname);
+      const dirPath = path.dirname(filePath);
+      
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+      
+      fs.writeFileSync(filePath, file.buffer);
       return {
-          public_id: file.originalname,
-          url: filePath,
+        public_id: file.originalname,
+        url: `${req.protocol}://${req.get('host')}/uploads/${projectId}/${file.originalname}`
       };
-  });
+    });
+    // createDirectoryStructure(tree, uploadDir, projectId);
 
-    // After saving, recreate the directory structure
-    // createDirectoryStructure(tree, uploadDir);
-
-    res.status(200).json({ success: true, files: fileData });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+    res.status(200).send({
+      message: 'Files and tree structure saved successfully',
+      files: fileUrls
+    });
+  } catch (error) {
+    console.error('Error saving files:', error);
+    res.status(500).send({message:'Internal server error'});
+  }
 });
 
-// const createDirectoryStructure = (node, currentPath) => {
-//   if (node.children && node.children.length > 0) {
-//     node.children.forEach((child) => {
-//       const childPath = join(currentPath, child.name);
-
-//       if (child.isDirectory) {
-//         // Create directory
-//         if (!existsSync(childPath)) {
-//           mkdirSync(childPath);
-//         }
-//         // Recurse into the directory
-//         createDirectoryStructure(child, childPath);
-//       } else {
-//         // Move file to the correct location
-//         const oldPath = join(__dirname, 'uploads', child.name);
-//         const newPath = join(currentPath, child.name);
-
-//         if (existsSync(oldPath)) {
-//           renameSync(oldPath, newPath);
-//         } else {
-//           console.error(`File not found: ${oldPath}`);
-//         }
-//       }
-//     });
-//   }
-// };
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

@@ -38,8 +38,7 @@ const projectSchema = new mongoose.Schema({
         required: true,
     },
     files:[{
-        public_id: String,
-        url: String,
+        type: Object,
     }],
     languages:[{
         type: String,

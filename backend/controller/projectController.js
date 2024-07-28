@@ -126,10 +126,42 @@ export const showProjects = catchAsyncErrors(async (req,res,next)=>{
   })
 })
 
+export const findProjectsbyId = catchAsyncErrors(async (req,res,next)=>{
+  const project = await Project.findOne({projectId:req.params.id});
+  res.status(200).json({
+    success: true,
+    project,
+  })
+})
+
 export const showSupProjects = catchAsyncErrors(async (req,res,next)=>{
   const project = await Project.find({supervisor:req.user.email});
   res.status(200).json({
     success: true,
     project,
+  })
+})
+
+
+export const addProjectFiles = catchAsyncErrors(async (req, res, next) => {
+  const projectId = req.body.projectId;
+  const files = req.body.files;
+  const tags = req.body.tags;
+  const tree = req.body.tree;
+  // console.log(projectId);
+  // console.log(files);
+  // console.log(tags);
+  // console.log(tree);
+
+  const project = await Project.findOneAndUpdate({projectId: projectId},{
+    files: files,
+    languages: tags,
+    treeStructure: tree,
+  },{ new: true, runValidators: true })
+  // console.log(project);
+  res.status(200).json({
+    success: true,
+    project,
+    message: "Files Added Successfully"
   })
 })

@@ -3,101 +3,87 @@
   "children": [
     {
       "name": "CISCO Packet Tracer",
+      "isDirectory": true,
       "children": [
         {
           "name": "Assignments",
+          "isDirectory": true,
           "children": [
             {
               "name": "",
-              "children": [],
-              "isDirectory": true
+              "isDirectory": true,
+              "children": []
             },
             {
               "name": "ass1.pkt",
-              "children": [],
               "isDirectory": false
             },
             {
               "name": "ass2.pkt",
-              "children": [],
               "isDirectory": false
             },
             {
               "name": "ass3.pkt",
-              "children": [],
               "isDirectory": false
             },
             {
               "name": "ass4.pkt",
-              "children": [],
               "isDirectory": false
             },
             {
               "name": "ass6.pkt",
-              "children": [],
               "isDirectory": false
             }
-          ],
-          "isDirectory": true
+          ]
         },
         {
           "name": "bus_topology.pkt",
-          "children": [],
           "isDirectory": false
         },
         {
           "name": "Experiment",
+          "isDirectory": true,
           "children": [
             {
               "name": "",
-              "children": [],
-              "isDirectory": true
+              "isDirectory": true,
+              "children": []
             },
             {
               "name": "OSPF.pkt",
-              "children": [],
               "isDirectory": false
             }
-          ],
-          "isDirectory": true
+          ]
         },
         {
           "name": "hybrid_topology.pkt",
-          "children": [],
           "isDirectory": false
         },
         {
           "name": "Lab Manual_ Cisco Packet Tracer.pdf",
-          "children": [],
           "isDirectory": false
         },
         {
           "name": "mesh_topology.pkt",
-          "children": [],
           "isDirectory": false
         },
         {
           "name": "ring_topology.pkt",
-          "children": [],
           "isDirectory": false
         },
         {
           "name": "star_topology.pkt",
-          "children": [],
           "isDirectory": false
         },
         {
           "name": "Swarnadeep Das Cisco Packet Tracer Assignment MCA 2nd Sem.docx",
-          "children": [],
           "isDirectory": false
         },
         {
           "name": "Swarnadeep Das Cisco Packet Tracer Assignment MCA 2nd Sem.pdf",
-          "children": [],
           "isDirectory": false
         }
-      ],
-      "isDirectory": true
+      ]
     }
   ]
 }

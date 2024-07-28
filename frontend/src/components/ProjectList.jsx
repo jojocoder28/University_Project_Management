@@ -1,5 +1,10 @@
-
-function ProjectList(props) {
+import React from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+const ProjectList = (props) => {
+    const navigateTo = useNavigate();
+    const gotoProjectPage = async (projectId) => {
+        navigateTo(`/project/${projectId}`);
+    }
     return (
         <>
             <div className="overflow-auto p-4">
@@ -16,7 +21,7 @@ function ProjectList(props) {
                     </thead>
                     <tbody>
                         {props.projects.map((project, index) => (
-                            <tr key={index} className="cursor-pointer transition-color duration-300 hover:bg-gray-200 dark:hover:bg-slate-900">
+                            <tr key={index} className="cursor-pointer transition-color duration-300 hover:bg-gray-200 dark:hover:bg-slate-900" onClick={() => gotoProjectPage(project.projectId)}>
                             <td className="px-6 py-4">{project.projectName}</td>
                             <td className="px-6 py-4">{project.supervisor}</td>
                             <td className="px-6 py-4 overflow-auto gap-2">
