@@ -16,6 +16,7 @@ const ProjectPage = () => {
     const { isAuthenticated } = useContext(Context);
     const [tree, setTree] = useState([]);
     const [expandedDirs, setExpandedDirs] = useState({});
+    const [tags,setTags] = useState([]);
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -30,6 +31,8 @@ const ProjectPage = () => {
                 if (response.data.project.length !== 0) {
                     setProject(response.data.project);
                     setTree(JSON.parse(response.data.project.treeStructure));
+                    setTags(response.data.project.languages[0].split(",").map(item => item.trim()));
+                    // console.log(response.data.project.languages[0].split(",").map(item => item.trim()));
                 }
             } catch (error) {
                 console.log(error);
@@ -57,35 +60,35 @@ const ProjectPage = () => {
         }));
     };
 
-    const renderTree = (node, path = '') => {
-        if (!node.children) return null;
+    const renderTree = (node, depth = 0) => {
+      if (!node.children) return null;
 
-        return (
-            <ul>
-                {node.children.map((child, index) => {
-                    const childPath = `${path}/${child.name}`;
-                    return (
-                        <li key={index}>
-                            {child.isDirectory ? (
-                                <>
-                                    <div onClick={() => toggleDirectory(childPath)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                                        {expandedDirs[childPath] ? <FaFolderOpen /> : <FaFolder />}
-                                        <strong style={{ marginLeft: '5px' }}>{child.name}</strong>
-                                    </div>
-                                    {expandedDirs[childPath] && renderTree(child, childPath)}
-                                </>
-                            ) : (
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <FaFile />
-                                    <a href={`#`} style={{ marginLeft: '5px' }}>{child.name}</a>
-                                </div>
-                            )}
-                        </li>
-                    );
-                })}
-            </ul>
-        );
-    };
+      return (
+          <ul style={{ marginLeft: depth * 20 }}>
+              {node.children.map((child, index) => {
+                  const childPath = `${node.name}/${child.name}`;
+                  return (
+                      <li key={index} style={{ marginBottom: '5px' }}>
+                          {child.isDirectory ? (
+                              <>
+                                  <div onClick={() => toggleDirectory(childPath)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                                      {expandedDirs[childPath] ? <FaFolderOpen /> : <FaFolder />}
+                                      <strong style={{ marginLeft: '5px' }}>{child.name}</strong>
+                                  </div>
+                                  {expandedDirs[childPath] && renderTree(child, depth + 1)}
+                              </>
+                          ) : (
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                  <FaFile />
+                                  <a href={`#`} style={{ marginLeft: '5px' }}>{child.name}</a>
+                              </div>
+                          )}
+                      </li>
+                  );
+              })}
+          </ul>
+      );
+  };
 
     return (
         <>
@@ -110,7 +113,7 @@ const ProjectPage = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Tags</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                             <div className="flex gap-2">
-                                                {project.languages.map((lang, index) => (
+                                                {tags.map((lang, index) => (
                                                     <div key={index} className="badge badge-neutral overflow-hidden">{lang}</div>
                                                 ))}
                                             </div>
