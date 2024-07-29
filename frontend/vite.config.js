@@ -12,8 +12,5 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
   },
-  esbuild: {
-    target: 'esnext',
-    platform: 'linux',
-  }
+  
 })
