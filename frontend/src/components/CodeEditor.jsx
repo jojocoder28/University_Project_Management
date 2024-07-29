@@ -14,6 +14,7 @@ import '../App.css';
 
 const CodeEditor = ({ fileBlob, className }) => {
   const [code, setCode] = useState('');
+  const [readOnly, setReadOnly] = useState(true); // State to manage read-only mode
 
   useEffect(() => {
     if (fileBlob) {
@@ -23,15 +24,22 @@ const CodeEditor = ({ fileBlob, className }) => {
     }
   }, [fileBlob]);
 
+  const toggleEditMode = () => {
+    setReadOnly(prevReadOnly => !prevReadOnly); // Toggle read-only state
+  };
+
   return (
     <div className={`CodeMirror-container ${className} w-full`}>
+      <button onClick={toggleEditMode} className="edit-button">
+        {readOnly ? 'Edit' : 'View'}
+      </button>
       <CodeMirror
         value={code}
         options={{
           mode: 'javascript',
-          theme: 'dracula',
+          // theme: 'dracula',
           lineNumbers: true,
-          readOnly: true,
+          readOnly: readOnly ? 'nocursor' : false, // Set readOnly based on state
           lineWrapping: true,
         }}
         onBeforeChange={(editor, data, value) => {

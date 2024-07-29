@@ -61,6 +61,9 @@ const createDirectoryStructure = (node, currentPath, projectId) => {
   }
 };
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
 app.post('/api/upload', upload.any(), (req, res) => {
   try {
     const tree = JSON.parse(req.body.tree);
