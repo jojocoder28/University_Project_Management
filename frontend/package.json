@@ -11,6 +11,7 @@
     "deploy": "vite preview --port $PORT --host"
   },
   "dependencies": {
+    "esbuild": "^0.13.15",
     "@emailjs/browser": "^4.4.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
