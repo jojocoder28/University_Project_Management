@@ -55,5 +55,8 @@
     "react-error-overlay": "^6.0.9",
     "tailwindcss": "^3.4.4",
     "vite": "^5.3.1"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }
