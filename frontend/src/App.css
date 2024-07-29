@@ -59,3 +59,9 @@
 }
 
 
+.projectpage-container{
+  scroll-snap-type: y mandatory;
+}
+.projectdetails .projecttree{
+  scroll-snap-align: start;
+}

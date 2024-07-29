@@ -1,5 +1,5 @@
 // src/pages/ProjectPage.jsx
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef, useLayoutEffect } from 'react';
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { backend_api } from '../config.js';
 import { toast } from "react-toastify";
@@ -9,6 +9,7 @@ import Loading from "../components/Loading.jsx";
 import ZipUpload from './FileUpload.jsx';
 import CodeEditor from '../components/CodeEditor.jsx';
 import TreeRenderer from '../components/TreeRenderer.jsx';
+
 import '../App.css';
 
 const ProjectPage = () => {
@@ -23,8 +24,6 @@ const ProjectPage = () => {
     const [tags, setTags] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [files, setFiles] = useState([]);
-
-
 
     const handleFileSelect2 = async (fileName) => {
         console.log('File selected:', fileName);
@@ -100,11 +99,11 @@ const ProjectPage = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <div className="p-8">
-                    <div className="mb-6">
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 overflow-hidden">{project.projectName}</h1>
-                        <div className="max-w-screen overflow-x-auto">
-                            <table className="max-w-screen divide-y divide-gray-200 table-fixed">
+                <div className="projectpage-container snap-mandatory max-h-screen max-w-screen p-10 mt-6">
+                    <div className="projectinfo flex flex-col items-center justify-center snap-start h-screen w-screen">
+                        <h1 className="text-3xl font-bold text-gray-900 text-left dark:text-gray-100 mb-4 overflow-hidden w-4/5">{project.projectName}</h1>
+                        <div className="max-w-screen w-4/5 overflow-x-auto">
+                            <table className="max-w-screen divide-y divide-gray-200 table-fixed flex items-center">
                                 <tbody className="max-wscreen divide-y divide-gray-200">
                                     <tr className='max-w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Supervisor</td>
@@ -117,7 +116,7 @@ const ProjectPage = () => {
                                     <tr className='max-w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Tags</td>
                                         <td className="px-6 py-4 max-w-screen whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                            <div className="flex gap-2">
+                                            <div className="flex flex-wrap gap-2">
                                                 {tags.map((lang, index) => (
                                                     <div key={index} className="badge badge-neutral overflow-hidden">{lang}</div>
                                                 ))}
@@ -138,37 +137,34 @@ const ProjectPage = () => {
                             </table>
                         </div>
                     </div>
-                    <div className="mt-8">
+                    <div className="projecttree snap-start h-screen w-screen ml-8 mr-8">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Project Files</h2>
                         {tree && tree.children && tree.children.length > 0 ? (
-                          <div className="flex flex-col lg:flex-row max-h-screen">
-                              <div className="flex h-full w-screen lg:w-2/5">
-                            <TreeRenderer 
-                              node={tree} 
-                              expandedDirs={expandedDirs} 
-                              toggleDirectory={toggleDirectory}
-                              handleFileSelect={handleFileSelect2}
-                            />
+                            <div className="flex flex-col lg:flex-row max-h-screen">
+                                <div className="flex h-full w-screen lg:w-2/5">
+                                    <TreeRenderer 
+                                        node={tree} 
+                                        expandedDirs={expandedDirs} 
+                                        toggleDirectory={toggleDirectory}
+                                        handleFileSelect={handleFileSelect2}
+                                    />
+                                </div>
+                                <div className="flex max-h-screen w-full p-5">
+                                    {selectedFile && (
+                                        <CodeEditor fileBlob={selectedFile} readmode={false}/>
+                                    )}
+                                </div>
                             </div>
-                            <div className="flex max-h-screen w-full p-5">
-                                {selectedFile && (
-                                  <CodeEditor fileBlob={selectedFile} readmode={false}/>
-                                )}
-                                
-                              </div>
-                              </div>
                         ) : (
                             <div className="flex max-h-screen">
-                              <div className="flex h-full w-screen lg:w-2/5">
-                                <ZipUpload onFileSelect={handleFileSelect} />
-                              </div>
-
-                              <div className="lg:flex hidden h-full w-full p-5">
-                                {selectedFile && (
-                                  <CodeEditor fileBlob={selectedFile} readmode={true}/>
-                                )}
-                                
-                              </div>
+                                <div className="flex h-full w-screen lg:w-2/5">
+                                    <ZipUpload onFileSelect={handleFileSelect} />
+                                </div>
+                                <div className="lg:flex hidden h-full w-full p-5">
+                                    {selectedFile && (
+                                        <CodeEditor fileBlob={selectedFile} readmode={true}/>
+                                    )}
+                                </div>
                             </div>
                         )}
                     </div>
@@ -176,6 +172,7 @@ const ProjectPage = () => {
             )}
         </>
     );
+    
 };
 
 export default ProjectPage;
