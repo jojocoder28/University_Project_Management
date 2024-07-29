@@ -65,12 +65,12 @@ const ProjectPage = () => {
                         withCredentials: true,
                     }
                 );
+                setProject(response.data.project);
                 if (response.data.project.treeStructure) {
-                    setProject(response.data.project);
                     setTree(JSON.parse(response.data.project.treeStructure));
+                  }
                     setFiles(JSON.parse(response.data.project.files));
                     setTags(response.data.project.languages[0].split(",").map(item => item.trim()));
-                }
             } catch (error) {
                 console.log(error);
                 toast.error(error.response.data.message);
@@ -156,7 +156,7 @@ const ProjectPage = () => {
                               </div>
                               </div>
                         ) : (
-                            <div className="flex h-screen">
+                            <div className="flex max-h-screen">
                               <div className="flex h-full w-screen lg:w-2/5">
                                 <ZipUpload onFileSelect={handleFileSelect} />
                               </div>
