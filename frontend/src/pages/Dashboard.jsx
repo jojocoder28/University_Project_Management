@@ -84,7 +84,7 @@ const calculateTrueFalseRatio = async(item) => {
                 <div className="divider"></div>
                 <div className="flex gap-5 w-full justify-center items-center">
                     <h2 className="text-2xl font-semibold text-center my-4">Projects</h2>
-                    <div className="flex justify-center">
+                    <div className="flex justify-center overflow-hidden">
                         <a href='/project/add' className="btn btn-primary hover:bg-blue-200 dark:hover:bg-slate-900 shadow-md">Add Project</a>
                     </div>
                 </div>
