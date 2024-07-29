@@ -142,6 +142,16 @@ export const showSupProjects = catchAsyncErrors(async (req,res,next)=>{
   })
 })
 
+export const findSupProjectbyID = catchAsyncErrors(async (req,res,next)=>{
+  const {email, projectId} = req.query;
+  // console.log(req.query)
+  const project = await Project.findOne({supervisor:email, projectId:projectId});
+  res.status(200).json({
+    success: true,
+    project,
+  })
+})
+
 
 export const NotApprovedshowSupProjects = catchAsyncErrors(async (req,res,next)=>{
   const project = await Project.find({supervisor:req.user.email, isApproved:false});

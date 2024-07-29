@@ -160,7 +160,7 @@ const ProjectPage = () => {
                                     </div>
                                 ) : (
                                     <div className="flex justify-center items-center h-screen">
-                                        <h1 className='text-4xl font-extrabold'>No Projects</h1>
+                                        <h1 className='text-4xl font-extrabold'>No Project Files</h1>
                                     </div>
                                 )}
                             </div>

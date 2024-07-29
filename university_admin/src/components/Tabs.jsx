@@ -28,8 +28,8 @@ const Tabs = () => {
         </a>
       </div>
       <div className="mt-4">
-        {activeTab === 0 && <div><Table title="Project" th={["Project Name", "Tags", "Contributors"]} /></div>}
-        {activeTab === 1 && <div><Table title="Students" th={["Name", "Department", "Niche"]} /></div>}
+        {activeTab === 0 && <div><Table title="Project" th={["Project Name", "Tags", "Creator Email"]} /></div>}
+        {activeTab === 1 && <div><Table title="Students" th={["Name", "Course", "Username"]} /></div>}
       </div>
     </div>
   );
