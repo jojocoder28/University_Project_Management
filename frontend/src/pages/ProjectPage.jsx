@@ -99,7 +99,7 @@ const ProjectPage = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <div className="projectpage-container snap-mandatory max-h-screen max-w-screen p-10 mt-6">
+                <div className="projectpage-container snap-mandatory max-h-screen max-w-screen">
                     <div className="projectinfo flex flex-col items-center justify-center snap-start h-screen w-screen">
                         <h1 className="text-3xl font-bold text-gray-900 text-left dark:text-gray-100 mb-4 overflow-hidden w-4/5">{project.projectName}</h1>
                         <div className="max-w-screen w-4/5 overflow-x-auto">

@@ -56,7 +56,7 @@ const ProjectList = (props) => {
                                 <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Approved</div>):(<div className="badge badge-neutral bg-yellow-400 dark:bg-yellow-700 overflow-hidden">Pending</div>)
                             }
                             </td>):(
-                                <td className="px-6 py-4"><a href={"/profile/"+project.creatorEmail}>{project.creatorEmail}</a></td>
+                                <td className="px-6 py-4"><a href={"/profile/"+project.creatorEmail} className="hover:text-blue-400">{project.creatorEmail}</a></td>
                             )}
                             </tr>
                         ))}
