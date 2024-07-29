@@ -22,6 +22,9 @@ function Dashboard() {
   // const email=user.email;
   // console.log("user = ",user)
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  useEffect(() => {
     const fetchProject = async () => {
       setIsLoading(true);
       try {
@@ -92,6 +95,7 @@ const calculateTrueFalseRatio = async(item) => {
                     <div className="max-w-3/5">
                         <ProjectList
                         projects={project}
+                        view={false}
                         />
                     </div>
                 </div>):(<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">

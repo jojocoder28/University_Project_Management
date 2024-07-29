@@ -43,3 +43,39 @@
 .read-the-docs {
   color: #888;
 } */
+
+
+.TreeNode{
+  display: flex;
+}
+.TreeNodeToolBar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.typeIconContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.CodeMirror {
+  height: 100% !important; /* Full height of the container */
+  width: 100% !important; /* Full width of the container */
+  overflow: auto; /* Ensure proper scrolling */
+}
+
+/* Ensure the editor starts from the top left with no extra space */
+.CodeMirror-scroll {
+  overflow: auto; /* Handle scrolling */
+}
+
+/* Optional: Enable word wrapping */
+.CodeMirror-wrap {
+  white-space: pre-wrap; /* Ensure long lines wrap */
+}
+
+
+

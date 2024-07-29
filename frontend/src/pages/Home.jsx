@@ -1,9 +1,32 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 import CardsHome from '../components/CardsHome.jsx';
-
+import SearchBar from '../components/SearchBar.jsx';
+import { backend_api } from '../config.js';
+import ProjectList from '../components/ProjectList.jsx';
+import { Context } from '../main.jsx';
 
 const Home = () => {
-  document.title="Unifolio"
+  document.title="Unifolio";
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const {isAuthenticated, setIsAuthenticated} = useContext(Context);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  const handleSearch = async (searchTerm) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(backend_api+'api/v1/project/search', {
+        params: { query: searchTerm }
+      });
+      setSearchResults(response.data.results);
+    } catch (error) {
+      console.error('Error searching projects:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
       const title1="Unifolio: Streamline your university projects with ease, collaboration, and efficiency";
       const desc1="Unifolio is a comprehensive university project management website designed to streamline academic projects. It offers features such as task tracking, file sharing, collaborative tools, and deadline reminders. With Unifolio, students and faculty can manage projects efficiently, ensuring better organization and communication. The platform supports seamless collaboration, making it easy to coordinate tasks, share resources, and monitor progress. Ideal for both individual and group projects, Unifolio enhances productivity and helps users stay on top of their academic commitments"
   return ( <>
@@ -22,13 +45,39 @@ const Home = () => {
               Sign in to Unifolio today and streamline your university projects. Easy management, collaboration, and success await
               </div>
               <div className="absolute bottom-12">
-                <a href='/register' className='btn btn-wide dark:bg-slate-800 dark:hover:bg-teal-900 bg-blue-200 border-0 hover:bg-teal-500'>Register</a>
-              </div>
+                { !isAuthenticated ? (
+
+                  <a href='/register' className='btn btn-wide dark:bg-slate-800 dark:hover:bg-teal-900 bg-blue-200 border-0 hover:bg-teal-500'>Register</a>
+                ) : (
+                  <a href='/project/add' className='btn btn-wide dark:bg-slate-800 dark:hover:bg-teal-900 bg-blue-200 border-0 hover:bg-teal-500'>Create Project</a>
+
+                )
+                }
+                </div>
             </div>
           </div>
         </div>
-        <div className="flex mb-4 p-4">
+        {/* <div className="flex mb-4 p-4">
           <CardsHome title={title1} description={desc1} wh="lg:w-full h-84"/>
+        </div> */}
+        <div className="container mx-auto">
+          <SearchBar onSearch={handleSearch} />
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="grid grid-cols-1 mx-5 gap-4">
+              {searchResults.length > 0 ? (
+                
+                      <ProjectList
+                        projects={searchResults}
+                        view={true}
+                      />
+                
+              ) : (
+                <div>No projects found</div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </main>

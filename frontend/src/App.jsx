@@ -56,11 +56,11 @@ const App = () => {
     <Router>
     <Navbar transparent/>
       <Routes>
-        {isAuthenticated ? (<Route path="/" element={<Dashboard />} />):(<Route path="/" element={<Home />} />)}
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/project/add" element={<AddProject/>} />
         <Route path="/project/:projectId" element={<ProjectPage />} />
-        {/* <Route path="/project/:projectId/fileupload" element={<FileUpload />} /> */}
+        <Route path="/dashboard" element={<Dashboard />}/>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path='*' element={<NotFound />} />

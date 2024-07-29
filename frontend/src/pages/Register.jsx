@@ -26,7 +26,9 @@ const Register = () => {
 
   const navigateTo = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     const fetchUniversity = async () => {
       try {

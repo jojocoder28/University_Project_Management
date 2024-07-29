@@ -1,9 +1,13 @@
-import React, {useState, useEffect} from "react";
+import { context } from "@react-three/fiber";
+import React, {useState, useEffect, useContext} from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Context } from "../main";
+
 const ProjectList = (props) => {
     const navigateTo = useNavigate();
+    const {isAuthenticated, setIsAuthenticated} = useContext(Context);
     const gotoProjectPage = async (projectId) => {
-        navigateTo(`/project/${projectId}`);
+        isAuthenticated ? navigateTo(`/project/${projectId}`) :  navigateTo(`/login`);        
     }
     
     return (
@@ -15,9 +19,13 @@ const ProjectList = (props) => {
                         <tr className="border-b border-slate-700">
                         <th className="px-6 py-4 w-1/5 text-left">Project Name</th>
                         <th className="px-6 py-4 w-1/5 text-left">Supervisor Email</th>
-                        <th className="px-6 py-4 w-3/5 text-left">Description</th>
+                        <th className="px-6 py-4 w-2/5 text-left">Description</th>
                         <th className="px-6 py-4 w-1/5 text-left">Tags</th>
-                        <th className="px-6 py-4 w-1/10">Status</th>
+                        {props.view ? (
+                            <th className="px-6 py-4 w-1/5">Creator</th>
+                        ):(
+                            <th className="px-6 py-4 w-1/10">Status</th>
+                        )}
                         </tr>
                     </thead>
                     <tbody>
@@ -41,11 +49,14 @@ const ProjectList = (props) => {
                                             </ul>
                                     ))):(<div></div>)}
                             </td>
+                            {!props.view ? (
                             <td className="px-6 py-4">
                             {project.isApproved ? (
                                 <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Approved</div>):(<div className="badge badge-neutral bg-yellow-400 dark:bg-yellow-700 overflow-hidden">Pending</div>)
                             }
-                            </td>
+                            </td>):(
+                                <td className="px-6 py-4">{project.creatorEmail}</td>
+                            )}
                             </tr>
                         ))}
                     </tbody>

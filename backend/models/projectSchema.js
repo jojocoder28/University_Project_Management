@@ -47,9 +47,9 @@ const projectSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
-    topic:[{
+    topic:{
         type: String,
-    }],
+    },
     treeStructure: {
         type: Object,
         // required: true,
@@ -57,6 +57,6 @@ const projectSchema = new mongoose.Schema({
 
 });
 
-
+projectSchema.index({ projectName: 'text', description: 'text', topic: 'text' });
 
 export const Project = mongoose.model("project", projectSchema);

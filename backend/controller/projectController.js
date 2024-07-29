@@ -143,6 +143,14 @@ export const showSupProjects = catchAsyncErrors(async (req,res,next)=>{
 })
 
 
+export const NotApprovedshowSupProjects = catchAsyncErrors(async (req,res,next)=>{
+  const project = await Project.find({supervisor:req.user.email, isApproved:false});
+  res.status(200).json({
+    success: true,
+    project,
+  })
+})
+
 export const addProjectFiles = catchAsyncErrors(async (req, res, next) => {
   const projectId = req.body.projectId;
   const files = req.body.files;
@@ -157,11 +165,50 @@ export const addProjectFiles = catchAsyncErrors(async (req, res, next) => {
     files: files,
     languages: tags,
     treeStructure: tree,
+    topic: tags,
   },{ new: true, runValidators: true })
   // console.log(project);
   res.status(200).json({
     success: true,
     project,
     message: "Files Added Successfully"
+  })
+})
+
+
+export const searchProjects = catchAsyncErrors(async (req, res, next) => {
+  const { query } = req.query;
+  try {
+    const results = await Project.find({
+      $text: { $search: query }
+    }, {
+      score: { $meta: "textScore" }
+    }).sort({
+      score: { $meta: "textScore" }
+    });
+      res.status(200).json({
+        success: true,
+        results,
+        message: "Project Found"  
+      })
+  } catch (error) {
+      console.error("Error searching projects:", error);
+      throw error;
+  }
+});
+
+
+export const approveProject = catchAsyncErrors(async (req, res, next) => {
+  const projectId = req.body.projectId;
+  
+
+  const project = await Project.findOneAndUpdate({projectId: projectId},{
+    isApproved: true,
+  },{ new: true, runValidators: true })
+  // console.log(project);
+  res.status(200).json({
+    success: true,
+    project,
+    message: "Project is approved"
   })
 })

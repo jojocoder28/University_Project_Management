@@ -8,16 +8,16 @@ import axios from "axios";
 import Loading from "../components/Loading.jsx";
 import ZipUpload from './FileUpload.jsx';
 import CodeEditor from '../components/CodeEditor.jsx';
-import TreeRenderer from '../components/TreeRenderer.jsx'; // Import the new component
+import TreeRenderer from '../components/TreeRenderer.jsx';
 import '../App.css';
 
 const ProjectPage = () => {
     const { projectId } = useParams();
     const navigate = useNavigate();
+    const { isAuthenticated } = useContext(Context);
     document.title = `Project ${projectId}`;
     const [project, setProject] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const { isAuthenticated } = useContext(Context);
     const [tree, setTree] = useState([]);
     const [expandedDirs, setExpandedDirs] = useState({});
     const [tags, setTags] = useState([]);
@@ -54,7 +54,9 @@ const ProjectPage = () => {
       console.log('File selected:', file);
       setSelectedFile(file);
     };
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     useEffect(() => {
         const fetchProject = async () => {
             setIsLoading(true);
@@ -101,20 +103,20 @@ const ProjectPage = () => {
                 <div className="p-8">
                     <div className="mb-6">
                         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 overflow-hidden">{project.projectName}</h1>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200 table-fixed">
-                                <tbody className="divide-y divide-gray-200">
-                                    <tr className='w-screen'>
+                        <div className="max-w-screen overflow-x-auto">
+                            <table className="max-w-screen divide-y divide-gray-200 table-fixed">
+                                <tbody className="max-wscreen divide-y divide-gray-200">
+                                    <tr className='max-w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Supervisor</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.supervisor}</td>
                                     </tr>
                                     <tr className='max-w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Description</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.description}</td>
+                                        <td className="px-6 py-4 max-w-screen whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.description}</td>
                                     </tr>
                                     <tr className='max-w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Tags</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                        <td className="px-6 py-4 max-w-screen whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                             <div className="flex gap-2">
                                                 {tags.map((lang, index) => (
                                                     <div key={index} className="badge badge-neutral overflow-hidden">{lang}</div>
@@ -139,7 +141,7 @@ const ProjectPage = () => {
                     <div className="mt-8">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Project Files</h2>
                         {tree && tree.children && tree.children.length > 0 ? (
-                          <div className="flex flex-col lg:flex-row h-screen">
+                          <div className="flex flex-col lg:flex-row max-h-screen">
                               <div className="flex h-full w-screen lg:w-2/5">
                             <TreeRenderer 
                               node={tree} 
@@ -148,7 +150,7 @@ const ProjectPage = () => {
                               handleFileSelect={handleFileSelect2}
                             />
                             </div>
-                            <div className="flex h-full w-full p-5">
+                            <div className="flex max-h-screen w-full p-5">
                                 {selectedFile && (
                                   <CodeEditor fileBlob={selectedFile} readmode={false}/>
                                 )}

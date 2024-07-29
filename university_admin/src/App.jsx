@@ -16,6 +16,9 @@ import { Context } from "./main";
 import Login from './pages/Login';
 import Students from './pages/Students';
 import backend_api from './config';
+import Projects from './pages/Projects';
+import ProjectPage from './pages/ProjectPage';
+import ReviewProjects from './pages/ReviewProjects';
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
@@ -62,8 +65,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
-        {/*<Route path="/university" element={<University />} />
-        <Route path="/admin/addnew" element={<AddNewAdmin />} /> */}
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/project/:projectId" element={<ProjectPage />} />
+        <Route path="/project/review" element={<ReviewProjects />} />
         <Route path="/students" element={<Students />} /> 
         {isAuthenticated ? (<Route path="*" element={<NotFound/>} />):
         (

@@ -24,6 +24,10 @@ const AddProject = () => {
   const [email, setEmail] = useState(user.email);
   const [university, setUniversity] = useState(user.university);
   const [date, setDate] = useState(new Date());
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const handleProject = async (e) => {
     e.preventDefault();
     try {

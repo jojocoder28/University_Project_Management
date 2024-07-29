@@ -95,7 +95,7 @@ export default function Navbar(props) {
               (props.transparent ? "text-black dark:text-white" : "text-gray-800") +
               " text-sm leading-none mr-4 whitespace-nowrap uppercase px-3 py-4 lg:py-2 flex items-center font-bold dark:hover:text-teal-700 hover:text-teal-900"
             }
-            href="/"
+            href="/dashboard"
           >
             {user.username}
           </a>)}

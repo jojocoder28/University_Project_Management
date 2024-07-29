@@ -79,6 +79,9 @@ const FileIcon = ({ onClick: defaultOnClick, nodeData }) => {
 const IconComponents = {FileIcon,}
 
 const ZipUpload = ({ onFileSelect }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
     const navigate = useNavigate();
     const { projectId } = useParams();
     document.title = `Project ${projectId} - File Upload`;

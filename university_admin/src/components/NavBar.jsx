@@ -40,7 +40,7 @@ function NavBar({activeTab}) {
                 </a>
             </li>
             <li>
-                <a className={`tooltip ${activeTab == "ReviewProjects" ? "active" : ""}`} data-tip="Review Projects" href="/reviewProjects">
+                <a className={`tooltip ${activeTab == "ReviewProjects" ? "active" : ""}`} data-tip="Review Projects" href="/project/review">
                     <GrValidate />
                 </a>
             </li>

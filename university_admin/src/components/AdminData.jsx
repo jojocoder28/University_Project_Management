@@ -1,6 +1,6 @@
 import { LuPackage } from "react-icons/lu";
 import Modal from "./Modal";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
@@ -10,7 +10,7 @@ import backend_api from "../config.js";
 function AdminData(props) {
     const [email, setEmail]=useState(props.admin.email);
     const [university, setUniversity]=useState(props.admin.university);
-    let [numProjects, setNumprojects] = useState(0);
+    // let [numProjects, setNumprojects] = useState(0);
     const [name, setName] = useState(props.admin.firstName + " " + props.admin.lastName);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [avatar, setAvatar] = useState(props.admin.avatar && props.admin.avatar.url);
@@ -117,8 +117,8 @@ function AdminData(props) {
                         <LuPackage size={40} />
                     </div>
                     <div className="stat-title">Total Projects</div>
-                    <div className="stat-value text-primary text-xl md:text-2xl">{numProjects}</div>
-                    <div className="stat-desc">21% more than last month</div>
+                    <div className="stat-value text-primary text-xl md:text-2xl">{props.numProjects}</div>
+                    <div className="stat-desc">Avaiable</div>
                 </div>
 
                 <div className="stat flex-1">
@@ -136,9 +136,9 @@ function AdminData(props) {
                             </path>
                         </svg>
                     </div>
-                    <div className="stat-title">Page Views</div>
-                    <div className="stat-value text-secondary text-xl md:text-2xl">2.6M</div>
-                    <div className="stat-desc">21% more than last month</div>
+                    <div className="stat-title">Total Students</div>
+                    <div className="stat-value text-secondary text-xl md:text-2xl">{props.studentlength}</div>
+                    <div className="stat-desc">Students from {university}</div>
                 </div>
 
             </div>
