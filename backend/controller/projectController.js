@@ -126,6 +126,15 @@ export const showProjects = catchAsyncErrors(async (req,res,next)=>{
   })
 })
 
+export const showProjectsbyEmail = catchAsyncErrors(async (req,res,next)=>{
+  const project = await Project.find({creatorEmail:req.query.email});
+  res.status(200).json({
+    success: true,
+    project,
+  })
+})
+
+
 export const findProjectsbyId = catchAsyncErrors(async (req,res,next)=>{
   const project = await Project.findOne({projectId:req.params.id});
   res.status(200).json({

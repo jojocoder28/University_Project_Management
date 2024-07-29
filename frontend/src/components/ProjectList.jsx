@@ -30,7 +30,8 @@ const ProjectList = (props) => {
                     </thead>
                     <tbody>
                         {props.projects.map((project, index) => (
-                            <tr key={index} className="cursor-pointer transition-color duration-300 hover:bg-gray-200 dark:hover:bg-slate-900" onClick={() => gotoProjectPage(project.projectId)}>
+                            <tr key={index} className="cursor-pointer transition-color duration-300 hover:bg-gray-200 dark:hover:bg-slate-900" 
+                            onClick={() => gotoProjectPage(project.projectId)}>
                             <td className="px-6 py-4">{project.projectName}</td>
                             <td className="px-6 py-4">{project.supervisor}</td>
                             <td className="px-6 py-4 overflow-auto gap-2">
@@ -55,7 +56,7 @@ const ProjectList = (props) => {
                                 <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Approved</div>):(<div className="badge badge-neutral bg-yellow-400 dark:bg-yellow-700 overflow-hidden">Pending</div>)
                             }
                             </td>):(
-                                <td className="px-6 py-4">{project.creatorEmail}</td>
+                                <td className="px-6 py-4"><a href={"/profile/"+project.creatorEmail}>{project.creatorEmail}</a></td>
                             )}
                             </tr>
                         ))}

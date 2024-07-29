@@ -19,6 +19,7 @@ import AboutData from "./components/AboutData.jsx";
 import AddProject from "./pages/AddProject.jsx";
 import ProjectPage from "./pages/ProjectPage.jsx";
 import FileUpload from "./pages/FileUpload.jsx";
+import ProfileView from "./pages/ProfileView.jsx";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
@@ -61,6 +62,7 @@ const App = () => {
         <Route path="/project/add" element={<AddProject/>} />
         <Route path="/project/:projectId" element={<ProjectPage />} />
         <Route path="/dashboard" element={<Dashboard />}/>
+        <Route path="/profile/:email" element={<ProfileView />}/>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path='*' element={<NotFound />} />

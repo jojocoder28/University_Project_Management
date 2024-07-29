@@ -43,9 +43,7 @@ function Dashboard() {
       fetchUser();
     },[isAuthenticated]);
 
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+   
     useEffect(() => {
       const fetchProject = async () => {
         setIsLoading(true);

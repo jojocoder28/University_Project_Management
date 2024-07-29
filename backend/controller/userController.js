@@ -100,6 +100,14 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+export const getUserbyEmail = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findOne({email: req.query.email});
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
 export const getUniversityAdminDetails = catchAsyncErrors(async (req, res, next) => {
   const user = req.user;
   res.status(200).json({

@@ -5,14 +5,15 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import Loading from "../components/Loading.jsx";
 import React, { useContext, useState, useEffect} from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { backend_api } from '../config.js';
 
 
-function Dashboard() {
+const ProfileView = () => {
     document.title="Profile";
+    const { email } = useParams();
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-  const {user, setUser} = useContext(Context);
+  const [user, setUser] = useState([]);
   const [project, setProject] = useState([]);
   const [numProjects, setNumprojects] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,8 +30,11 @@ function Dashboard() {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          backend_api+"api/v1/project/getall",
+          backend_api+"api/v1/project/get/byemail",
           {
+            params:{
+                email:email
+            },
             withCredentials: true,
           }
         );
@@ -51,6 +55,32 @@ function Dashboard() {
       }
     };
     fetchProject();
+}, [isAuthenticated]);
+
+
+useEffect(() => {
+    const fetchUser = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          backend_api+"api/v1/user/profile",
+          {
+            params:{
+                email:email
+            },
+            withCredentials: true,
+          }
+        );
+       setUser(response.data.user);
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.message);
+      }
+      finally{
+        setIsLoading(false);
+      }
+    };
+    fetchUser();
 }, [isAuthenticated]);
 
 const calculateTrueFalseRatio = async(item) => {
@@ -82,21 +112,19 @@ const calculateTrueFalseRatio = async(item) => {
                     <UserData 
                     fname={user.firstName} lname={user.lastName} role="User"
                     course={user.course} university={user.university} numProjects={numProjects} acceptance={acceptance} date={date} pending={pending}
-                    view={false}
+                    view={true} user={user}
                     />
                 </div>
                 <div className="divider"></div>
                 <div className="flex gap-5 w-full justify-center items-center">
                     <h2 className="text-2xl font-semibold text-center my-4">Projects</h2>
-                    <div className="flex justify-center overflow-hidden">
-                        <a href='/project/add' className="btn btn-primary hover:bg-blue-200 dark:hover:bg-slate-900 shadow-md">Add Project</a>
-                    </div>
+                    
                 </div>
                 {numProjects!==0 ? (<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
                     <div className="max-w-3/5">
                         <ProjectList
                         projects={project}
-                        view={false}
+                        view={true}
                         />
                     </div>
                 </div>):(<div className="flex w-full justify-center border-gray-700 rounded-md shadow-md">
@@ -110,4 +138,4 @@ const calculateTrueFalseRatio = async(item) => {
     )
 }
 
-export default Dashboard
+export default ProfileView

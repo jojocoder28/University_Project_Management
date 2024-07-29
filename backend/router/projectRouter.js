@@ -1,4 +1,4 @@
-import { addProject, addProjectFiles, approveProject, findProjectsbyId, findSupProjectbyID, NotApprovedshowSupProjects, searchProjects, showProjects, showSupProjects, uploadFiles } from "../controller/projectController.js";
+import { addProject, addProjectFiles, approveProject, findProjectsbyId, findSupProjectbyID, NotApprovedshowSupProjects, searchProjects, showProjects, showProjectsbyEmail, showSupProjects, uploadFiles } from "../controller/projectController.js";
 import multer, { memoryStorage } from 'multer';
 import express from "express";
 import { isUniversityAuthenticated, isUserAuthenticated } from "../middlewares/auth.js";
@@ -8,6 +8,7 @@ const router = express.Router();
 const upload = multer({ storage: memoryStorage() });
 
 router.get('/getall',isUserAuthenticated, showProjects);
+router.get('/get/byemail', showProjectsbyEmail);
 router.get('/find/:id', findProjectsbyId);
 router.get('/supervisor/getall',isUniversityAuthenticated, showSupProjects);
 router.get('/supervisor/byid', findSupProjectbyID);

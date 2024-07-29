@@ -69,10 +69,15 @@ function UserData(props) {
         <div className="flex flex-col lg:flex-row justify-between mx-5 my-10 p-5 rounded-lg w-full">
             <div className="flex flex-row userData mb-5 lg:mb-0">
                 <div className="relative">
-                    <img className="w-20 h-20 rounded-full" src={user.avatar && user.avatar.url || `blankAvatar.jpg`} alt="avatar"/>
-                    <div className="flex justify-center items-center">
+                    
+                    {props.view?(<><img className="w-20 h-20 rounded-full" src={props.user.avatar && props.user.avatar.url || `blankAvatar.jpg`} alt="avatar"/></>):(
+                        <>
+                        <img className="w-20 h-20 rounded-full" src={user.avatar && user.avatar.url || `blankAvatar.jpg`} alt="avatar"/>
+                        <div className="flex justify-center items-center">
                     <button className="flex dark:bg-slate-800 bg-slate-200 hover:bg-slate-400 dark:hover:bg-slate-700 w-full lg:mx-4 text-sm py-1 justify-center items-center rounded-lg mt-4 sm:mx-0 md:mx-0" onClick={openModal}> Edit </button>
                     </div>
+                    </>)}
+                    
                 </div>
                 {/* <button onClick={openModal}>
                     
