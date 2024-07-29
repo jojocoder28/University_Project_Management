@@ -6,6 +6,9 @@ import { Context } from "../main.jsx";
 import axios from "axios";
 import Loading from "../components/Loading.jsx";
 import { FaFolder, FaFolderOpen, FaFile } from 'react-icons/fa';
+import ZipUpload from './FileUpload.jsx';
+import CodeEditor from '../components/CodeEditor.jsx';
+import '../App.css';
 
 const ProjectPage = () => {
     const { projectId } = useParams();
@@ -17,6 +20,13 @@ const ProjectPage = () => {
     const [tree, setTree] = useState([]);
     const [expandedDirs, setExpandedDirs] = useState({});
     const [tags,setTags] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [files, setFiles] = useState([]);
+
+    const handleFileSelect = (file) => {
+      console.log('File selected:', file);
+      setSelectedFile(file);
+    };
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -28,9 +38,10 @@ const ProjectPage = () => {
                         withCredentials: true,
                     }
                 );
-                if (response.data.project.length !== 0) {
+                if (response.data.project.treeStructure) {
                     setProject(response.data.project);
                     setTree(JSON.parse(response.data.project.treeStructure));
+                    setFiles(JSON.parse(response.data.project.files));
                     setTags(response.data.project.languages[0].split(",").map(item => item.trim()));
                     // console.log(response.data.project.languages[0].split(",").map(item => item.trim()));
                 }
@@ -49,9 +60,9 @@ const ProjectPage = () => {
         return <Navigate to={"/"} />;
     }
 
-    const gotoFileUpload = () => {
-        navigate(`/project/${projectId}/fileupload`);
-    };
+    // const gotoFileUpload = () => {
+    //     navigate(`/project/${projectId}/fileupload`);
+    // };
 
     const toggleDirectory = (path) => {
         setExpandedDirs((prevState) => ({
@@ -97,19 +108,19 @@ const ProjectPage = () => {
             ) : (
                 <div className="p-8">
                     <div className="mb-6">
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">{project.projectName}</h1>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 overflow-hidden">{project.projectName}</h1>
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <tbody className="divide-y divide-gray-200">
-                                    <tr>
+                                    <tr className='w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Supervisor</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.supervisor}</td>
                                     </tr>
-                                    <tr>
+                                    <tr className='max-w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Description</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.description}</td>
                                     </tr>
-                                    <tr>
+                                    <tr className='max-w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Tags</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                             <div className="flex gap-2">
@@ -119,7 +130,7 @@ const ProjectPage = () => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className='max-w-screen'>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Status</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                             {project.isApproved ? (
@@ -138,12 +149,24 @@ const ProjectPage = () => {
                         {tree && tree.children && tree.children.length > 0 ? (
                             renderTree(tree)
                         ) : (
-                            <button
-                                onClick={gotoFileUpload}
-                                className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-                            >
-                                Upload Files
-                            </button>
+                            // <button
+                            //     onClick={gotoFileUpload}
+                            //     className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                            // >
+                            //     Upload Files
+                            // </button>
+                            <div className="flex h-screen">
+                              <div className="flex h-full w-screen lg:w-2/5">
+                                <ZipUpload onFileSelect={handleFileSelect} />
+                              </div>
+
+                              <div className="lg:flex hidden h-full w-full p-5">
+                                {selectedFile && (
+                                  <CodeEditor fileBlob={selectedFile}/>
+                                )}
+                                
+                              </div>
+                            </div>
                         )}
                     </div>
                 </div>

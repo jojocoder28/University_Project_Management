@@ -60,7 +60,7 @@ const App = () => {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/project/add" element={<AddProject/>} />
         <Route path="/project/:projectId" element={<ProjectPage />} />
-        <Route path="/project/:projectId/fileupload" element={<FileUpload />} />
+        {/* <Route path="/project/:projectId/fileupload" element={<FileUpload />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path='*' element={<NotFound />} />

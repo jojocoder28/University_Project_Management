@@ -59,8 +59,8 @@ const fileExtensionToTechnology = {
   'json': 'JSON',
   'xml': 'XML',
   'yml': 'YAML',
-  'sh': 'Shell Script',
-  'docx': 'Word Document'
+  'sh': 'Shell',
+  'docx': 'Word'
 };
 
 const FileIcon = ({ onClick: defaultOnClick, nodeData }) => {
@@ -78,13 +78,14 @@ const FileIcon = ({ onClick: defaultOnClick, nodeData }) => {
 
 const IconComponents = {FileIcon,}
 
-const ZipUpload = () => {
+const ZipUpload = ({ onFileSelect }) => {
     const navigate = useNavigate();
     const { projectId } = useParams();
     document.title = `Project ${projectId} - File Upload`;
 
   const [treeData, setTreeData] = useState(null);
   const [filesMap, setFilesMap] = useState(new Map());
+  const [filesMapTemp2, setFilesMapTemp2] = useState(new Map());
   const [tags, setTags] = useState([]);
   const [files, setFiles] = useState([]);
 
@@ -101,12 +102,16 @@ const ZipUpload = () => {
         files.push({
           name: zipEntry.name,
           isDirectory: zipEntry.dir,
+          fullPath: relativePath
         });
 
         if (!zipEntry.dir) {
           const blob = await zipEntry.async('blob');
           const fileObject = new File([blob], zipEntry.name, { type: blob.type });
           filesMapTemp.set(zipEntry.name, fileObject);
+          zipEntry.async('blob').then((blob) => {
+            setFilesMapTemp2((prev) => new Map(prev).set(relativePath, blob));
+          });
         }
       });
 
@@ -121,18 +126,17 @@ const ZipUpload = () => {
 
   const createTree = (files) => {
     const tree = { name: 'root', children: [] };
-  
+
     files.forEach((file) => {
       const parts = file.name.split('/');
       let currentNode = tree;
-  
+
       parts.forEach((part, index) => {
         let node = currentNode.children.find((child) => child.name === part);
-  
+
         if (!node) {
-          node = { name: part };
-  
-          // Check if the current part is the last part or not
+          node = { name: part, fullPath: file.fullPath };
+
           if (index < parts.length - 1 || file.isDirectory) {
             node.isDirectory = true;
             node.children = [];
@@ -144,14 +148,13 @@ const ZipUpload = () => {
           }
           currentNode.children.push(node);
         }
-  
+
         currentNode = node;
       });
     });
-  
+
     return tree;
   };
-
   const generateTags = async (files, zip) => {
     const tagsArray = [];
 
@@ -168,6 +171,19 @@ const ZipUpload = () => {
     }
 
     return tagsArray;
+  };
+
+  const handleFileClick = (node) => {
+    console.log("Current FilesMap: ", filesMapTemp2);
+    if (!node.isDirectory) {
+      const blob = filesMapTemp2.get(node.nodeData.fullPath);
+      console.log("blob:", blob);
+      if (blob) {
+        onFileSelect(blob);
+      } else {
+        console.error(`Blob not found for file: ${node.nodeData.fullPath}`);
+      }
+    }
   };
   
 
@@ -242,6 +258,9 @@ const ZipUpload = () => {
               indentPixels={ 20 }
               iconComponents={IconComponents}
               className="flex items-center justify-center"
+              onNameClick={(node) => {
+                handleFileClick(node);
+              }}
             />
           </div>
 
