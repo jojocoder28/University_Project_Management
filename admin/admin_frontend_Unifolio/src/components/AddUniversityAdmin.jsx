@@ -4,10 +4,11 @@ import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Loading from "./Loading.jsx";
+import Sidebar from "./Sidebar.jsx";
 import backend_api from "../config.js";
 
 const AddUniversityAdmin = () => {
-    document.title="Register";
+    document.title="Add University Admin";
 
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   
@@ -92,10 +93,11 @@ const AddUniversityAdmin = () => {
         <Loading />
       ):(
         <>
+        <Sidebar activeTab="AddUniAdmin" />
       <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
               <div className="max-w-md w-full space-y-">
                 <div>
-                  <h2 className="mt-6 text-center text-3xl font-extrabold py-10">Register</h2>
+                  <h2 className="mt-6 text-center text-3xl font-extrabold py-10">Add University Admin</h2>
                 </div>
                 <form className="w-full max-w-lg" onSubmit={handleRegistration}>
                   <div className="flex flex-wrap -mx-3 mb-6">

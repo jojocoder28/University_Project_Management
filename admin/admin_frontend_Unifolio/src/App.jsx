@@ -13,6 +13,7 @@ import CopyrightElement from "./components/CopyrightElement";
 import NotFound from "./components/NotFound";
 import University from "./components/University";
 import AddUniversityAdmin from "./components/AddUniversityAdmin";
+import AddUniversity from "./components/AddUniversity";
 import Loading from "./components/Loading";
 import backend_api from "./config";
 
@@ -50,9 +51,9 @@ const App = () => {
     {isLoading ? (
       <Loading/>):(
     <Router>
-      <Sidebar />
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/addUniversity" element={<AddUniversity />} />
         <Route path="/login" element={<Login />} />
         <Route path="/university" element={<University />} />
         <Route path="/admin/addnew" element={<AddNewAdmin />} />

@@ -17,7 +17,7 @@ const universitySchema = new Schema(
             type: String,
             minLength: [2, "Invalid Acronym"]
         },
-        location:String,
+        uniLocation:String,
         projects:[{
             projectId: String,
             isApproved: Boolean

@@ -19,8 +19,10 @@ const Dashboard = () => {
 
   return (
     <>
-    <div className="h-5 relative"></div>
-     hello
+    <Sidebar activeTab="Home"/>
+    <div>
+      <h1 className="mt-6 text-center text-6xl font-extrabold py-10">Welcome, Admin</h1>
+    </div>
     </>
   );
 };
