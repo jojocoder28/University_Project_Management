@@ -42,7 +42,7 @@ const AddProject = () => {
         )
         .then((res) => {
           toast.success(res.data.message);
-          navigateTo("/");
+          navigateTo("/dashboard");
           setprojectId("");
           setprojectName("");
           setdescription("");

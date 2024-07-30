@@ -102,45 +102,48 @@ const ProjectPage = () => {
                 <><div className="items-center justify-start pb-4">
                         <NavBar activeTab="Projects" />
                     </div>
-                    <div className="container mx-auto p-5">
-                            <div className="mb-6">
-                                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4 overflow-hidden">{project.projectName}</h1>
-                                <div className=" overflow-x-auto">
-                                    <table className=" divide-y divide-gray-200 table-fixed">
-                                        <tbody className="max-w-screen divide-y divide-gray-200">
-                                            <tr className=''>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Supervisor</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.supervisor}</td>
-                                            </tr>
-                                            <tr className=''>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Description</td>
-                                                <td className="px-6 py-4  whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.description}</td>
-                                            </tr>
-                                            <tr className=''>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Tags</td>
-                                                <td className="px-6 py-4  whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                                    <div className="flex gap-2">
-                                                        {tags.map((lang, index) => (
-                                                            <div key={index} className="badge badge-neutral overflow-hidden">{lang}</div>
-                                                        ))}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr className='max-w-screen'>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Status</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                                    {project.isApproved ? (
-                                                        <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Approved</div>
-                                                    ) : (
-                                                        <div className="badge badge-neutral bg-yellow-400 dark:bg-yellow-700 overflow-hidden">Pending</div>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                    <div className="flex flex-col items-center py-10 w-screen">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">{project.projectName}</h1>
+                    <div className="max-w-screen w-4/5">
+                        <div className="bg-teal-50 dark:bg-gray-800 shadow overflow-hidden p-3 sm:rounded-lg">
+                            <div className="px-4 py-5 sm:px-6">
+                                <h3 className="text-lg leading-6 font-bold text-gray-900 dark:text-gray-100">Project Details</h3>
                             </div>
-                            <div className="mt-8">
+                            <div className="border-t border-gray-200 dark:border-gray-700">
+                                <dl className="divide-y divide-gray-200 dark:divide-gray-700">
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Supervisor</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">{project.supervisor}</dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Description</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">{project.description}</dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Tags</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">
+                                            <div className="flex flex-wrap gap-2">
+                                                {tags.map((lang, index) => (
+                                                    <span key={index} className="overflow-hidden badge badge-neutral dark:bg-gray-700 bg-gray-200">{lang}</span>
+                                                ))}
+                                            </div>
+                                        </dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Status</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">
+                                            {project.isApproved ? (
+                                                <span className="overflow-hidden badge badge-neutral dark:bg-green-800 bg-green-500">Approved</span>
+                                            ) : (
+                                                <span className="overflow-hidden badge badge-neutral dark:bg-yellow-700 bg-yellow-400">Pending</span>
+                                            )}
+                                        </dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                            <div className="max-h-screen w-screen mt-8 px-10">
                                 <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Project Files</h2>
                                 {tree && tree.children && tree.children.length > 0 ? (
                                     <div className="flex flex-col lg:flex-row max-h-screen">
@@ -159,12 +162,13 @@ const ProjectPage = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="flex justify-center items-center h-screen">
-                                        <h1 className='text-4xl font-extrabold'>No Project Files</h1>
+                                    <div className="flex justify-center items-center max-h-screen">
+                                        <h1 className='text-4xl font-extrabold animate-pulse'>No Project Files</h1>
                                     </div>
                                 )}
                             </div>
-                        </div></>
+                        </div>
+                        </>
             )}
         </>
     );

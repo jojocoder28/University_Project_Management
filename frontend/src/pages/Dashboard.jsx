@@ -93,6 +93,40 @@ function Dashboard() {
         };
     };
 
+    const handleAccept = async (notification) => {
+        try {
+            await axios.post(
+                `${backend_api}api/v1/project/colab/accept`,
+                { projectId: notification.projectId, email: notification.email },
+                {
+                    withCredentials: true,
+                }
+            );
+            toast.success("Collaboration request accepted");
+            setNotifications((prev) => prev.filter((n) => n !== notification));
+        } catch (error) {
+            console.log(error);
+            toast.error("Error accepting collaboration request");
+        }
+    };
+
+    const handleReject = async (notification) => {
+        try {
+            await axios.post(
+                `${backend_api}api/v1/project/colab/reject`,
+                { projectId: notification.projectId, email: notification.email },
+                {
+                    withCredentials: true,
+                }
+            );
+            toast.success("Collaboration request rejected");
+            setNotifications((prev) => prev.filter((n) => n !== notification));
+        } catch (error) {
+            console.log(error);
+            toast.error("Error rejecting collaboration request");
+        }
+    };
+
     if (!isAuthenticated) {
         return <Navigate to={"/"} />;
     }
@@ -159,9 +193,13 @@ function Dashboard() {
 
                     {/* Notification Modal */}
                     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                        <h2 className="text-xl font-semibold mb-4">Notifications</h2>
+                        <h2 className="text-xl font-semibold mb-4">Colab Requests</h2>
                         {notifications.length > 0 ? (
-                            <NotificationList notifications={notifications} />
+                            <NotificationList
+                            notifications={notifications}
+                            onAccept={handleAccept}
+                            onReject={handleReject}
+                        />
                         ) : (
                             <div>No notifications</div>
                         )}

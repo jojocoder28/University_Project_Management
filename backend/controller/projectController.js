@@ -277,3 +277,51 @@ export const colabNotification = catchAsyncErrors(async (req, res, next) => {
     message : "Notification Recieved"
   })
 })
+
+
+export const acceptRequest = catchAsyncErrors(async (req,res,next) => {
+  const email = req.body.email;
+  const projectId = req.body.projectId;
+  const colab = await User.findOne({email:req.user.email});
+  const data = colab.colabRequest.map(request => JSON.parse(request));
+  const result = data.filter(item => !(item.projectId === projectId && item.email === email));
+
+  const project = await Project.findOneAndUpdate({projectId: projectId},
+    { $push: {colabEmail: email} },
+    {new: true, runValidators: true}
+  )
+  const upUser = await User.findOneAndUpdate({email:email},
+    {$push : {colab: projectId}},
+    {new: true, runValidators: true}
+  )
+
+  const user = await User.findOneAndUpdate({email:req.user.email},
+    {colabRequest:result.length > 0 ? result.map(item => JSON.stringify(item)) : null,
+    },
+    {new: true, runValidators: true}
+  )
+  res.status(200).json({
+    success: true,
+    project,
+    message: "Colab Request Approved"
+  })
+})
+
+
+export const rejectRequest = catchAsyncErrors(async (req,res,next) => {
+  const email = req.body.email;
+  const projectId = req.body.projectId;
+  const colab = await User.findOne({email:req.user.email});
+  const data = colab.colabRequest.map(request => JSON.parse(request));
+  const result = data.filter(item => !(item.projectId === projectId && item.email === email));
+
+  const user = await User.findOneAndUpdate({email:req.user.email},
+    {colabRequest:result.length > 0 ? result.map(item => JSON.stringify(item)) : null},
+    {new: true, runValidators: true}
+  )
+  res.status(200).json({
+    success: true,
+    user,
+    message: "Colab Request Rejected"
+  })
+})
