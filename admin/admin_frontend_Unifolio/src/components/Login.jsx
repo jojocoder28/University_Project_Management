@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import backend_api from "../config";
+import Sidebar from "./Sidebar";
 
 const Login = () => {
   document.title="Login";
@@ -49,7 +50,9 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
+    <>
+      <Sidebar />
+      <div className="min-h-screen flex justify-center py-2 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-">
               <div>
                 <h2 className="mt-6 text-center text-3xl font-extrabold py-10">Login</h2>
@@ -84,6 +87,7 @@ const Login = () => {
               </form>
             </div>
         </div>
+      </>
   )
 }
 

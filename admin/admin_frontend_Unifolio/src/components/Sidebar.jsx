@@ -1,9 +1,8 @@
 import React, { useContext, useState } from "react";
-import { TiHome } from "react-icons/ti";
+import { BiSolidHome } from "react-icons/bi";
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { AiFillMessage } from "react-icons/ai";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaUserDoctor } from "react-icons/fa6";
+import { FaUniversity } from "react-icons/fa";
 import { MdAddModerator } from "react-icons/md";
 import { IoPersonAddSharp } from "react-icons/io5";
 import axios from "axios";
@@ -12,16 +11,13 @@ import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import backend_api from "../config";
 
-
-const Sidebar = (props) => {
-  const [show, setShow] = useState(false);
-  const [navbarOpen, setNavbarOpen] = React.useState(false);
-
+const Sidebar = ({activeTab}) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const handleLogout = async () => {
     await axios
-      .get(backend_api+"api/v1/user/admin/logout", {
+      .get(backend_api + "api/v1/user/admin/logout", {
         withCredentials: true,
       })
       .then((res) => {
@@ -37,100 +33,59 @@ const Sidebar = (props) => {
 
   const gotoHomePage = () => {
     navigateTo("/");
-    setShow(!show);
   };
-  const gotoUsersPage = () => {
-    navigateTo("/users");
-    setShow(!show);
+  const gotoAddUniversityPage = () => {
+    navigateTo("/addUniversity");
   };
   const gotoUniversityPage = () => {
     navigateTo("/university");
-    setShow(!show);
   };
   const gotoAddNewUniversityAdmin = () => {
     navigateTo("/admin/adduniversityadmin");
-    setShow(!show);
   };
   const gotoAddNewAdmin = () => {
     navigateTo("/admin/addnew");
-    setShow(!show);
   };
+
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
 
-
   return (
-    <>
-      
-
-      <nav
-      className={
-        (props.transparent
-          ? "top-0 relative z-50 w-full"
-          : "relative bg-white shadow-lg") +
-        " flex flex-wrap items-center justify-between px-2 py-3 top-2"
-      }
-    >
-      <div className={"container px-4 mx-auto flex flex-wrap items-center" + (navbarOpen ? "justify-start" : " justify-center")}>
-        <div className="w-full relative flex lg:w-auto lg:static lg:block lg:justify-start">
-        <button
-            className="overflow-hidden cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
-            type="button"
-            onClick={() => setNavbarOpen(!navbarOpen)}
-          >
-            <i
-              className={
-                (props.transparent ? "dark:text-white text:black"  : "text-gray-800") +
-                " fas fa-bars"
-              }
-            ><svg
-            className={`h-8 w-8 transition-transform duration-300 ${navbarOpen ? 'transform rotate-180' : ''}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d={navbarOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16m-7 6h7'}
-            />
-          </svg></i>
-          </button>
-        
-          
-        </div>
-        <div
-          className={
-            "lg:flex dark:bg-transparent bg-white lg:bg-transparent lg:shadow-none" +
-            (navbarOpen ? "block rounded shadow-lg" : " hidden")
-          }
-          id="example-navbar-warning"
-        >
-          <TiHome onClick={gotoHomePage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
-          <div className={navbarOpen ? "py-2":""}></div>
-          <FaUserDoctor onClick={gotoUsersPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
-          <div className={navbarOpen ? "py-2":""}></div>
-          <MdAddModerator onClick={gotoAddNewAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
-          <div className={navbarOpen ? "py-2":""}></div>
-          <IoPersonAddSharp onClick={gotoAddNewUniversityAdmin} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
-          <div className={navbarOpen ? "py-2":""}></div>
-          <AiFillMessage onClick={gotoUniversityPage} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
-          <div className={navbarOpen ? "py-2":""}></div>
-          <RiLogoutBoxFill onClick={handleLogout} className="text-2xl mx-12 cursor-pointer hover:text-blue-700"/>
-          {/* <NavbarElements name="Login" link="login" flag={navbarOpen}/> */}
-         
-
-        </div>
-          {/* <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">       
-            <li className="flex items-center">
-             <ThemeSwitch/>
-            </li>
-          </ul> */}
-      </div>
-    </nav>
-    </>
+    <div className="flex flex-col items-center lg:flex-row lg:items-center justify-center sm:w-screen w-full">
+      <ul className="menu menu-horizontal lg:menu-horizontal sm:menu-vertical gap-2 rounded-box mt-6 bg-base-200 dark:bg-base-300">
+        <li>
+            <a onClick={gotoHomePage} className={`tooltip ${activeTab == "Home" ? "active" : ""}`}  data-tip="Home">
+              <BiSolidHome className="text-2xl" />
+            </a>
+        </li>
+        <li>
+            <a onClick={gotoAddUniversityPage} className={`tooltip ${activeTab == "AddUniversity" ? "active" : ""}`}  data-tip="Add University">
+              <FaUniversity className="text-2xl" />
+            </a>
+        </li>
+        <li>
+            <a onClick={gotoAddNewAdmin} className={`tooltip ${activeTab == "AddAdmin" ? "active" : ""}`}  data-tip="Add New Admin">
+              <MdAddModerator className="text-2xl" />
+            </a>
+        </li>
+        <li>
+            <a onClick={gotoAddNewUniversityAdmin} className={`tooltip ${activeTab == "AddUniAdmin" ? "active" : ""}`}  data-tip="Add New University Admin">
+              <IoPersonAddSharp className="text-2xl" />
+            </a>
+        </li>
+        <li>
+            <a onClick={gotoUniversityPage} className={`tooltip ${activeTab == "Universities" ? "active" : ""}`}  data-tip="All Universities">
+              <AiFillMessage className="text-2xl" />
+            </a>
+        </li>
+        <li>
+            <a onClick={handleLogout} data-tip="Logout">
+              <RiLogoutBoxFill className="text-2xl" />
+            </a>  
+        </li>
+      </ul>
+    </div>
   );
 };
 

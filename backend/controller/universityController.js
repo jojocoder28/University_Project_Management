@@ -5,10 +5,11 @@ import cloudinary from "cloudinary";
 import { User } from "../models/userSchema.js";
 
 export const UniversityRegister = catchAsyncErrors(async (req, res, next) => {
-    const { universityId, universityName, acronym } =
+    const { universityId, universityName, acronym, uniLocation } =
       req.body;
+    console.log(universityId, universityName, acronym, uniLocation);
     if (
-      !universityId || !universityName || !acronym
+      !universityId || !universityName || !acronym || !uniLocation
     ) {
       return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
@@ -22,6 +23,7 @@ export const UniversityRegister = catchAsyncErrors(async (req, res, next) => {
       universityId,
       universityName,
       acronym,
+      uniLocation
     });
     res.status(200).json({
         success: true,
