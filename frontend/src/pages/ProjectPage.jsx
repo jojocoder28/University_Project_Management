@@ -1,5 +1,4 @@
-// src/pages/ProjectPage.jsx
-import React, { useEffect, useState, useContext, useRef, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { backend_api } from '../config.js';
 import { toast } from "react-toastify";
@@ -9,21 +8,58 @@ import Loading from "../components/Loading.jsx";
 import ZipUpload from './FileUpload.jsx';
 import CodeEditor from '../components/CodeEditor.jsx';
 import TreeRenderer from '../components/TreeRenderer.jsx';
-
+import Modal from '../components/Modal';
 import '../App.css';
 
 const ProjectPage = () => {
     const { projectId } = useParams();
     const navigate = useNavigate();
-    const { isAuthenticated } = useContext(Context);
-    document.title = `Project ${projectId}`;
+    const { user, isAuthenticated } = useContext(Context);
+    document.title = `${user.username} | Project - ${projectId}`;
+    const [email, setEmail] = useState(user.email);
+    const [desc, setDesc] = useState(false);
     const [project, setProject] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [tree, setTree] = useState([]);
     const [expandedDirs, setExpandedDirs] = useState({});
     const [tags, setTags] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     const [files, setFiles] = useState([]);
+    const [modify, setModify] = useState(false); // Added to handle modification state
+    const [iscolab, setIscolab] = useState(false);
+    const [selectedProjectId, setSelectedProjectId] = useState("");
+    const openModal = (projectId) => {
+        setSelectedProjectId(projectId);
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+        setSelectedProjectId(null);
+    };
+
+    const handleYes = () => {
+        colabApproval();
+        closeModal();
+    };
+
+    const colabApproval = async () => {
+        try {
+            const response = await axios.post(
+                backend_api + 'api/v1/project/colab/approve',
+                { projectId: selectedProjectId, 
+                    email: user.email
+                 },
+                { withCredentials: true }
+            );
+            toast.success(response.data.message);
+            setModify(true);
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || 'An error occurred');
+        }
+    };
 
     const handleFileSelect2 = async (fileName) => {
         console.log('File selected:', fileName);
@@ -48,14 +84,15 @@ const ProjectPage = () => {
         }
     };
 
-
     const handleFileSelect = (file) => {
-      console.log('File selected:', file);
-      setSelectedFile(file);
+        console.log('File selected:', file);
+        setSelectedFile(file);
     };
+
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
+    }, []);
+
     useEffect(() => {
         const fetchProject = async () => {
             setIsLoading(true);
@@ -67,11 +104,13 @@ const ProjectPage = () => {
                     }
                 );
                 setProject(response.data.project);
+                setIscolab(response.data.project.colabEmail.includes(user.email));
+                response.data.project.creatorEmail != email ? setDesc(true) : setDesc(false);
                 if (response.data.project.treeStructure) {
                     setTree(JSON.parse(response.data.project.treeStructure));
-                  }
-                    setFiles(JSON.parse(response.data.project.files));
-                    setTags(response.data.project.languages[0].split(",").map(item => item.trim()));
+                }
+                setFiles(JSON.parse(response.data.project.files));
+                setTags(response.data.project.languages[0].split(",").map(item => item.trim()));
             } catch (error) {
                 console.log(error);
                 toast.error(error.response.data.message);
@@ -81,7 +120,7 @@ const ProjectPage = () => {
         };
 
         fetchProject();
-    }, [projectId]);
+    }, [isAuthenticated]);
 
     if (!isAuthenticated) {
         return <Navigate to={"/"} />;
@@ -94,52 +133,97 @@ const ProjectPage = () => {
         }));
     };
 
+    const formatDate = (isoDate) => {
+        const date = new Date(isoDate);
+        return date.toLocaleString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZoneName: 'short'
+        });
+    };
+    
     return (
         <>
             {isLoading ? (
                 <Loading />
             ) : (
-                <div className="projectpage-container snap-mandatory max-h-screen max-w-screen">
-                    <div className="projectinfo flex flex-col items-center justify-center snap-start h-screen w-screen">
-                        <h1 className="text-3xl font-bold text-gray-900 text-left dark:text-gray-100 mb-4 overflow-hidden w-4/5">{project.projectName}</h1>
-                        <div className="max-w-screen w-4/5 overflow-x-auto">
-                            <table className="max-w-screen divide-y divide-gray-200 table-fixed flex items-center">
-                                <tbody className="max-wscreen divide-y divide-gray-200">
-                                    <tr className='max-w-screen'>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Supervisor</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.supervisor}</td>
-                                    </tr>
-                                    <tr className='max-w-screen'>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Description</td>
-                                        <td className="px-6 py-4 max-w-screen whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{project.description}</td>
-                                    </tr>
-                                    <tr className='max-w-screen'>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Tags</td>
-                                        <td className="px-6 py-4 max-w-screen whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <div className="flex flex-col items-center py-10 w-screen">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">{project.projectName}</h1>
+                    <div className="max-w-screen w-4/5">
+                        <div className="bg-teal-50 dark:bg-gray-800 shadow overflow-hidden p-3 sm:rounded-lg">
+                            <div className="px-4 py-5 sm:px-6">
+                                <h3 className="text-lg leading-6 font-bold text-gray-900 dark:text-gray-100">Project Details</h3>
+                            </div>
+                            <div className="border-t border-gray-200 dark:border-gray-700">
+                                <dl className="divide-y divide-gray-200 dark:divide-gray-700">
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Supervisor</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">{project.supervisor}</dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Description</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">{project.description}</dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Tags</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">
                                             <div className="flex flex-wrap gap-2">
                                                 {tags.map((lang, index) => (
-                                                    <div key={index} className="badge badge-neutral overflow-hidden">{lang}</div>
+                                                    <span key={index} className="overflow-hidden badge badge-neutral dark:bg-gray-700 bg-gray-200">{lang}</span>
                                                 ))}
                                             </div>
-                                        </td>
-                                    </tr>
-                                    <tr className='max-w-screen'>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Status</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                        </dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Status</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">
                                             {project.isApproved ? (
-                                                <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Approved</div>
+                                                <span className="overflow-hidden badge badge-neutral dark:bg-green-800 bg-green-500">Approved</span>
                                             ) : (
-                                                <div className="badge badge-neutral bg-yellow-400 dark:bg-yellow-700 overflow-hidden">Pending</div>
+                                                <span className="overflow-hidden badge badge-neutral dark:bg-yellow-700 bg-yellow-400">Pending</span>
                                             )}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        </dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Creation Date & Time</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">{formatDate(project.creationDate)}</dd>
+                                    </div>
+                                    <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-300">Creator Email</dt>
+                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:mt-0 sm:col-span-2">
+                                            {desc ? (
+                                                <a className='text-blue-500 hover:text-blue-800 dark:hover:text-blue-700' href={"/profile/"+project.creatorEmail}>{project.creatorEmail}</a>
+                                                ):(
+                                                    project.creatorEmail
+                                            )}
+                                            
+                                        </dd>
+                                    </div>
+                                </dl>
+                            </div>
                         </div>
                     </div>
-                    <div className="projecttree snap-start h-screen w-screen ml-8 mr-8">
+                    {desc ? (
+                        !iscolab ? (
+                        <div className='py-3'>
+                        <button className='btn' onClick={() => openModal(project.projectId)}>Colab Request</button>
+                        </div>) : (
+                            <div className='flex py-3 w-screen justify-center items-center'>
+                                <p className='font-extralight italic text-green-500'>You are one of the collaborators of this project</p>
+                            </div>
+                        )
+                    ):(
+                        <></>
+                    )}
+                    <div className="projecttree max-h-screen w-screen mt-8 px-10 ">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Project Files</h2>
-                        {tree && tree.children && tree.children.length > 0 ? (
+                        { desc ? (
+                        tree && tree.children && tree.children.length > 0 ? (
                             <div className="flex flex-col lg:flex-row max-h-screen">
                                 <div className="flex h-full w-screen lg:w-2/5">
                                     <TreeRenderer 
@@ -166,13 +250,53 @@ const ProjectPage = () => {
                                     )}
                                 </div>
                             </div>
-                        )}
+                        )) : (
+                            tree && tree.children && tree.children.length > 0 ? (
+                                <div className="flex flex-col lg:flex-row max-h-screen">
+                                    <div className="flex max-h-full w-screen lg:w-2/5">
+                                        <TreeRenderer 
+                                            node={tree} 
+                                            expandedDirs={expandedDirs} 
+                                            toggleDirectory={toggleDirectory}
+                                            handleFileSelect={handleFileSelect2}
+                                        />
+                                    </div>
+                                    <div className="flex max-h-screen w-full p-5">
+                                        {selectedFile && (
+                                            <CodeEditor fileBlob={selectedFile} readmode={true}/>
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='flex items-center py-12 overflow-hidden justify-center'>
+                                     <h1 className='font-extrabold text-4xl overflow-hidden'>No Project Files</h1>
+                                </div>
+                            )
+                            
+                        )
+                    }
                     </div>
                 </div>
             )}
+
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Confirmation Modal"
+                className="modal"
+                overlayClassName="modal-overlay"
+                onClose={() => setModalIsOpen(false)}
+            >
+                <h2 className="text-lg font-bold mb-4">Confirmation</h2>
+                <p>Do you want to sent a colaboration request to the user?</p>
+                <div className="flex justify-end mt-4">
+                    <button className="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded" onClick={closeModal}>No</button>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleYes}>Yes</button>
+                </div>
+            </Modal>
         </>
     );
-    
 };
 
 export default ProjectPage;

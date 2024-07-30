@@ -231,3 +231,49 @@ export const approveProject = catchAsyncErrors(async (req, res, next) => {
     message: "Project is approved"
   })
 })
+
+
+export const approveColab = catchAsyncErrors(async (req, res, next) => {
+  const projectId = req.body.projectId;
+  const email = req.body.email;
+  const currentDate = new Date().toISOString(); 
+  const jsonObject = {
+    projectId: projectId,
+    email: email,
+    date: currentDate 
+  };
+  const jsonString = JSON.stringify(jsonObject);
+  const project = await Project.findOne({projectId:projectId});
+  const search = await User.findOne({email: project.creatorEmail});
+  const data = search.colabRequest.map(request => JSON.parse(request));
+  const exists = data.some(item =>
+    item.projectId === projectId &&
+    item.email === email
+  );
+  if(exists){
+    res.status(200).json({
+      success: false,
+      message: "Colab Requesting Pending"
+    })
+  }
+  const user = await User.findOneAndUpdate({email: project.creatorEmail},
+    { $push: { colabRequest: jsonString } },
+    { new: true, runValidators: true })
+  res.status(200).json({
+    success: true,
+    user,
+    message: "Colab Request Sent"
+  })
+})
+
+
+export const colabNotification = catchAsyncErrors(async (req, res, next) => {
+  const email=req.user.email;
+  const user = await User.findOne({email:email});
+  const notifications = user.colabRequest.map(request => JSON.parse(request));
+  res.status(200).json({
+    success:true,
+    notifications : notifications,
+    message : "Notification Recieved"
+  })
+})

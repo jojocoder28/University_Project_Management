@@ -14,7 +14,7 @@ import '../App.css';
 import { FaRegEdit } from 'react-icons/fa';
 import { CiRead } from "react-icons/ci";
 
-const CodeEditor = ({ fileBlob, className }) => {
+const CodeEditor = ({ fileBlob, className, readmode }) => {
   const [code, setCode] = useState('');
   const [readOnly, setReadOnly] = useState(true); // State to manage read-only mode
 
@@ -32,27 +32,46 @@ const CodeEditor = ({ fileBlob, className }) => {
 
   return (
     <>
-      <button onClick={toggleEditMode} className="btn h-9 w-12 text-sm overflow-hidden">
-        {readOnly ? <FaRegEdit/> : <CiRead/>}
-      </button>
-        <div className={`CodeMirror-container ${className} w-full`}>
-      <CodeMirror
-        value={code}
-        options={{
-          mode: 'javascript',
-          theme: 'dracula', // Ensure the theme is correctly set
-          lineNumbers: true,
-          readOnly: readOnly ? 'nocursor' : false, // Set readOnly based on state
-          lineWrapping: true,
-          
-        }}
-        onBeforeChange={(editor, data, value) => {
-          setCode(value);
-        }}
-      />
+    { !readmode ? (
+      
+      <><div className={`CodeMirror-container ${className} w-full`}>
+        <CodeMirror
+          value={code}
+          options={{
+            mode: 'javascript',
+            theme: 'dracula',
+            lineNumbers: true,
+            readOnly: true,
+            lineWrapping: true,
+          }}
+          onBeforeChange={(editor, data, value) => {
+            setCode(value);
+          } } />
     </div>
     </>
-  );
+    ):(
+      <><button onClick={toggleEditMode} className="btn h-9 w-12 text-sm overflow-hidden">
+        {readOnly ? <FaRegEdit /> : <CiRead />}
+      </button>
+      <div className={`CodeMirror-container ${className} w-full`}>
+          <CodeMirror
+            value={code}
+            options={{
+              mode: 'javascript',
+              theme: 'dracula', // Ensure the theme is correctly set
+              lineNumbers: true,
+              readOnly: readOnly ? 'nocursor' : false, // Set readOnly based on state
+              lineWrapping: true,
+            }}
+            onBeforeChange={(editor, data, value) => {
+              setCode(value);
+            } } />
+        </div>
+        </>
+    )}
+      
+    </>
+    );
 };
 
 export default CodeEditor;

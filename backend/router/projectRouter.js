@@ -1,4 +1,4 @@
-import { addProject, addProjectFiles, approveProject, findProjectsbyId, findSupProjectbyID, NotApprovedshowSupProjects, searchProjects, showProjects, showProjectsbyEmail, showSupProjects, uploadFiles } from "../controller/projectController.js";
+import { addProject, addProjectFiles, approveColab, approveProject, colabNotification, findProjectsbyId, findSupProjectbyID, NotApprovedshowSupProjects, searchProjects, showProjects, showProjectsbyEmail, showSupProjects, uploadFiles } from "../controller/projectController.js";
 import multer, { memoryStorage } from 'multer';
 import express from "express";
 import { isUniversityAuthenticated, isUserAuthenticated } from "../middlewares/auth.js";
@@ -14,8 +14,11 @@ router.get('/supervisor/getall',isUniversityAuthenticated, showSupProjects);
 router.get('/supervisor/byid', findSupProjectbyID);
 router.get('/supervisor/getall/notapproved',isUniversityAuthenticated, NotApprovedshowSupProjects);
 router.get('/search',searchProjects);
+router.get('/colab/notification',isUserAuthenticated,colabNotification);
+
 
 router.post('/approve',isUniversityAuthenticated, approveProject)
+router.post('/colab/approve',isUserAuthenticated, approveColab)
 router.post('/create/new',isUserAuthenticated, addProject);
 router.post('/files/upload', upload.array('files'), uploadFiles);
 router.post('/add/files', addProjectFiles);
