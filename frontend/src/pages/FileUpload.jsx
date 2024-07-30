@@ -41,7 +41,6 @@ const fileExtensionToTechnology = {
   'js': 'JavaScript',
   'jsx': 'React',
   'ts': 'TypeScript',
-  'tsx': 'React TypeScript',
   'html': 'HTML',
   'css': 'CSS',
   'scss': 'SASS',
@@ -167,7 +166,7 @@ const ZipUpload = ({ onFileSelect }) => {
         const fileType = await fileTypeFromBuffer(fileData);
         const extension = fileType ? fileType.ext : filePath.split('.').pop().toLowerCase();
         const technology = fileExtensionToTechnology[extension] || extension;
-        if (technology && !tagsArray.includes(technology)) {
+        if (technology && technology.length<=10 && !tagsArray.includes(technology)) {
           tagsArray.push(technology);
         }
       }

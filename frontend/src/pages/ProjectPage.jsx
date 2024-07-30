@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
-import { backend_api } from '../config.js';
+import { backend_api, fileupload_api } from '../config.js';
 import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import axios from "axios";
@@ -105,7 +105,7 @@ const ProjectPage = () => {
                 );
                 setProject(response.data.project);
                 setIscolab(response.data.project.colabEmail.includes(user.email));
-                response.data.project.creatorEmail != email ? setDesc(true) : setDesc(false);
+                response.data.project.creatorEmail != user.email ? setDesc(true) : setDesc(false);
                 if (response.data.project.treeStructure) {
                     setTree(JSON.parse(response.data.project.treeStructure));
                 }
@@ -145,6 +145,23 @@ const ProjectPage = () => {
             second: '2-digit',
             timeZoneName: 'short'
         });
+    };
+
+    const downloadZip = async () => {
+        try {
+            const response = await axios.get(`${fileupload_api}api/download/${projectId}`, {
+                responseType: 'blob',
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${projectId}.zip`);
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            console.log("SDK CNQ");
+            // toast.error('Error downloading zip');
+        }
     };
     
     return (
@@ -222,23 +239,23 @@ const ProjectPage = () => {
                     )}
                     <div className="projecttree max-h-screen w-screen mt-8 px-10 ">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Project Files</h2>
-                        { desc ? (
+                        { !desc ? (
                         tree && tree.children && tree.children.length > 0 ? (
-                            <div className="flex flex-col lg:flex-row max-h-screen">
-                                <div className="flex h-full w-screen lg:w-2/5">
-                                    <TreeRenderer 
-                                        node={tree} 
-                                        expandedDirs={expandedDirs} 
-                                        toggleDirectory={toggleDirectory}
-                                        handleFileSelect={handleFileSelect2}
-                                    />
-                                </div>
-                                <div className="flex max-h-screen w-full p-5">
-                                    {selectedFile && (
-                                        <CodeEditor fileBlob={selectedFile} readmode={false}/>
-                                    )}
-                                </div>
-                            </div>
+                            <><div className="flex flex-col lg:flex-row max-h-screen">
+                                        <div className="flex h-full w-screen lg:w-2/5">
+                                            <TreeRenderer
+                                                node={tree}
+                                                expandedDirs={expandedDirs}
+                                                toggleDirectory={toggleDirectory}
+                                                handleFileSelect={handleFileSelect2} />
+                                        </div>
+
+                                        <div className="flex max-h-screen w-full p-5">
+                                            {selectedFile && (
+                                                <CodeEditor fileBlob={selectedFile} readmode={false} />
+                                            )}
+                                        </div>
+                                    </div><button className='btn hover:bg-blue-400 dark:hover:bg-blue-900' onClick={downloadZip}>Download All as Zip</button></>
                         ) : (
                             <div className="flex max-h-screen">
                                 <div className="flex h-full w-screen lg:w-2/5">

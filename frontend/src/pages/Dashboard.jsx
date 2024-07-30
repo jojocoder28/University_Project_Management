@@ -65,7 +65,7 @@ function Dashboard() {
                 setNotifications(response.data.notifications);
             } catch (error) {
                 console.log(error);
-                toast.error("Error fetching notifications");
+                // toast.error("Error fetching notifications");
             }
         };
 

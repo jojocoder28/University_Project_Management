@@ -245,6 +245,7 @@ export const approveColab = catchAsyncErrors(async (req, res, next) => {
   const jsonString = JSON.stringify(jsonObject);
   const project = await Project.findOne({projectId:projectId});
   const search = await User.findOne({email: project.creatorEmail});
+  // console.log(search.colabRequest);
   const data = search.colabRequest.map(request => JSON.parse(request));
   const exists = data.some(item =>
     item.projectId === projectId &&
