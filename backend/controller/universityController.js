@@ -7,7 +7,7 @@ import { User } from "../models/userSchema.js";
 export const UniversityRegister = catchAsyncErrors(async (req, res, next) => {
     const { universityId, universityName, acronym, uniLocation } =
       req.body;
-    console.log(universityId, universityName, acronym, uniLocation);
+    // console.log(universityId, universityName, acronym, uniLocation);
     if (
       !universityId || !universityName || !acronym || !uniLocation
     ) {

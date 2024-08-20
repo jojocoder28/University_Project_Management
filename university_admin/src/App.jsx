@@ -15,10 +15,11 @@ import Loading from './components/Loading';
 import { Context } from "./main";
 import Login from './pages/Login';
 import Students from './pages/Students';
-import backend_api from './config';
+import {backend_api} from './config';
 import Projects from './pages/Projects';
 import ProjectPage from './pages/ProjectPage';
 import ReviewProjects from './pages/ReviewProjects';
+import CreateProjects from './pages/CreateProjects';
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
@@ -65,6 +66,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/project/create" element={<CreateProjects />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/project/:projectId" element={<ProjectPage />} />
         <Route path="/project/review" element={<ReviewProjects />} />

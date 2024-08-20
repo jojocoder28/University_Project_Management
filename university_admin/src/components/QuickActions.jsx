@@ -1,21 +1,32 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FaPlusSquare } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 import { LuPackage } from "react-icons/lu";
-import backend_api from '../config';
+import { backend_api } from '../config';
 import axios from 'axios';
 import { Context } from '../main';
 import Modal from './Modal';
-import { toast } from 'react-toastify'; // Ensure you have react-toastify installed and configured
+import { toast } from 'react-toastify';
+
+// Utility function to format date into hours ago
+const timeAgo = (dateString) => {
+    const now = new Date();
+    const notificationDate = new Date(dateString);
+    const hoursDiff = Math.floor((now - notificationDate) / (1000 * 60 * 60));
+    return hoursDiff ? `${hoursDiff} hour${hoursDiff !== 1 ? 's' : ''} ago` : ' Just now';
+};
 
 function QuickActions() {
     const [projectId, setProjectId] = useState('');
     const [projectData, setProjectData] = useState(null);
     const [error, setError] = useState(null);
-    const { admin, setAdmin } = useContext(Context);
+    const { admin } = useContext(Context);
     const [email, setEmail] = useState(admin.email);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedProjectId, setSelectedProjectId] = useState(null);
-    const [modify, setModify] = useState(false); // Added to handle modification state
+    const [modify, setModify] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [notificationCount, setNotificationCount] = useState(0);
+    const [notificationModalOpen, setNotificationModalOpen] = useState(false);
 
     const giveApproval = async () => {
         try {
@@ -47,9 +58,62 @@ function QuickActions() {
         closeModal();
     };
 
+    const fetchNotifications = async () => {
+        try {
+            const response = await axios.get(`${backend_api}api/v1/project/colab/notification?email=${email}`, {
+                withCredentials: true
+            });
+            setNotifications(response.data.notifications);
+            setNotificationCount(response.data.notifications.length);
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to fetch notifications');
+        }
+    };
+
+    useEffect(() => {
+        fetchNotifications();
+    }, [admin]);
+
+    const handleNotificationClick = () => {
+        fetchNotifications();
+        setNotificationModalOpen(true);
+    };
+
+    const handleAccept = async (notificationemail, notificationid) => {
+        try {
+            const response = await axios.post(
+                `${backend_api}api/v1/project/colab/accept`,
+                { email: notificationemail, projectId: notificationid },
+                { withCredentials: true }
+            );
+            toast.success(response.data.message);
+            fetchNotifications();
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to accept collaboration');
+        }
+    };
+
+    const handleReject = async (notificationemail, notificationid) => {
+        try {
+            const response = await axios.post(
+                `${backend_api}api/v1/project/colab/reject`,
+                { email: notificationemail, projectId: notificationid },
+                { withCredentials: true }
+            );
+            toast.success(response.data.message);
+            fetchNotifications();
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to reject collaboration');
+        }
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+    
     useEffect(() => {
         setProjectData(null);
     }, [modify]);
@@ -81,21 +145,52 @@ function QuickActions() {
         <>
             <div className="pt-5">
                 <div className="flex text-xl text-slate-200 items-center py-5 justify-center">Quick Actions</div>
-                <button className="btn mx-2" onClick={() => document.getElementById('StudentModal').showModal()}>
-                    <FaPlusSquare />
-                    Add Student
+                <button className="btn mx-2 relative" onClick={handleNotificationClick}>
+                    <FaBell />
+                    {notificationCount > 0 && (
+                        <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                            {notificationCount}
+                        </span>
+                    )}
+                    Notifications
                 </button>
 
-                <dialog id="StudentModal" className="modal">
-                    <div className="modal-box">
-                        <form method="dialog">
-                            {/* if there is a button in form, it will close the modal */}
-                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                        </form>
-                        <h3 className="font-bold text-lg">Add a Student</h3>
-                        <p className="py-4">Press ESC key or click on ✕ button to close</p>
-                    </div>
-                </dialog>
+                {/* Notifications Modal */}
+                <Modal
+                    isOpen={notificationModalOpen}
+                    onClose={() => setNotificationModalOpen(false)}
+                    contentLabel="Notifications Modal"
+                    className="modal"
+                    overlayClassName="modal-overlay"
+                >
+                    <h3 className="font-bold text-lg">Notifications</h3>
+                    {notifications.length > 0 ? (
+                        <ul className="mt-4 space-y-2">
+                            {notifications.map((notification, index) => (
+                                <div key={index} className="flex flex-row justify-between rounded-lg bg-slate-800">
+                                    <div className="flex flex-col">
+                                        <h5 className='px-2 font-bold'>Colab Notification</h5>
+                                        <p className='px-2 italic text-orange-500 animate-pulse'>{timeAgo(notification.date)}</p>
+                                        <li className="p-2">
+                                            <p>Email: {notification.email}</p>
+                                            <p>Project: {notification.projectId}</p>
+                                        </li>
+                                    </div>
+                                    <div className="flex flex-col justify-between">
+                                        <button className='btn btn-ghost bg-green-600' onClick={() => handleAccept(notification.email, notification.projectId)}>
+                                            Accept
+                                        </button>
+                                        <button className='btn btn-ghost bg-red-600' onClick={() => handleReject(notification.email, notification.projectId)}>
+                                            Reject
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="mt-4">No new notifications</p>
+                    )}
+                </Modal>
 
                 <button className="btn mx-2" onClick={() => document.getElementById('ProjectModal').showModal()}>
                     <LuPackage />
@@ -105,7 +200,6 @@ function QuickActions() {
                 <dialog id="ProjectModal" className="modal">
                     <div className="modal-box">
                         <form method="dialog">
-                            {/* if there is a button in form, it will close the modal */}
                             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
                         <h3 className="font-bold text-lg">Approve/Reject a Project</h3>
@@ -125,13 +219,12 @@ function QuickActions() {
                                 <p>Name: {projectData.projectName}</p>
                                 <p>Description: {projectData.description}</p>
                                 <p>Status: {projectData.isApproved ? (<span className='text-green-500'>Approved</span>) : (<span className='text-yellow-500'>Pending</span>)}</p>
-                                {projectData.isApproved ? (<></>):(
+                                {projectData.isApproved ? (<></>) : (
                                     <form method='dialog'>
-                                <button className='btn btn-ghost' onClick={() => openModal(projectData.projectId)}>Approve</button>
-                                </form>)}
-                                
+                                        <button className='btn btn-ghost' onClick={() => openModal(projectData.projectId)}>Approve</button>
+                                    </form>
+                                )}
                             </div>
-
                         )}
                     </div>
                 </dialog>

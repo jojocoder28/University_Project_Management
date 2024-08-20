@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import backend_api from "../config";
+import {backend_api} from "../config";
 
 const UpdateStudentDetails = ({ email, name, onUpdateSuccess }) => {
     const [rollnumber, setRollnumber] = useState("");

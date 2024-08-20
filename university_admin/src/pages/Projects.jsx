@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import { Context } from "../main";
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
-import backend_api from '../config.js';
+import { backend_api, fileupload_api } from "../config.js";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Loading from "../components/Loading.jsx";
@@ -46,6 +46,10 @@ const Projects = () => {
         fetchProject();
     }, [isAuthenticated]);
 
+    const gotoCreateProject = () => {
+      navigateTo("/project/create")
+    }
+
   return (
     <>
     {isLoading ? (
@@ -53,50 +57,59 @@ const Projects = () => {
             <><div className="items-center justify-start pb-4">
                       <NavBar activeTab="Projects" />
                   </div>
-          <h1 className="uppercase font-bold flex container justify-center items-center">All Projects</h1>
-          <div className="overflow-auto p-4">
-                          <div className="max-w-3/5 rounded-lg shadow-lg border border-slate-700 overflow-auto">
-                              <table className="min-w-full table-fixed">
-                                  <thead>
-                                      <tr className="border-b border-slate-700">
-                                          <th className="px-6 py-4 w-1/5 text-left">Project Name</th>
-                                          <th className="px-6 py-4 w-1/5 text-left">Creator Email</th>
-                                          <th className="px-6 py-4 w-2/5 text-left">Description</th>
-                                          <th className="px-6 py-4 w-1/5 text-left">Tags</th>
-                                          <th className="px-6 py-4 w-1/10">Status</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      {projects.map((project, index) => (
-                                          <tr key={index} className="cursor-pointer transition-color duration-300 hover:bg-gray-200 dark:hover:bg-slate-900"
-                                              onClick={() => gotoProjectPage(project.projectId)}>
-                                              <td className="px-6 py-4">{project.projectName}</td>
-                                              <td className="px-6 py-4">{project.creatorEmail}</td>
-                                              <td className="px-6 py-4 overflow-auto gap-2">
-                                                  {project.description}
-                                              </td>
-                                              <td className="px-6 py-4 overflow-auto gap-2">
+                  <div className="container flex justify-center items-center">
+                    <button className="btn btn-accent uppercase" onClick={gotoCreateProject}>Create project</button>
+                  </div>
+                  {numProjects ? (
+                    <><h1 className="uppercase font-bold flex container justify-center items-center">All Projects</h1><div className="overflow-auto p-4">
+                <div className="max-w-3/5 rounded-lg shadow-lg border border-slate-700 overflow-auto">
+                  <table className="min-w-full table-fixed">
+                    <thead>
+                      <tr className="border-b border-slate-700">
+                        <th className="px-6 py-4 w-1/5 text-left">Project Name</th>
+                        <th className="px-6 py-4 w-1/5 text-left">Creator Email</th>
+                        <th className="px-6 py-4 w-2/5 text-left">Description</th>
+                        <th className="px-6 py-4 w-1/5 text-left">Tags</th>
+                        <th className="px-6 py-4 w-1/10">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {projects.map((project, index) => (
+                        <tr key={index} className="cursor-pointer transition-color duration-300 hover:bg-gray-200 dark:hover:bg-slate-900"
+                          onClick={() => gotoProjectPage(project._id)}>
+                          <td className="px-6 py-4">{project.projectName}</td>
+                          <td className="px-6 py-4">{project.creatorEmail}</td>
+                          <td className="px-6 py-4 overflow-auto gap-2">
+                            {project.description}
+                          </td>
+                          <td className="px-6 py-4 overflow-auto gap-2">
 
-                                                  {project.languages ? (
-                                                      project.languages.map((lang, index) => (
-                                                          <ul key={index} className="list-disc list-inside">{lang.split(',').map((tag, i) => (
-                                                              <li key={i} className="overflow-hidden">{tag}
-                                                              </li>
-                                                          ))}
-                                                          </ul>
-                                                      ))) : (<div></div>)}
-                                              </td>
+                            {project.languages ? (
+                              project.languages.map((lang, index) => (
+                                <ul key={index} className="list-disc list-inside">{lang.split(',').map((tag, i) => (
+                                  <li key={i} className="overflow-hidden">{tag}
+                                  </li>
+                                ))}
+                                </ul>
+                              ))) : (<div></div>)}
+                          </td>
 
-                                              <td className="px-6 py-4">
-                                                  {project.isApproved ? (
-                                                      <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Approved</div>) : (<div className="badge badge-neutral bg-yellow-400 dark:bg-yellow-700 overflow-hidden">Pending</div>)}
-                                              </td>
-                                          </tr>
-                                      ))}
-                                  </tbody>
-                              </table>
-                          </div>
-                      </div></>
+                          <td className="px-6 py-4">
+                            {!project.isClosed ? (
+                              <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Open</div>) : (<div className="badge badge-neutral bg-red-400 dark:bg-red-700 overflow-hidden">Closed</div>)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div></>
+                  ):(
+                    <div className="container flex justify-center items-center">
+                      <h1 className="uppercase">No projects</h1>
+                    </div>
+                  )}
+          </>
       )}
         </>
   )

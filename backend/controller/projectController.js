@@ -13,29 +13,6 @@ import multer from "multer";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// const createDirectoryStructure = (node, currentPath, id) => {
-//     if (node.children && node.children.length > 0) {
-//       node.children.forEach((child) => {
-//         const childPath = path.join(currentPath, child.name);
-  
-//         if (child.isDirectory) {
-//           if (!fs.existsSync(childPath)) {
-//             fs.mkdirSync(childPath);
-//           }
-//           createDirectoryStructure(child, childPath);
-//         } else {
-//           const oldPath = path.join(__dirname, 'uploads',id, child.name);
-//           const newPath = path.join(currentPath, child.name);
-  
-//           if (fs.existsSync(oldPath)) {
-//             fs.renameSync(oldPath, newPath);
-//           } else {
-//             console.error(`File not found: ${oldPath}`);
-//           }
-//         }
-//       });
-//     }
-//   };
 
 export const uploadFiles = catchAsyncErrors(async (req, res, next) => {
     console.log(req.files);
@@ -75,38 +52,34 @@ export const uploadFiles = catchAsyncErrors(async (req, res, next) => {
 
 
 export const addProject = catchAsyncErrors(async (req, res, next) => {
-  const { projectId, projectName, description, supervisor, email, university, date } =
+  const { Name, description, requirement, supervisor, email, university,today, date } =
     req.body;
     // console.log(req.body);
   if (
-    !projectId || !projectName || !description || !supervisor
+    !Name || !description || !supervisor || !requirement
   ) {
     return next(new ErrorHandler("Please Give All Details!", 400));
   }
 
-  const isRegistered = await Project.findOne({ projectId });
-  if (isRegistered) {
-    return next(new ErrorHandler("Project with this ID has already been created!", 400));
-  }
   const isSupervisor = await User.findOne({ email:supervisor, role:'UniversityAdmin' });
   if (!isSupervisor) {
     return next(new ErrorHandler("Supervisor not found with this email!", 400));
   }
-
   const project = await Project.create({
-    projectId: projectId,
-    projectName: projectName,
+    projectName: Name,
     description: description,
     creatorEmail: email,
     supervisor: supervisor,
+    requirement: requirement,
     university: university,
-    creationDate: date,
-    isApproved: false,
+    creationDate: today,
+    deadline:date,
+    isClosed: false,
   });
 
   const user = await User.findOneAndUpdate(
     { email: email },
-    { $push: { projects: projectId } },
+    { $push: { projects: project._id } },
     { new: true, useFindAndModify: false }
 );
 
@@ -119,7 +92,10 @@ export const addProject = catchAsyncErrors(async (req, res, next) => {
 
 
 export const showProjects = catchAsyncErrors(async (req,res,next)=>{
-  const project = await Project.find({creatorEmail:req.user.email});
+  const user = await User.findOne({email: req.user.email});
+  const projectIds = user.projects
+  // console.log(user)
+  const project = await Project.find({ _id: { $in: projectIds } })
   res.status(200).json({
     success: true,
     project,
@@ -136,7 +112,7 @@ export const showProjectsbyEmail = catchAsyncErrors(async (req,res,next)=>{
 
 
 export const findProjectsbyId = catchAsyncErrors(async (req,res,next)=>{
-  const project = await Project.findOne({projectId:req.params.id});
+  const project = await Project.findById(req.params.id);
   res.status(200).json({
     success: true,
     project,
@@ -243,12 +219,10 @@ export const approveColab = catchAsyncErrors(async (req, res, next) => {
     date: currentDate 
   };
   const jsonString = JSON.stringify(jsonObject);
-  const project = await Project.findOne({projectId:projectId});
-  const search = await User.findOne({email: project.creatorEmail});
+  const project = await Project.findOne({_id:projectId});
   // console.log(search.colabRequest);
-  const data = search.colabRequest.map(request => JSON.parse(request));
+  const data = project.colabRequest.map(request => JSON.parse(request));
   const exists = data.some(item =>
-    item.projectId === projectId &&
     item.email === email
   );
   if(exists){
@@ -257,21 +231,24 @@ export const approveColab = catchAsyncErrors(async (req, res, next) => {
       message: "Colab Requesting Pending"
     })
   }
-  const user = await User.findOneAndUpdate({email: project.creatorEmail},
+  const projects = await Project.findOneAndUpdate({_id:projectId},
     { $push: { colabRequest: jsonString } },
     { new: true, runValidators: true })
   res.status(200).json({
     success: true,
-    user,
+    projects,
     message: "Colab Request Sent"
   })
 })
 
 
 export const colabNotification = catchAsyncErrors(async (req, res, next) => {
-  const email=req.user.email;
-  const user = await User.findOne({email:email});
-  const notifications = user.colabRequest.map(request => JSON.parse(request));
+  const email=req.query.email;
+  const project = await Project.find({creatorEmail:email})
+  const notifications = project.flatMap(project => 
+    project.colabRequest.map(request => JSON.parse(request))
+  );
+  // console.log(notifications);
   res.status(200).json({
     success:true,
     notifications : notifications,
@@ -283,27 +260,27 @@ export const colabNotification = catchAsyncErrors(async (req, res, next) => {
 export const acceptRequest = catchAsyncErrors(async (req,res,next) => {
   const email = req.body.email;
   const projectId = req.body.projectId;
-  const colab = await User.findOne({email:req.user.email});
+  const colab = await Project.findOne({_id:projectId});
   const data = colab.colabRequest.map(request => JSON.parse(request));
   const result = data.filter(item => !(item.projectId === projectId && item.email === email));
 
-  const project = await Project.findOneAndUpdate({projectId: projectId},
+  const project = await Project.findOneAndUpdate({_id: projectId},
     { $push: {colabEmail: email} },
     {new: true, runValidators: true}
   )
   const upUser = await User.findOneAndUpdate({email:email},
-    {$push : {colab: projectId}},
+    {$push : {colab: projectId, projects: projectId}},
     {new: true, runValidators: true}
   )
 
-  const user = await User.findOneAndUpdate({email:req.user.email},
-    {colabRequest:result.length > 0 ? result.map(item => JSON.stringify(item)) : null,
+  const updatedProject = await Project.findOneAndUpdate({_id:projectId},
+    {colabRequest:result.length > 0 ? result.map(item => JSON.stringify(item)) : [],
     },
     {new: true, runValidators: true}
   )
   res.status(200).json({
     success: true,
-    project,
+    updatedProject,
     message: "Colab Request Approved"
   })
 })
@@ -312,17 +289,18 @@ export const acceptRequest = catchAsyncErrors(async (req,res,next) => {
 export const rejectRequest = catchAsyncErrors(async (req,res,next) => {
   const email = req.body.email;
   const projectId = req.body.projectId;
-  const colab = await User.findOne({email:req.user.email});
+  const colab = await Project.findOne({_id:projectId});
   const data = colab.colabRequest.map(request => JSON.parse(request));
   const result = data.filter(item => !(item.projectId === projectId && item.email === email));
 
-  const user = await User.findOneAndUpdate({email:req.user.email},
-    {colabRequest:result.length > 0 ? result.map(item => JSON.stringify(item)) : null},
+  const updatedProject = await Project.findOneAndUpdate({_id:projectId},
+    {colabRequest:result.length > 0 ? result.map(item => JSON.stringify(item)) : [],
+    },
     {new: true, runValidators: true}
   )
   res.status(200).json({
     success: true,
-    user,
+    updatedProject,
     message: "Colab Request Rejected"
   })
 })

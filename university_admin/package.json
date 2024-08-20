@@ -11,15 +11,21 @@
     "test": "vite"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.17.0",
     "axios": "^1.7.2",
     "codemirror": "^5.65.17",
+    "jspdf": "^2.5.1",
+    "lodash": "^4.17.21",
+    "markdown-to-txt": "^2.0.1",
     "react": "^18.3.1",
     "react-codemirror2": "^8.0.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
+    "react-markdown": "^9.0.1",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.25.1",
     "react-toastify": "^10.0.5",
+    "remark-gfm": "^4.0.0",
     "toastify": "^2.0.1"
   },
   "devDependencies": {

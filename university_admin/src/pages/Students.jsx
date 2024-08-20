@@ -5,8 +5,7 @@ import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import StudentCard from "../components/StudentCard";
-import backend_api from "../config";
-
+import { backend_api, fileupload_api } from "../config";
 const Students = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [students, setStudents] = useState("");

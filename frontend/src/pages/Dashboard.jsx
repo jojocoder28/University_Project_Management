@@ -155,9 +155,9 @@ function Dashboard() {
                     <div className="flex gap-5 w-full justify-center items-center">
                         <div className="flex items-center justify-between gap-5">
                             <h2 className="text-2xl font-semibold text-center my-4">Projects</h2>
-                            <div className="flex px-5 justify-center overflow-hidden">
+                            {/* <div className="flex px-5 justify-center overflow-hidden">
                                 <a href='/project/add' className="btn btn-primary hover:bg-blue-200 dark:hover:bg-slate-900 shadow-md">Add Project</a>
-                            </div>
+                            </div> */}
                         </div>
                         {/* Notification Icon */}
                         <div className="relative pt-2">
@@ -193,7 +193,7 @@ function Dashboard() {
 
                     {/* Notification Modal */}
                     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                        <h2 className="text-xl font-semibold mb-4">Colab Requests</h2>
+                        <h2 className="text-xl font-semibold mb-4">Notifications</h2>
                         {notifications.length > 0 ? (
                             <NotificationList
                             notifications={notifications}

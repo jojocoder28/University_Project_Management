@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import backend_api from "../config";
+import {backend_api} from "../config";
 
 const Login = () => {
   document.title="Login";

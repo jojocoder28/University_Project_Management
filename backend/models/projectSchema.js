@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 import validator from "validator";
 
 const projectSchema = new mongoose.Schema({
-    projectId:{
-        type: String,
-        required: true,
-    },
     projectName:{
         type: String,
         required: true,
@@ -24,9 +20,11 @@ const projectSchema = new mongoose.Schema({
         type: String,
         validate: [validator.isEmail, "Please Provide A Valid Email"],
     }],
+    colabRequest:[{
+        type: String,
+    }],
     supervisor:{
         type: String,
-        required: true,
         validate: [validator.isEmail, "Please Provide A Valid Email"],
     },
     university:{
@@ -37,24 +35,30 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    files:[{
-        type: Object,
+    requirement:[{
+        type:String,
     }],
     languages:[{
         type: String,
     }],
-    isApproved:{
+
+    isClosed:{
         type: Boolean,
         required: true,
     },
     topic:{
         type: String,
     },
+    deadline:{
+        type:String,
+    },
     treeStructure: {
         type: Object,
         // required: true,
     },
-
+    isApproved:{
+        type: Boolean,
+    },
 });
 
 projectSchema.index({ projectName: 'text', description: 'text', topic: 'text' });

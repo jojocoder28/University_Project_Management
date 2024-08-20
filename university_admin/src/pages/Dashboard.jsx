@@ -8,7 +8,7 @@ import Tabs from '../components/Tabs'
 import { Context } from '../main'
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Loading from '../components/Loading';
-import backend_api from '../config';
+import {backend_api} from '../config';
 
 function Dashboard() {
   const navigateTo = useNavigate();

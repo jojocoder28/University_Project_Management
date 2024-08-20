@@ -1,7 +1,7 @@
 import { acceptRequest, addProject, addProjectFiles, approveColab, approveProject, colabNotification, findProjectsbyId, findSupProjectbyID, NotApprovedshowSupProjects, rejectRequest, searchProjects, showProjects, showProjectsbyEmail, showSupProjects, uploadFiles } from "../controller/projectController.js";
 import multer, { memoryStorage } from 'multer';
 import express from "express";
-import { isUniversityAuthenticated, isUserAuthenticated } from "../middlewares/auth.js";
+import { isAdminAuthenticated, isUniversityAuthenticated, isUserAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.post('/approve',isUniversityAuthenticated, approveProject)
 router.post('/colab/approve',isUserAuthenticated, approveColab)
 router.post('/colab/accept',isUserAuthenticated, acceptRequest)
 router.post('/colab/reject',isUserAuthenticated, rejectRequest)
-router.post('/create/new',isUserAuthenticated, addProject);
+router.post('/create/new',isAdminAuthenticated, addProject);
 router.post('/files/upload', upload.array('files'), uploadFiles);
 router.post('/add/files', addProjectFiles);
 

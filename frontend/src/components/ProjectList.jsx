@@ -31,7 +31,7 @@ const ProjectList = (props) => {
                     <tbody>
                         {props.projects.map((project, index) => (
                             <tr key={index} className="cursor-pointer transition-color duration-300 hover:bg-gray-200 dark:hover:bg-slate-900" 
-                            onClick={() => gotoProjectPage(project.projectId)}>
+                            onClick={() => gotoProjectPage(project._id)}>
                             <td className="px-6 py-4">{project.projectName}</td>
                             <td className="px-6 py-4">{project.supervisor}</td>
                             <td className="px-6 py-4 overflow-auto gap-2">
@@ -52,8 +52,8 @@ const ProjectList = (props) => {
                             </td>
                             {!props.view ? (
                             <td className="px-6 py-4">
-                            {project.isApproved ? (
-                                <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Approved</div>):(<div className="badge badge-neutral bg-yellow-400 dark:bg-yellow-700 overflow-hidden">Pending</div>)
+                            {!project.isClosed ? (
+                                <div className="badge badge-neutral dark:bg-green-800 bg-green-500 overflow-hidden">Open</div>):(<div className="badge badge-neutral bg-red-400 dark:bg-red-700 overflow-hidden">Closed</div>)
                             }
                             </td>):(
                                 <td className="px-6 py-4"><a href={"/profile/"+project.creatorEmail} className="hover:text-blue-400">{project.creatorEmail}</a></td>

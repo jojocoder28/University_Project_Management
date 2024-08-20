@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import backend_api from '../config.js';
+import {backend_api} from '../config.js';
 import { toast } from "react-toastify";
 import { Context } from "../main.jsx";
 import axios from "axios";
@@ -44,7 +44,7 @@ function Table({ title, th }) {
                 withCredentials: true,
               }
             );
-            console.log(response.data.user)
+            // console.log(response.data.user)
             setStudents(response.data.user);
           //   console.log(response.data.user);
           } catch (error) {

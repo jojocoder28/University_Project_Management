@@ -7,7 +7,7 @@ import { IoMdSettings } from "react-icons/io";
 import { Context } from '../main';
 import { BiLogInCircle } from "react-icons/bi";
 import { TbLogout } from "react-icons/tb";
-import backend_api from '../config.js';
+import {backend_api} from '../config.js';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 

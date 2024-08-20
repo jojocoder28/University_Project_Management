@@ -18,7 +18,6 @@ import {backend_api} from "./config.js";
 import AboutData from "./components/AboutData.jsx";
 import AddProject from "./pages/AddProject.jsx";
 import ProjectPage from "./pages/ProjectPage.jsx";
-import FileUpload from "./pages/FileUpload.jsx";
 import ProfileView from "./pages/ProfileView.jsx";
 
 const App = () => {

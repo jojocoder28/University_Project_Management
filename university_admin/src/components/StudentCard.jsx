@@ -4,7 +4,7 @@ import UpdateStudentDetails from './UpdateStudentDetails';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import backend_api from '../config';
+import {backend_api} from '../config';
 
 const StudentCard = ({ student }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);

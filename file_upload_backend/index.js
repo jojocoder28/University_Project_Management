@@ -1,160 +1,156 @@
-import express, { json, urlencoded } from 'express';
-import multer, { memoryStorage } from 'multer';
-import fs, { writeFileSync, existsSync, mkdirSync, renameSync } from 'fs';
-import { fileURLToPath } from 'url';
-import path, { dirname, join } from 'path';
-import cors from "cors";
-import { config } from "dotenv";
-import archiver from 'archiver';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
+require('dotenv').config();
 
 const app = express();
-config({ path: "./config.env" });
-const upload = multer({ storage: memoryStorage() });
+app.use(express.json());
+app.use(cors());
 
-app.use(json());
-app.use(urlencoded({ extended: true }));
+mongoose.connect(process.env.MONGO_URI, {
+  dbName: "university_project_management"
+})
+  .then(() => {
+    console.log("Connected to database");
+  })
+  .catch((err) => {
+    console.log(`Some error occured while connecting to database : ${err}`);
+  });
 
-const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL, process.env.UNIVERSITY_ADMIN_URL];
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+const imageStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'project-management',
+    resource_type: 'raw',
+    public_id: (req, file) => {
+      const fileNameWithoutExtension = file.originalname.split('.').slice(0, -1).join('.');
+      const fileExtension = file.originalname.split('.').pop();
+      return `files/${fileNameWithoutExtension}.${fileExtension}`;
+    },
   },
-  methods: ["GET", "POST", "DELETE", "PUT"],
-  credentials: true,
-};
+});
 
-app.use(cors(corsOptions));
+const fileStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'project-management/files',
+    resource_type: 'raw',
+    public_id: (req, file) => `files/${file.originalname.split('.')[0]}`,
+  },
+});
 
-const createDirectoryStructure = (node, currentPath, projectId) => {
-  if (node.children && node.children.length > 0) {
-    node.children.forEach((child) => {
-      const childPath = path.join(currentPath, child.name);
+const imageUpload = multer({ storage: imageStorage });
+const fileUpload = multer({ storage: fileStorage });
 
-      if (child.isDirectory) {
-        if (!fs.existsSync(childPath)) {
-          fs.mkdirSync(childPath);
+const jobRequestSchema = new mongoose.Schema({
+  projectid: String,
+  title: String,
+  description: String,
+  deadline: Date,
+  submissions: [
+    {
+      email: String,
+      files: [
+        {
+          url: String,
+          public_id: String
         }
-        createDirectoryStructure(child, childPath);
-      } else {
-        const oldPath = path.join(__dirname, 'uploads', child.name);
-        const newPath = path.join(currentPath, child.name);
+      ],
+      caption: String,
+      createdAt: { type: Date, default: Date.now }
+    }
+  ]
+});
 
-        if (fs.existsSync(oldPath)) {
-          fs.renameSync(oldPath, newPath);
-        } else {
-          console.error(`File not found: ${oldPath}`);
-        }
-      }
+const JobRequest = mongoose.model('JobRequest', jobRequestSchema);
+
+app.post('/job-requests', async (req, res) => {
+  const id = req.body.id;
+  const title = req.body.title;
+  const description = req.body.description;
+  const deadline = req.body.deadline;
+
+  const jobRequest = new JobRequest({
+    projectid: id,
+    title: title,
+    description: description,
+    deadline: deadline
+  });
+  await jobRequest.save();
+  res.status(200).json({
+    success: true,
+    jobRequest,
+    message: "Job Request has been Created"
+  });
+});
+
+app.get('/job-requests', async (req, res) => {
+  const jobRequests = await JobRequest.find({ projectid: req.query.id });
+  res.status(200).json({
+    success: true,
+    jobRequests
+  });
+});
+
+app.post('/job-requests/:id/submissions', imageUpload.array('images', 5), async (req, res) => {
+  const jobRequest = await JobRequest.findById(req.params.id);
+
+  const currentDate = new Date();
+  if (currentDate > jobRequest.deadline) {
+    return res.status(400).json({
+      success: false,
+      message: 'Submission is closed. The deadline has passed.'
     });
   }
-};
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+  const images = req.files.filter(file => file.fieldname === 'images').map(file => ({ url: file.path, public_id: file.filename }));
 
-app.post('/api/upload', upload.any(), (req, res) => {
+  const submission = {
+    email: req.body.email,
+    files: images,
+    caption: req.body.caption
+  };
+
+  jobRequest.submissions.push(submission);
+  await jobRequest.save();
+  res.status(200).json({
+    success: true,
+    jobRequest,
+    message: "Submitted Successfully"
+  });
+});
+
+// New endpoint for fetching submissions by job request ID
+app.get('/job-requests/:id/submissions', async (req, res) => {
   try {
-    const tree = JSON.parse(req.body.tree);
-    const files = req.files;
-    const projectId = req.body.projectId;
-
-    const uploadDir = path.join(__dirname, 'uploads', projectId);
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    const treePath = path.join(uploadDir, 'tree.json');
-    fs.writeFileSync(treePath, JSON.stringify(tree, null, 2));
-
-    const fileUrls = files.map((file) => {
-      const filePath = path.join(uploadDir, file.originalname);
-      const dirPath = path.dirname(filePath);
-
-      if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-      }
-
-      fs.writeFileSync(filePath, file.buffer);
-      return {
-        public_id: file.originalname,
-        url: `${req.protocol}://${req.get('host')}/uploads/${projectId}/${file.originalname}`
-      };
-    });
-
-    res.status(200).send({
-      message: 'Files and tree structure saved successfully',
-      files: fileUrls
-    });
-  } catch (error) {
-    console.error('Error saving files:', error);
-    res.status(500).send({message:'Internal server error'});
-  }
-});
-
-app.get('/api/download/:projectId', (req, res) => {
-  const projectId = req.params.projectId;
-  const uploadDir = path.join(__dirname, 'uploads', projectId);
-
-  if (!fs.existsSync(uploadDir)) {
-    return res.status(404).send({ message: 'Project not found' });
-  }
-
-  const zipPath = path.join(__dirname,'uploads' , `${projectId}.zip`);
-  const output = fs.createWriteStream(zipPath);
-  const archive = archiver('zip', { zlib: { level: 9 } });
-
-  output.on('close', () => {
-    console.log(`Archive created: ${zipPath} (${archive.pointer()} total bytes)`);
-    res.download(zipPath, `${projectId}.zip`, (err) => {
-      if (err) {
-        console.error('Error downloading zip:', err);
-      }
-      fs.unlink(zipPath, (unlinkErr) => {
-        if (unlinkErr) {
-          console.error('Error removing zip file:', unlinkErr);
-        }
+    const jobRequest = await JobRequest.findById(req.params.id);
+    if (!jobRequest) {
+      return res.status(404).json({
+        success: false,
+        message: 'Job Request not found'
       });
+    }
+
+    res.status(200).json({
+      success: true,
+      submissions: jobRequest.submissions
     });
-  });
-
-  archive.on('error', (err) => {
-    console.error('Archive error:', err);
-    res.status(500).send({ message: 'Internal server error' });
-  });
-
-  archive.pipe(output);
-
-  // Check if directory exists and has files
-  fs.readdir(uploadDir, (err, files) => {
-    if (err) {
-      console.error('Error reading directory:', err);
-      return res.status(500).send({ message: 'Internal server error' });
-    }
-
-    if (files.length === 0) {
-      return res.status(404).send({ message: 'No files to archive' });
-    }
-
-    archive.directory(uploadDir, false);
-    archive.finalize();
-  });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: `An error occurred: ${err.message}`
+    });
+  }
 });
 
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
-
-app.listen(3001, () => {
-  console.log('Server running on port 3001');
-});
+const port = process.env.PORT || 3001;
+app.listen(port, () => console.log(`Server running on port ${port}`));

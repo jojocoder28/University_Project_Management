@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import axios from "axios";
-import backend_api from "../config.js";
+import {backend_api} from "../config.js";
 
 function AdminData(props) {
     const [email, setEmail]=useState(props.admin.email);
@@ -69,7 +69,7 @@ function AdminData(props) {
                     <div className="stat-figure text-secondary">
                         <div className="avatar online">
                             <div className="w-16 md:w-24 rounded-full">
-                                <img src={avatar || 'blankAvatar.jpg'} alt="Admin" />
+                                <img src={avatar || '/blankAvatar.jpg'} alt="Admin" />
                             </div>
                         </div>
                         <div className="flex justify-center items-center pt-3">

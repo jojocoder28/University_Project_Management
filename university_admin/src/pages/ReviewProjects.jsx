@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../main";
 import { useNavigate } from 'react-router-dom';
-import backend_api from '../config.js';
 import { toast } from "react-toastify";
 import axios from "axios";
 import Loading from "../components/Loading.jsx";
 import NavBar from "../components/NavBar.jsx";
 import '../App.css';
 import Modal from "../components/Modal.jsx";
+import { backend_api, fileupload_api } from "../config";
 
 const ReviewProjects = () => {
   document.title = `Review Projects`;
